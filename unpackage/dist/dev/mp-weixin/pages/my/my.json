@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "business": "/pages/my/components/business",
+    "user": "/pages/my/components/user",
+    "intelligence": "/pages/my/components/intelligence"
+  }
+}

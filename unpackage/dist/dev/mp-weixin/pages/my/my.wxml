@@ -1,0 +1,1 @@
+<view><block wx:if="{{xcx_status==0}}"><business vue-id="704e9d00-1" bind:__l="__l"></business></block><block wx:if="{{xcx_status==1}}"><user vue-id="704e9d00-2" bind:__l="__l"></user></block><block wx:if="{{xcx_status==2}}"><intelligence vue-id="704e9d00-3" bind:__l="__l"></intelligence></block></view>

@@ -1,0 +1,71 @@
+<template>
+	<view class="wrap_box">
+		<cu-custom bgImage="/static/images/wwzm_01.jpg">
+			<block slot="content">万屋智能</block>
+		</cu-custom>
+		<view class="main_box">
+			<view class="main_tit">欢迎使用万屋智能~</view>
+			<view class="more_main" @tap="set_xcx(0)">
+				<image src="../../static/images/images/wwzm_04.jpg" mode="aspectFill"></image>
+			</view>
+			<view class="more_main" @tap="set_xcx(1)">
+				<image src="../../static/images/images/wwzm_07.jpg" mode="aspectFill"></image>
+			</view>
+			<view class="more_main" @tap="set_xcx(2)">
+				<image src="../../static/images/images/wwzm_09.jpg" mode="aspectFill"></image>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import service from '../../service.js';
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
+	export default {
+		data() {
+			return {
+				
+			}
+		},
+		
+		computed: {
+			...mapState(['hasLogin', 'forcedLogin', 'userName','loginDatas','xcx_status']),
+		},
+		methods: {
+			...mapMutations(['set_xcx']),
+		}
+	}
+</script>
+
+<style scoped>
+	.wrap_box{
+		width: 100%;
+		/* min-height: 100vh; */
+		background: #fff;
+	}
+	.main_box{
+		width: 100%;
+		padding:0 30upx 30upx;
+	}
+	.main_tit{
+		line-height: 220upx;
+		font-size: 40upx;
+		font-family: PingFang;
+		font-weight: bold;
+		color: #000000;
+	}
+	.more_main{
+		margin-bottom: 55upx;
+		width: 690upx;
+		height: 250upx;
+		box-shadow: 0px 0px 16upx 0px rgba(173, 218, 219, 0.5);
+		border-radius: 10upx;
+	}
+	.more_main image{
+		width: 690upx;
+		height: 250upx;
+	}
+</style>
