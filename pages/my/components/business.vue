@@ -89,22 +89,6 @@
 					<view class="my_td my_td2">2</view>
 					<view class="my_td my_td2">50万</view>
 				</view>
-				<view class="dis_flex my_table">
-					<view class="my_td my_td1">
-						<image class="td_user_tx" :src="getimg(loginDatas.avatarurl)"></image>
-					</view>
-					<view class="my_td my_td2">12</view>
-					<view class="my_td my_td2">12</view>
-					<view class="my_td my_td2">50万</view>
-				</view>
-				<view class="dis_flex my_table">
-					<view class="my_td my_td1">
-						<image class="td_user_tx" :src="getimg(loginDatas.avatarurl)"></image>
-					</view>
-					<view class="my_td my_td2">12</view>
-					<view class="my_td my_td2">12</view>
-					<view class="my_td my_td2">50万</view>
-				</view>
 			</view>
 		</view>
 		
@@ -653,7 +637,7 @@
 		margin-right: 20upx;
 	}
 	.td_user_msg{
-		height: 52upx;
+		height: 62upx;
 	}
 	.td_uname{
 		color: #3a3a3a;
