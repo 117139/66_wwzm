@@ -53,6 +53,7 @@
 					<view class="my_td my_th">已完成</view>
 					<view class="my_td my_th">价值</view>
 				</view>
+				<view style="width: 100%;height: 20upx;"></view>
 				<view class="dis_flex my_table">
 					<view class="my_td my_td1">合同2020-2</view>
 					<view class="my_td my_td2">6</view>
@@ -77,6 +78,7 @@
 					<view class="dis_flex aic bus_my_li_tit_text"><image src="../../../static/images/business/my_icon2.png" mode=""></image>工程完成统计</view>
 					
 				</view>
+				<view style="width: 100%;height: 20upx;"></view>
 				<view class="dis_flex my_table">
 					<view class="my_td my_td1">
 						<image class="td_user_tx" :src="getimg(loginDatas.avatarurl)"></image>
@@ -85,9 +87,33 @@
 							<view class="td_utb">L-6B</view>
 						</view>
 					</view>
-					<view class="my_td my_td2">6</view>
-					<view class="my_td my_td2">2</view>
-					<view class="my_td my_td2">50万</view>
+					<view class="my_td my_td2"><image class="td_ximg" src="../../../static/images/business/my_ximg_03.jpg" mode=""></image>999+</view>
+					<view class="my_td my_td2"><image class="td_ximg" src="../../../static/images/business/my_ximg_05.jpg" mode=""></image>500</view>
+					<view class="my_td my_td2"><image class="td_ximg" src="../../../static/images/business/my_ximg_07.jpg" mode=""></image>500</view>
+				</view>
+				<view class="dis_flex my_table">
+					<view class="my_td my_td1">
+						<image class="td_user_tx" :src="getimg(loginDatas.avatarurl)"></image>
+						<view class="td_user_msg dis_flex_c ju_b">
+							<view class="td_uname">宋少康</view>
+							<view class="td_utb">L-6B</view>
+						</view>
+					</view>
+					<view class="my_td my_td2"><image class="td_ximg" src="../../../static/images/business/my_ximg_03.jpg" mode=""></image>820</view>
+					<view class="my_td my_td2"><image class="td_ximg" src="../../../static/images/business/my_ximg_05.jpg" mode=""></image>600</view>
+					<view class="my_td my_td2"><image class="td_ximg" src="../../../static/images/business/my_ximg_07.jpg" mode=""></image>220</view>
+				</view>
+				<view class="dis_flex my_table">
+					<view class="my_td my_td1">
+						<image class="td_user_tx" :src="getimg(loginDatas.avatarurl)"></image>
+						<view class="td_user_msg dis_flex_c ju_b">
+							<view class="td_uname">宋少康</view>
+							<view class="td_utb">L-6B</view>
+						</view>
+					</view>
+					<view class="my_td my_td2"><image class="td_ximg" src="../../../static/images/business/my_ximg_03.jpg" mode=""></image>10</view>
+					<view class="my_td my_td2"><image class="td_ximg" src="../../../static/images/business/my_ximg_05.jpg" mode=""></image>5</view>
+					<view class="my_td my_td2"><image class="td_ximg" src="../../../static/images/business/my_ximg_07.jpg" mode=""></image>5</view>
 				</view>
 			</view>
 		</view>
@@ -646,5 +672,10 @@
 	.td_utb{
 		font-size: 14upx;
 		color: #a8a8a8;
+	}
+	.td_ximg{
+		width: 18upx;
+		height: 16upx;
+		margin-right: 20upx;
 	}
 </style>
