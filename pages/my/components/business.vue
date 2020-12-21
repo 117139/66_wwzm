@@ -1,13 +1,14 @@
 <template>
 	<view class="content_wrap" :class="tk_show?'tk_class':''">
 		<view class="head_box" :class="{'cur_H':PageScroll>10}" :style="style">
+			<image class="head_box_img" src="/static/images/business/my_bg_01.jpg" mode="aspectFill"></image>
 			<view class="my_tit_box" :style="style1">
 				个人中心
 			</view>
 		</view>
 		
 		<view v-if="hasLogin" class="my_box">
-			<image class="my_box_bg" src="/static/images/business/my_bg_01.jpg"></image>
+			<image class="my_box_bg" src="/static/images/business/my_bg_01.jpg" mode="aspectFill"></image>
 			<view class="user_box dis_flex aic">
 				<view class="user_tx">
 					<image class="user_tx" :src="getimg(loginDatas.avatarurl)"></image>
@@ -31,7 +32,7 @@
 			</view>
 		</view>
 		<view v-else class="my_box">
-			<image class="my_box_bg" src="/static/images/business/my_bg_01.jpg"></image>
+			<image class="my_box_bg" src="/static/images/business/my_bg_01.jpg" mode="aspectFill"></image>
 			
 			<view class="user_box dis_flex aic ju_c">
 				<!-- <image class="user_tx" src="/static/logo.png"></image> -->
@@ -79,7 +80,7 @@
 					
 				</view>
 				<view style="width: 100%;height: 20upx;"></view>
-				<view class="dis_flex my_table">
+				<view class="dis_flex my_table" v-for="(item,index) in 3">
 					<view class="my_td my_td1">
 						<image class="td_user_tx" :src="getimg(loginDatas.avatarurl)"></image>
 						<view class="td_user_msg dis_flex_c ju_b">
@@ -87,33 +88,9 @@
 							<view class="td_utb">L-6B</view>
 						</view>
 					</view>
-					<view class="my_td my_td2"><image class="td_ximg" src="../../../static/images/business/my_ximg_03.jpg" mode=""></image>999+</view>
-					<view class="my_td my_td2"><image class="td_ximg" src="../../../static/images/business/my_ximg_05.jpg" mode=""></image>500</view>
-					<view class="my_td my_td2"><image class="td_ximg" src="../../../static/images/business/my_ximg_07.jpg" mode=""></image>500</view>
-				</view>
-				<view class="dis_flex my_table">
-					<view class="my_td my_td1">
-						<image class="td_user_tx" :src="getimg(loginDatas.avatarurl)"></image>
-						<view class="td_user_msg dis_flex_c ju_b">
-							<view class="td_uname">宋少康</view>
-							<view class="td_utb">L-6B</view>
-						</view>
-					</view>
-					<view class="my_td my_td2"><image class="td_ximg" src="../../../static/images/business/my_ximg_03.jpg" mode=""></image>820</view>
-					<view class="my_td my_td2"><image class="td_ximg" src="../../../static/images/business/my_ximg_05.jpg" mode=""></image>600</view>
-					<view class="my_td my_td2"><image class="td_ximg" src="../../../static/images/business/my_ximg_07.jpg" mode=""></image>220</view>
-				</view>
-				<view class="dis_flex my_table">
-					<view class="my_td my_td1">
-						<image class="td_user_tx" :src="getimg(loginDatas.avatarurl)"></image>
-						<view class="td_user_msg dis_flex_c ju_b">
-							<view class="td_uname">宋少康</view>
-							<view class="td_utb">L-6B</view>
-						</view>
-					</view>
-					<view class="my_td my_td2"><image class="td_ximg" src="../../../static/images/business/my_ximg_03.jpg" mode=""></image>10</view>
-					<view class="my_td my_td2"><image class="td_ximg" src="../../../static/images/business/my_ximg_05.jpg" mode=""></image>5</view>
-					<view class="my_td my_td2"><image class="td_ximg" src="../../../static/images/business/my_ximg_07.jpg" mode=""></image>5</view>
+					<view class="my_td my_td1" style="color: #000;"><image class="td_ximg" src="../../../static/images/business/my_ximg_03.jpg" mode=""></image>999+</view>
+					<view class="my_td my_td1" style="color: #000;"><image class="td_ximg" src="../../../static/images/business/my_ximg_05.jpg" mode=""></image>500</view>
+					<view class="my_td my_td1" style="color: #000;"><image class="td_ximg" src="../../../static/images/business/my_ximg_07.jpg" mode=""></image>500</view>
 				</view>
 			</view>
 		</view>
@@ -496,6 +473,15 @@
 		-webkit-box-shadow: 0rpx 0rpx 0rpx;
 		box-shadow: 0rpx 0rpx 0rpx;
 		z-index: 9999;
+		overflow: hidden;
+	}
+	.head_box_img{
+		position: absolute;
+		top: 0;
+		width: 100%;
+		height: 498upx;
+		left: 0;
+		right: 0;
 	}
 	.cur_H{
 		background: #fff;

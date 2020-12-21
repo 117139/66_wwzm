@@ -6,13 +6,13 @@
 		<view class="main_box">
 			<view class="main_tit">欢迎使用万屋智能~</view>
 			<view class="more_main" @tap="set_xcx(0)">
-				<image src="../../static/images/images/wwzm_04.jpg" mode="aspectFill"></image>
+				<image src="../../static/images/wwzm_04.jpg" mode="aspectFill"></image>
 			</view>
 			<view class="more_main" @tap="set_xcx(1)">
-				<image src="../../static/images/images/wwzm_07.jpg" mode="aspectFill"></image>
+				<image src="../../static/images/wwzm_07.jpg" mode="aspectFill"></image>
 			</view>
 			<view class="more_main" @tap="set_xcx(2)">
-				<image src="../../static/images/images/wwzm_09.jpg" mode="aspectFill"></image>
+				<image src="../../static/images/wwzm_09.jpg" mode="aspectFill"></image>
 			</view>
 		</view>
 	</view>

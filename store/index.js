@@ -36,8 +36,6 @@ const store = new Vuex.Store({
 		bj_prodata:'',
 		
 		
-		h5_uid:'',
-		
 		
 		
 		

@@ -2,6 +2,7 @@
 	<view>
 		<view class="cu-custom" :style="[{height:CustomBar + 'px'}]">
 			<view class="cu-bar fixed" :style="style" :class="[bgImage!=''?'none-bg text-white bg-img':'',bgColor]">
+				<image class="cu-bar_image" v-if="bgImage!=''" :src="bgImage" mode="aspectFill" :style="[{height:CustomBar + 'px'}]"></image>
 				<view class="action" @tap="BackPage" v-if="isBack">
 					<text class="cuIcon-back iconfont iconicon-test"></text>
 					<slot name="backText"></slot>
@@ -66,6 +67,16 @@
 	}
 </script>
 
-<style>
-
+<style scoped>
+	.cu-custom{
+		overflow: hidden;
+	}
+	.cu-bar_image{
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+	}
 </style>

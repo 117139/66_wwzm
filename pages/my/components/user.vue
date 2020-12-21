@@ -1,58 +1,94 @@
 <template>
-	<view class="content_wrap" :class="tk_show?'tk_class':''">
+	<view class="content_wrap" >
 		<view class="head_box" :class="{'cur_H':PageScroll>10}" :style="style">
+			<image class="head_box_img" src="/static/images/user/my_bg_01.png" mode="aspectFill"></image>
 			<view class="my_tit_box" :style="style1">
 				个人中心
 			</view>
 		</view>
 
 		<view v-if="hasLogin" class="my_box">
-			<image class="my_box_bg" src="/static/images/user/my_bg_01.png"></image>
+			<image class="my_box_bg" src="/static/images/user/my_bg_01.png" mode="aspectFill"></image>
 			<view class="user_box dis_flex aic">
 				<view class="user_tx">
 					<image class="user_tx" :src="getimg(loginDatas.avatarurl)"></image>
-					<!-- <avatar  stretch="short" selWidth="400upx" selHeight="400upx" @upload="myUpload"
-					:avatarSrc="tximg?getimg(tximg):loginDatas.avatarurl"
-					 avatarStyle="width: 140upx; height:140upx; border-radius: 50%;">
-					</avatar> -->
-					<!-- <avatar  stretch="short" inner="true" selWidth="400upx" selHeight="400upx" @upload="myUpload"
-					:avatarSrc="loginDatas.img_url?getimg(loginDatas.img_url):tximg"
-					 avatarStyle="width: 140upx; height:140upx; border-radius: 50%;">
-					</avatar>
-					<view class="user_set">
-						<text class="iconfont icon-xiugai"></text>
-					</view> -->
 				</view>
 				<view class="flex_1">
 					<view class="user_name">{{loginDatas.nickname}}</view>
-					<image class="user_edit" src="../../../static/images/user/my_edit.png" mode="aspectFill"></image>
+					<image class="user_edit"  @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin' src="../../../static/images/user/my_edit.png" mode="aspectFill"></image>
 				</view>
 				<!-- <view class="iconfont icon-bianji user_edit" @tap="jump" data-url="/pages/my_msg/my_msg"></view> -->
 			</view>
 		</view>
 		<view v-else class="my_box">
-			<image class="my_box_bg" src="/static/images/user/my_bg_01.png"></image>
+			<image class="my_box_bg" src="/static/images/user/my_bg_01.png" mode="aspectFill"></image>
 
 			<view class="user_box dis_flex aic ju_c">
-				<!-- <image class="user_tx" src="/static/logo.png"></image> -->
 				<view class="flex_1 dis_flex aic ju_c">
 					<view class="user_name" @tap="jump" data-url="../login/login">登录/注册</view>
 				</view>
 			</view>
 		</view>
 		<view class="bus_my_list">
-			<view class="user_my1">
-				<view class="user_order">
-					<image src="../../../static/images/user/my_order.png" mode=""></image>我的订单
+			<view class="user_my1 dis_flex ais ">
+				<view class="user_order"  @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
+					<image src="../../../static/images/user/my_order.png" mode="aspectFit"></image>我的订单
 				</view>
-				<view class="user_order">
-					<image src="../../../static/images/user/my_xiaoxi.png" mode=""></image>我的消息
+				<view class="user_order" @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
+					<image src="../../../static/images/user/my_xiaoxi.png" mode="aspectFit"></image>我的消息
+				</view>
+			</view>
+			<view class="user_list">
+				<view class="user_li"  @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
+					<view class="user_li_l">
+						<image src="../../../static/images/user/my_icon1.png" mode="aspectFit"></image>
+					</view>
+					<view class="user_li_r">
+						<view>施工进度</view>
+						<view class="iconfont iconnext-m"></view>
+					</view>
+				</view>
+				<view class="user_li" @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
+					<view class="user_li_l">
+						<image src="../../../static/images/user/my_icon2.png" mode="aspectFit"></image>
+					</view>
+					<view class="user_li_r">
+						<view>我的套餐</view>
+						<view class="iconfont iconnext-m"></view>
+					</view>
+				</view>
+				<view class="user_li" @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
+					<view class="user_li_l">
+						<image src="../../../static/images/user/my_icon3.png" mode="aspectFit"></image>
+					</view>
+					<view class="user_li_r">
+						<view>我的收藏</view>
+						<view class="iconfont iconnext-m"></view>
+					</view>
+				</view>
+				<view class="user_li" @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
+					<view class="user_li_l">
+						<image src="../../../static/images/user/my_icon4.png" mode="aspectFit"></image>
+					</view>
+					<view class="user_li_r">
+						<view>报修和售后</view>
+						<view class="iconfont iconnext-m"></view>
+					</view>
 				</view>
 			</view>
 		</view>
-
-
-
+		<view class="my_meitu_tit">
+			<view class="my_meitu_tit_l">我家美图</view>
+			<view  class="my_meitu_tit_r"  @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>发布/更多<text class="iconfont iconnext-m"></text></view>
+		</view>
+		<view class="my_meitu_list">
+			<view class="my_meitu_li" v-for="(item,index) in 10"  @tap="jump" data-url="../my_pwd/my_pwd">
+				<image class="my_meitu_li_img" src="../../../static/images/user/my_mt_03.jpg" mode="aspectFill"></image>
+				<view class="my_meitu_li_bg">
+					<view class="oh1">客户的实际装修美图</view>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -89,7 +125,11 @@
 		onPageScroll(e) {
 			console.log(e)
 			this.PageScroll = e.scrollTop
-
+			if(e.scrollTop>10){
+				uni.showToast({
+					title:e.scrollTop
+				})
+			}
 		},
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data']),
@@ -362,6 +402,7 @@
 </script>
 
 <style scoped>
+	
 	.my_tit_box {
 		width: calc(100% - 440rpx);
 		position: absolute;
@@ -387,14 +428,14 @@
 
 
 
-
-
-	.content_wrap {
+.content_wrap {
 		position: relative;
 		min-height: 100vh;
 		box-sizing: border-box;
-		background: #EDEDED;
+		background: #fafafa;
 	}
+
+
 
 	.cu_custom_box {
 		z-index: 99999;
@@ -431,8 +472,16 @@
 		-webkit-box-shadow: 0rpx 0rpx 0rpx;
 		box-shadow: 0rpx 0rpx 0rpx;
 		z-index: 9999;
+		overflow: hidden;
 	}
-
+	.head_box_img{
+		position: absolute;
+		top: 0;
+		width: 100%;
+		height: 417upx;
+		left: 0;
+		right: 0;
+	}
 	.cur_H {
 		background: #fff;
 		color: #333;
@@ -458,7 +507,7 @@
 		top: 200upx;
 		left: 30upx;
 		width: 690upx;
-		height: 195upx;
+		/* height: 195upx; */
 		/* background: #FFFFFF;
 		box-shadow: 0px 2px 10upx 0px rgba(0, 0, 0, 0.1);
 		border-radius: 10upx; */
@@ -546,5 +595,112 @@
 		width: 40upx;
 		height: 50upx;
 		margin-right: 30upx;
+	}
+	
+	
+	.user_list{
+		width: 100%;
+		/* padding: 0 30upx; */
+		
+		background: #FFFFFF;
+		border-radius: 10upx;
+	}
+	.user_li{
+		width: 100%;
+		height: 93upx;
+		display: flex;
+		align-items: stretch;
+	}
+	.user_li_l{
+		width: 88upx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.user_li_l image{
+		width: 38upx;
+		height: 38upx;
+	}
+	.user_li_r {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		border-bottom: 1px solid #EEEEEE;
+		padding-right: 30upx;
+		
+		font-size: 30upx;
+		font-family: PingFang SC;
+		font-weight: 500;
+		color: #222222;
+	}
+	.user_li_r .iconnext-m{
+		font-size: 22upx;
+		color: #222;
+	}
+	.my_meitu_tit{
+		width: 100%;
+		padding: 0 30upx;
+		height: 97upx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.my_meitu_tit_l{
+		
+		font-size: 32upx;
+		font-family: PingFang;
+		font-weight: bold;
+		color: #000000;
+	}
+	.my_meitu_tit_r{
+		padding-right: 30upx;
+		font-size: 26upx;
+		font-family: PingFang SC;
+		font-weight: 500;
+		color: #666666;
+	}
+	.my_meitu_tit_r .iconfont{
+		font-size: 22upx;
+		color: #222;
+		margin-left: 20upx;
+	}
+	.my_meitu_list{
+		width: 100%;
+		background: #fff;
+		padding: 30upx;
+	}
+	.my_meitu_li{
+		width: 100%;
+		height: 345upx;
+		position: relative;
+	}
+	.my_meitu_li+.my_meitu_li{
+		margin-top: 30upx;
+	}
+	.my_meitu_li_img{
+		width: 100%;
+		height: 345upx;
+		position: relative;
+		z-index: 1;
+	}
+	.my_meitu_li_bg{
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 2;
+		width: 100%;
+		padding: 0 30upx;
+		
+		height: 84upx;
+		background: rgba(0,0,0,.34);
+		
+		font-size: 28upx;
+		font-family: PingFang;
+		font-weight: bold;
+		color: #FFFFFF;
+		display: flex;
+		align-items: center;
 	}
 </style>

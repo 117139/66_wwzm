@@ -98,6 +98,9 @@
 	.aic{
 		align-items: center;
 	}
+	.ais{
+		align-items: stretch;
+	}
 	.aift{
 		align-items: flex-start;
 	}
