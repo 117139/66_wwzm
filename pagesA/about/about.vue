@@ -3,7 +3,7 @@
 	
 		<view v-if="about_content" class="xieyi_main" v-html="get_fwb(about_content)"></view>
 		<view v-else-if="type=='about'" class="xieyi_main" v-html="get_fwb(about_content)">
-			<image src="../../static/images/about_03.jpg" style="width: 690upx; height: 1130upx;" mode="aspectFill"></image>
+			<!-- <image src="../../static/images/about_03.jpg" style="width: 690upx; height: 1130upx;" mode="aspectFill"></image> -->
 		</view>
 		<view v-else-if="type=='yszc'" class="xieyi_main">
 		

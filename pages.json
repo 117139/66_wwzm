@@ -9,7 +9,7 @@
 				},
 				"navigationStyle": "custom"
 			}
-		}, {
+		},{
 			"path": "pages/my/my",
 			"style": {
 				"navigationBarTitleText": "",
@@ -20,7 +20,7 @@
 				"navigationStyle": "custom"
 			}
 
-		}, {
+		},  {
 			"path": "pages/main/main",
 			"style": {
 				"navigationBarTitleText": "",
@@ -68,7 +68,57 @@
 				"navigationBarTitleText": "工程",
 				"enablePullDownRefresh": false,
 				"navigationBarBackgroundColor": "#FFFFFF"
-				
+
+			}
+
+		}, {
+			"path": "bus_order_edit/bus_order_edit",
+			"style": {
+				"navigationBarTitleText": "添加工程",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "bus_order_xq/bus_order_xq",
+			"style": {
+				"navigationBarTitleText": "订单详情",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "intell_renzheng/intell_renzheng",
+			"style": {
+				"navigationBarTitleText": "实名认证",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "intell_shouhou/intell_shouhou",
+			"style": {
+				"navigationBarTitleText": "售后处理",
+				"enablePullDownRefresh": true
+
+			}
+
+		}, {
+			"path": "intell_end/intell_end",
+			"style": {
+				"navigationBarTitleText": "已完成",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "intell_ing/intell_ing",
+			"style": {
+				"navigationBarTitleText": "施工中",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "intell_order_xq/intell_order_xq",
+			"style": {
+				"navigationBarTitleText": "工单信息",
+				"enablePullDownRefresh": true
 			}
 
 		}]
@@ -114,7 +164,7 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "万屋智能",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationBarBackgroundColor": "#fff",
+		"backgroundColor": "#fafafa"
 	}
 }

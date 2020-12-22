@@ -31,7 +31,7 @@
 		</view>
 		<view class="bus_my_list">
 			<view class="user_list">
-				<view class="user_li"  @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
+				<view class="user_li"  @tap="jump" data-url="/pagesA/intell_ing/intell_ing" :data-login='true' :data-haslogin='hasLogin'>
 					<view class="user_li_l">
 						<image src="../../../static/images/intell/my_icon1.png" mode="aspectFit"></image>
 					</view>
@@ -40,7 +40,7 @@
 						<view class="iconfont iconnext-m"></view>
 					</view>
 				</view>
-				<view class="user_li" @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
+				<view class="user_li" @tap="jump" data-url="/pagesA/intell_end/intell_end" :data-login='true' :data-haslogin='hasLogin'>
 					<view class="user_li_l">
 						<image src="../../../static/images/intell/my_icon2.png" mode="aspectFit"></image>
 					</view>
@@ -49,7 +49,7 @@
 						<view class="iconfont iconnext-m"></view>
 					</view>
 				</view>
-				<view class="user_li" @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
+				<view class="user_li" @tap="jump" data-url="/pagesA/intell_shouhou/intell_shouhou" :data-login='true' :data-haslogin='hasLogin'>
 					<view class="user_li_l">
 						<image src="../../../static/images/intell/my_icon3.png" mode="aspectFit"></image>
 					</view>
@@ -58,7 +58,7 @@
 						<view class="iconfont iconnext-m"></view>
 					</view>
 				</view>
-				<view class="user_li" @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
+				<view class="user_li" @tap="jump" data-url="/pagesA/intell_renzheng/intell_renzheng" :data-login='true' :data-haslogin='hasLogin'>
 					<view class="user_li_l">
 						<image src="../../../static/images/intell/my_icon4.png" mode="aspectFit"></image>
 					</view>

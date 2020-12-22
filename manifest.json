@@ -61,7 +61,18 @@
         "setting" : {
             "urlCheck" : false
         },
-        "usingComponents" : true
+        "usingComponents" : true,
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "获取位置信息"
+            }
+        },
+				"plugins": {
+					"routePlan": {
+						"version": "1.0.11",
+						"provider": "wx50b5593e81dd937a"
+					}
+				}
     },
     "mp-alipay" : {
         "usingComponents" : true

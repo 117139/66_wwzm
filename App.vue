@@ -119,6 +119,9 @@
 	.flex_1{
 		flex: 1;
 	}
+	.flex_0{
+		flex: none;
+	}
 	.oh1 {
 	    overflow: hidden;
 	    text-overflow: ellipsis;

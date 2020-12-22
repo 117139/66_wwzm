@@ -39,7 +39,7 @@ const store = new Vuex.Store({
 		
 		
 		
-		xcx_status:0,     //0 商家端  1 用户端  2智能安装端
+		xcx_status:2,     //0 商家端  1 用户端  2智能安装端
 	},
 	mutations: {
 		set_xcx(state, xcx_status){

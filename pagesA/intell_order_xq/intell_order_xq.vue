@@ -1,12 +1,10 @@
 <template>
 	<view class="content_wrap" style="min-height: 100vh;background: #FAFAFA;">
-		<cu-custom bgColor="bg-white">
-			<block slot="content">首页</block>
-		</cu-custom>
+		
 		<view class="index_list">
-			<view class="index_li" v-for="(item,index) in datas">
+			<view class="index_li">
 				<view class="index_li_d1">
-					<image class="index_tx" src="../../../static/images/tx_m2.jpg" lazy-load="true" mode="aspectFill"></image>
+					<image class="index_tx" src="/static/images/tx_m2.jpg" lazy-load="true" mode="aspectFill"></image>
 					<view class="index_yz">业主：<text>孙三三</text></view>
 					<view @tap="call" data-tel="18300000000" class="iconfont iconphone"></view>
 				</view>
@@ -26,28 +24,50 @@
 					<view class="index_address">菜园坝290号重庆中银大厦6-11-4</view>
 				</view>
 				<view class="index_li_d3">
-					<view class="index_li_d3_tit">安防套餐</view>
-					<scroll-view class="weixin_dblist" scroll-x="true" bindscroll="scroll" style="width: 100%">
-						<image v-for="(item,index) in 10" @tap="pveimg" lazy-load="true" data-src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1306508493,2006189766&fm=26&gp=0.jpg" class="taocan_li" src="/static/images/business/tc_img_03.png" mode="aspectFit"></image>
-							
-					</scroll-view>
+					<view class="index_li_d3_tit">安防套餐(详单)</view>
+					<view class="tc_list">
+						<view class="tc_li" v-for="(item,index) in 4">
+							<image class="tc_li_img" src="/static/images/business/tc_img_03.png" mode="aspectFit"></image>
+							<view class="tc_msg flex_1">
+								<view class="dis_flex tc_d1 ju_b">
+									<view class="tc_d1_l">智能门锁 T1C</view>
+									<view class="tc_d1_r">￥998.12</view>
+								</view>
+								<view class="dis_flex tc_d1 ju_b tc_d2">
+									<view class="tc_d1_l">极致安全，气质不凡</view>
+									<view class="tc_d1_r">x1</view>
+								</view>
+								<view class="dis_flex flex-wrap">
+									<view class="tc_bq">门锁安防</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view  class="index_li_d4">
+					<view class="dis_flex aic ju_b index_li_d4_li">
+						<view style="color: #999;">订单号</view>
+						<view>56546545646541231</view>
+					</view>
+					<view class="dis_flex aic ju_b index_li_d4_li">
+						<view style="color: #999;">下单时间</view>
+						<view>2020-10-12</view>
+					</view>
 				</view>
 				<view class="index_li_d1" style="border-bottom: 0;">
-					<view class="index_yz dis_flex">要求：
-						<view class="flex_1"><text class="oh1">情况紧急，需要在三天内完成需要在三天内完成需要在三天内完成需要在三天内完成需要在三天内完成</text></view>
+					<view class="index_yz dis_flex ju_b">要求：
+						<view class="" style="max-width: 90%"><text class="oh1">情况紧急，需要在三天内完成</text></view>
 					</view>
-					<view class="go_btn" @tap="jump" data-url="/pagesA/intell_order_xq/intell_order_xq">进入</view>
 				</view>
 			</view>
-			<view v-if="datas.length==0" class="zanwu">暂无数据</view>
-			<view v-if="data_last" class="data_last">我可是有底线的哟~~~</view>
+			<view @tap="jump" data-url="" class="pz_btn"><text class="iconfont iconshigong"></text>施工前照片</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	import service from '../../../service.js';
-	import QQMapWX from '../../../libs/qqmap-wx-jssdk.js';
+	import service from '../../service.js';
+	import QQMapWX from '../../libs/qqmap-wx-jssdk.js';
 	import {
 		mapState,
 		mapMutations
@@ -365,7 +385,7 @@
 	}
 	.index_li_d3{
 		width: 100%;
-		padding: 20upx 30upx;
+		padding: 20upx 30upx 10upx;
 		border-bottom: 1px solid #eee;
 	}
 	.index_li_d3_tit{
@@ -376,34 +396,86 @@
 		color: #222222;
 		margin-bottom: 15upx;
 	}
-	
-	.weixin_dblist{
+	.tc_list{
 		width: 100%;
-		height: 170upx;
-		background: #FAFAFA;
-		white-space:nowrap;
-		padding: 15upx;
 	}
-	.taocan_li{
+	.tc_li{
+		width: 100%;
+		display: flex;
+		padding: 15upx 0;
+	}
+	.tc_li_img{
 		width: 140upx;
 		height: 140upx;
-		background: #FFFFFF;
-		border-radius: 4px;
-		display: inline-flex;
-		margin-right: 10upx;
+		background: #FAFAFA;
+		border-radius: 4upx;
+		margin-right: 20upx;
 	}
-	.go_btn{
-		margin-left: 10upx;
-		width: 160upx;
-		height: 56upx;
+	.tc_d1{
+		align-items: center;
+		margin-bottom: 10upx;
+	}
+	.tc_d1_l{
+		font-size: 24upx;
+		font-family: PingFangSC;
+		font-weight: 500;
+		color: #222222;
+		line-height: 35upx;
+		font-weight: bold;
+	}
+	.tc_d1_r{
+		font-size: 24upx;
+		font-family: PingFangSC;
+		font-weight: 500;
+		color: #222222;
+		line-height: 35upx;
+		flex:none;
+	}
+	.tc_d2 .tc_d1_l{
+		color: #999;
+		font-weight: normal;
+	}
+	.tc_d2 .tc_d1_r{
+		color: #999;
+		font-weight: normal;
+	}
+	.tc_bq{
+		padding: 7upx 9upx;
+		font-size: 16upx;
+		line-height: 16upx;
+		font-family: Adobe Heiti Std;
+		font-weight: normal;
+		color: #3778FE;
+		border: 1px solid #3778FE;
+	}
+	.index_li_d4{
+		width: 100%;
+		padding: 20upx 30upx;
+	}
+	.index_li_d4_li{
+		width: 100%;
+		font-size: 22upx;
+		color: #000;
+	}
+	.index_li_d4_li+.index_li_d4_li{
+		margin-top: 25upx;
+	}
+	.pz_btn{
+		width: 690upx;
+		height: 88upx;
 		background: #3778FE;
 		border-radius: 10upx;
-		font-size: 24upx;
-		font-family: PingFang SC;
-		font-weight: 500;
-		color: #FEFEFE;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		font-size: 32upx;
+		font-family: PingFang SC;
+		font-weight: 500;
+		color: #FFFFFF;
+		margin: 60upx auto;
+	}
+	.pz_btn text{
+		margin-right: 8upx;
+		font-size: 34upx;
 	}
 </style>

@@ -1,12 +1,10 @@
 <template>
 	<view class="content_wrap" style="min-height: 100vh;background: #FAFAFA;">
-		<cu-custom bgColor="bg-white">
-			<block slot="content">首页</block>
-		</cu-custom>
+		
 		<view class="index_list">
 			<view class="index_li" v-for="(item,index) in datas">
 				<view class="index_li_d1">
-					<image class="index_tx" src="../../../static/images/tx_m2.jpg" lazy-load="true" mode="aspectFill"></image>
+					<image class="index_tx" src="/static/images/tx_m2.jpg" lazy-load="true" mode="aspectFill"></image>
 					<view class="index_yz">业主：<text>孙三三</text></view>
 					<view @tap="call" data-tel="18300000000" class="iconfont iconphone"></view>
 				</view>
@@ -32,11 +30,17 @@
 							
 					</scroll-view>
 				</view>
-				<view class="index_li_d1" style="border-bottom: 0;">
+				<view  v-if="index%2==0" class="index_li_d1" style="border-bottom: 0;">
 					<view class="index_yz dis_flex">要求：
-						<view class="flex_1"><text class="oh1">情况紧急，需要在三天内完成需要在三天内完成需要在三天内完成需要在三天内完成需要在三天内完成</text></view>
+						<view class="flex_1"><text class="oh1">下单时间：2020-10-23</text></view>
 					</view>
-					<view class="go_btn" @tap="jump" data-url="/pagesA/intell_order_xq/intell_order_xq">进入</view>
+					<view class="go_btn" @tap="jump" data-url="">去签字</view>
+				</view>
+				<view  v-else class="index_li_d1" style="border-bottom: 0;">
+					<view class="index_yz dis_flex">要求：
+						<view class="flex_1"><text class="oh1">暂无</text></view>
+					</view>
+					<view class="dis_flex aic" style="font-size: 24upx;color: #3778FE;"><text class="iconfont iconduigou-copy" style="margin-right: 10upx;font-size: 24upx;color: #3778FE;"></text>已完成</view>
 				</view>
 			</view>
 			<view v-if="datas.length==0" class="zanwu">暂无数据</view>
@@ -46,8 +50,8 @@
 </template>
 
 <script>
-	import service from '../../../service.js';
-	import QQMapWX from '../../../libs/qqmap-wx-jssdk.js';
+	import service from '../../service.js';
+	import QQMapWX from '../../libs/qqmap-wx-jssdk.js';
 	import {
 		mapState,
 		mapMutations
