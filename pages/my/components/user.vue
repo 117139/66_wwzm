@@ -15,7 +15,7 @@
 				</view>
 				<view class="flex_1">
 					<view class="user_name">{{loginDatas.nickname}}</view>
-					<image class="user_edit"  @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin' src="../../../static/images/user/my_edit.png" mode="aspectFill"></image>
+					<image class="user_edit"  @tap="jump" data-url="/pagesA/user_edit/user_edit" :data-login='true' :data-haslogin='hasLogin' src="../../../static/images/user/my_edit.png" mode="aspectFill"></image>
 				</view>
 				<!-- <view class="iconfont icon-bianji user_edit" @tap="jump" data-url="/pages/my_msg/my_msg"></view> -->
 			</view>
@@ -39,7 +39,7 @@
 				</view>
 			</view>
 			<view class="user_list">
-				<view class="user_li"  @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
+				<view class="user_li"  @tap="jump" data-url="/pagesA/user_order_ing/user_order_ing" :data-login='true' :data-haslogin='hasLogin'>
 					<view class="user_li_l">
 						<image src="../../../static/images/user/my_icon1.png" mode="aspectFit"></image>
 					</view>
@@ -66,7 +66,7 @@
 						<view class="iconfont iconnext-m"></view>
 					</view>
 				</view>
-				<view class="user_li" @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
+				<view class="user_li" @tap="jump" data-url="/pagesA/user_shouhou/user_shouhou" :data-login='true' :data-haslogin='hasLogin'>
 					<view class="user_li_l">
 						<image src="../../../static/images/user/my_icon4.png" mode="aspectFit"></image>
 					</view>

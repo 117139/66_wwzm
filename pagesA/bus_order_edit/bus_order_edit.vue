@@ -3,6 +3,12 @@
 		<view class="order_box">
 			<view class="order_main">
 				<view class="order_li">
+					<view class="order_li_tit">工程名称</view>
+					<view class="order_li_msg">
+						<input v-model="gc_name" placeholder="请输入工程姓名" />
+					</view>
+				</view>
+				<view class="order_li">
 					<view class="order_li_tit">业主名称</view>
 					<view class="order_li_msg">
 						<input v-model="yz_name" placeholder="请输入业主姓名" />
@@ -79,6 +85,7 @@
 			            format: true
 			        })
 			return {
+				gc_name:'',
 				yz_name:'',
 				yz_tel:'',
 				yz_address:'',
@@ -142,7 +149,13 @@
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform', 'setfj_data']),
 			sub(){
-				
+				if(!this.gc_name){
+					uni.showToast({
+						icon:'none',
+						title:'请填写工程名称'
+					})
+					return
+				}
 				if(!this.yz_name){
 					uni.showToast({
 						icon:'none',

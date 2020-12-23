@@ -34,7 +34,7 @@
 					<view class="index_yz dis_flex">要求：
 						<view class="flex_1"><text class="oh1">下单时间：2020-10-23</text></view>
 					</view>
-					<view class="go_btn" @tap="jump" data-url="">去签字</view>
+					<view class="go_btn" @tap="jump" :data-url="'/pagesA/intell_order_xq/intell_order_xq?type='+2">去签字</view>
 				</view>
 				<view  v-else class="index_li_d1" style="border-bottom: 0;">
 					<view class="index_yz dis_flex">要求：

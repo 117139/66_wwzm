@@ -1,11 +1,10 @@
 <template>
 	<view class="content_wrap" >
-		<view class="head_box" :class="{'cur_H':PageScroll>10}" :style="style">
+		<!-- <view class="head_box" :class="{'cur_H':PageScroll>10}" :style="style">
 			<image class="head_box_img" src="/static/images/business/my_bg_01.jpg" mode="aspectFill"></image>
 			<view class="my_tit_box" :style="style1">
-				<!-- 个人中心 -->
 			</view>
-		</view>
+		</view> -->
 
 		<view v-if="hasLogin" class="my_box">
 			<image class="my_box_bg" src="/static/images/business/my_bg_01.jpg" mode="aspectFill"></image>

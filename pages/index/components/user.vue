@@ -1,70 +1,84 @@
 <template>
-	<view class="content_wrap" >
-		<view class="head_box" :class="{'cur_H':PageScroll>10}" :style="style">
+	<view class="content_wrap" style="min-height: 100vh;background: #fafafa;">
+		<!-- <view class="head_box" :class="{'cur_H':PageScroll>10}" :style="style">
 			<image class="head_box_img" src="/static/images/intell/my_bg_01.png" mode="aspectFill"></image>
 			<view class="my_tit_box" :style="style1">
 				个人中心
 			</view>
-		</view>
+		</view> -->
 
-		<view v-if="hasLogin" class="my_box">
-			<image class="my_box_bg" src="/static/images/intell/my_bg_01.png" mode="aspectFill"></image>
-			<view class="user_box dis_flex aic">
-				<view class="user_tx">
-					<image class="user_tx" :src="getimg(loginDatas.avatarurl)"></image>
-				</view>
-				<view class="flex_1">
-					<view class="user_name">{{loginDatas.nickname}}</view>
-					<image class="user_edit"  @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin' src="../../../static/images/user/my_edit.png" mode="aspectFill"></image>
-				</view>
-				<!-- <view class="iconfont icon-bianji user_edit" @tap="jump" data-url="/pages/my_msg/my_msg"></view> -->
+		<swiper class="swiper" :indicator-dots="indicatorDots" indicator-color="rgba(0,0,0,.3)" indicator-active-color="#11A078"
+		 :autoplay="autoplay" :interval="interval" :duration="duration" circular='true'>
+			<swiper-item v-for="(item,idx) in banner">
+
+				<!-- <image v-if="item.url" class="swi_img" :src="getimg(item.body)" mode="aspectFill"
+						 @tap="jump" :data-url="'../Turl/Turl?url='+item.url"></image> -->
+				<!-- /'../webview/webview?url='+datas.url -->
+				<image class="swi_img" src="../../../static/images/user/banner_01.jpg" mode="aspectFill"></image>
+				<!-- <image class="swi_img" :src="getimg(item.body)" mode="aspectFill"
+						 @tap="jump" data-url=""></image> -->
+			</swiper-item>
+
+		</swiper>
+		<view class="index_icons">
+			<view class="index_icon">
+				<image src="../../../static/images/user/index_icon1.png" mode="aspectFit"></image>
+				<text>智能设计</text>
+			</view>
+			<view class="index_icon">
+				<image src="../../../static/images/user/index_icon2.png" mode="aspectFit"></image>
+				<text>安装进度</text>
+			</view>
+			<view class="index_icon">
+				<image src="../../../static/images/user/index_icon3.png" mode="aspectFit"></image>
+				<text>服务案例</text>
+			</view>
+			<view class="index_icon">
+				<image src="../../../static/images/user/index_icon4.png" mode="aspectFit"></image>
+				<text>资讯</text>
 			</view>
 		</view>
-		<view v-else class="my_box">
-			<image class="my_box_bg" src="/static/images/intell/my_bg_01.png" mode="aspectFill"></image>
-
-			<view class="user_box dis_flex aic ju_c">
-				<view class="flex_1 dis_flex aic ju_c">
-					<view class="user_name" @tap="jump" data-url="../login/login">登录/注册</view>
+		<view class="tc_box">
+			<view class="tc_tit">主推套餐</view>
+			<view class="dis_flex ju_b">
+				<image class="index_url" src="../../../static/images/user/inde_url_04.png" mode="aspectFill"></image>
+				<view class="index_url dis_flex_c ju_b" style="width: 357upx;">
+					<image class="index_url1" src="../../../static/images/user/inde_url_06.png" mode="aspectFill"></image>
+					<image class="index_url1" src="../../../static/images/user/inde_url_09.png" mode="aspectFill"></image>
 				</view>
 			</view>
 		</view>
-		<view class="bus_my_list">
-			<view class="user_list">
-				<view class="user_li"  @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
-					<view class="user_li_l">
-						<image src="../../../static/images/intell/my_icon1.png" mode="aspectFit"></image>
+		<view class="index_list">
+			<view class="tc_tit">客户美图</view>
+			<view class="index_li" v-for="(item,index) in 20">
+				<view class="li_d1">
+					<view class="li_user">
+						<image src="../../../static/images/tx_m.jpg" mode="aspectFill"></image>
+						<text>智能小管家</text>
 					</view>
-					<view class="user_li_r">
-						<view>施工中</view>
-						<view class="iconfont iconnext-m"></view>
-					</view>
+					<view class="li_msg">客户的实际装修美图</view>
 				</view>
-				<view class="user_li" @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
-					<view class="user_li_l">
-						<image src="../../../static/images/intell/my_icon2.png" mode="aspectFit"></image>
-					</view>
-					<view class="user_li_r">
-						<view>已完成</view>
-						<view class="iconfont iconnext-m"></view>
-					</view>
+				<view class="li_img">
+					<image src="/static/images/user/banner_01.jpg" mode="aspectFill"></image>
 				</view>
-				<view class="user_li" @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
-					<view class="user_li_l">
-						<image src="../../../static/images/intell/my_icon3.png" mode="aspectFit"></image>
+				<view class="li_cz">
+					<view class="cz_li">
+						<button type="default" open-type="share"></button>
+						<text class="iconfont iconfenxiang1"></text>
 					</view>
-					<view class="user_li_r">
-						<view>售后处理</view>
-						<view class="iconfont iconnext-m"></view>
-					</view>
-				</view>
-				<view class="user_li" @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
-					<view class="user_li_l">
-						<image src="../../../static/images/intell/my_icon4.png" mode="aspectFit"></image>
-					</view>
-					<view class="user_li_r">
-						<view>我的认证</view>
-						<view class="iconfont iconnext-m"></view>
+					<view class="dis_flex aic">
+						<view class="cz_li">
+							<text class="iconfont iconpinlun"></text>
+						</view>
+						<view class="cz_li">
+							<text class="iconfont iconshoucang"></text>
+							<text class="cz_num">33</text>
+						</view>
+						<view class="cz_li">
+							<text class="iconfont iconzan2"></text>
+							<text class="cz_num">33</text>
+						</view>
+
 					</view>
 				</view>
 			</view>
@@ -82,14 +96,14 @@
 	export default {
 		data() {
 			return {
-				yhxy: false,
-				datas_xy: {
-					body: ''
-				},
-				btnkg: 0,
-				time_zz: '你好',
+				indicatorDots: true,
+				autoplay: true,
+				interval: 3000,
+				duration: 500,
 				StatusBar: this.StatusBar,
 				CustomBar: this.CustomBar,
+
+				banner: [1, 1, 1],
 				datas: '',
 
 				PageScroll: '',
@@ -105,11 +119,14 @@
 		onPageScroll(e) {
 			console.log(e)
 			this.PageScroll = e.scrollTop
-			if(e.scrollTop>10){
+			if (e.scrollTop > 10) {
 				uni.showToast({
-					title:e.scrollTop
+					title: e.scrollTop
 				})
 			}
+		},
+		onShareAppMessage() {
+			
 		},
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data']),
@@ -382,239 +399,168 @@
 </script>
 
 <style scoped>
-	
-	.my_tit_box {
-		width: calc(100% - 440rpx);
-		position: absolute;
-		text-align: center;
-		/* width: calc(100% - 340rpx); */
-		left: 0;
+	.swiper {
 
-		right: 0;
-		bottom: 0;
-		top: 0;
-		margin: auto;
-		height: 60rpx;
-		font-size: 32rpx;
-		line-height: 60rpx;
-		cursor: none;
-		pointer-events: none;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		overflow: hidden;
-	}
-
-
-
-
-
-.content_wrap {
-		position: relative;
-		min-height: 100vh;
-		box-sizing: border-box;
-		background: #fafafa;
-	}
-
-
-
-	.cu_custom_box {
-		z-index: 99999;
-	}
-
-	.index_bg {
-		position: fixed;
-		top: 0;
-		left: 0;
 		width: 100%;
-		height: 355upx;
-		z-index: 0;
+		height: 500upx;
 	}
 
-	.head_box {
-		position: fixed;
+	.swi_img {
 		width: 100%;
-		top: 0;
-		left: 0;
-		/* text-align: center; */
-		font-size: 32upx;
-		font-family: PingFang SC;
-		font-weight: 500;
-		color: #FFFFFF;
-		z-index: 99999;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		box-sizing: border-box;
-		transition: all .5s;
-
-
-		padding-right: 220rpx;
-		-webkit-box-shadow: 0rpx 0rpx 0rpx;
-		box-shadow: 0rpx 0rpx 0rpx;
-		z-index: 9999;
-		overflow: hidden;
+		height: 500upx;
 	}
-	.head_box_img{
-		position: absolute;
-		top: 0;
+
+	.index_icons {
 		width: 100%;
-		height: 417upx;
-		left: 0;
-		right: 0;
-	}
-	.cur_H {
+		height: 240upx;
 		background: #fff;
-		color: #333;
-	}
-
-
-	.my_box {
-		width: 100%;
-		height: 417upx;
-		position: relative;
-	}
-
-	.my_box_bg {
-		position: absolute;
-		top: 0;
-		width: 100%;
-		height: 417upx;
-		z-index: 0;
-	}
-
-	.user_box {
-		position: absolute;
-		top: 200upx;
-		left: 30upx;
-		width: 690upx;
-		/* height: 195upx; */
-		/* background: #FFFFFF;
-		box-shadow: 0px 2px 10upx 0px rgba(0, 0, 0, 0.1);
-		border-radius: 10upx; */
-		box-sizing: border-box;
-		/* padding: 40upx; */
-	}
-
-	.user_tx {
-		width: 110upx;
-		height: 110upx;
-		background: #BFBFBF;
-		border-radius: 50%;
-
-	}
-
-	view.user_tx {
-		margin-right: 20upx;
-		position: relative;
-	}
-
-	.user_set {
-		position: absolute;
-		width: 35upx;
-		height: 35upx;
-		bottom: 0;
-		right: 0;
-		background: #3775F6;
-		border-radius: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.user_set text {
-		font-size: 16upx;
-		color: #fff;
-	}
-
-	.user_name {
-		font-size: 32upx;
-		font-family: PingFang SC;
-		font-weight: 500;
-		color: #FFFFFF;
-		line-height: 57upx;
-	}
-
-	.user_edit {
-		width: 150upx;
-		height: 44upx;
-		border-radius: 22upx;
-	}
-
-	.bus_my_list {
-		width: 100%;
-		padding:30upx;
-	}
-
-	.user_my1 {
-		width: 100%;
-		height: 120upx;
-		background: #FFFFFF;
-		border-radius: 10upx;
-		margin-bottom: 20upx;
-	}
-
-	.user_order {
-		width: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		position: relative;
-	}
-	.user_order+.user_order::before{
-		position: absolute;
-		content: '';
-		left: 0;
-		top: 35upx;
-		width: 1px;
-		height: 50upx;
-		background: #EEEEEE;
-	}
-	.user_order image {
-		width: 40upx;
-		height: 50upx;
-		margin-right: 30upx;
-	}
-	
-	
-	.user_list{
-		width: 100%;
-		/* padding: 0 30upx; */
-		
-		background: #FFFFFF;
-		border-radius: 10upx;
-	}
-	.user_li{
-		width: 100%;
-		height: 93upx;
-		display: flex;
-		align-items: stretch;
-	}
-	.user_li_l{
-		width: 88upx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.user_li_l image{
-		width: 38upx;
-		height: 38upx;
-	}
-	.user_li_r {
-		flex: 1;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		border-bottom: 1px solid #EEEEEE;
-		padding-right: 30upx;
-		
-		font-size: 30upx;
+		padding: 0 30upx;
+	}
+
+	.index_icon {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.index_icon image {
+		width: 55upx;
+		height: 55upx;
+		margin-bottom: 25upx;
+	}
+
+	.index_icon text {
+		width: 4em;
+		font-size: 28upx;
 		font-family: PingFang SC;
 		font-weight: 500;
-		color: #222222;
+		color: #000000;
+		text-align: center;
 	}
-	.user_li_r .iconnext-m{
-		font-size: 22upx;
+
+	.tc_box {
+		margin-top: 20upx;
+		width: 100%;
+		background: #fff;
+		padding: 0 30upx 60upx;
+	}
+
+	.tc_tit {
+		width: 100%;
+		height: 100upx;
+		display: flex;
+		align-items: center;
+		font-size: 32upx;
+		font-family: PingFang;
+		font-weight: bold;
+		color: #000000;
+	}
+
+	.index_url {
+		width: 317upx;
+		height: 320upx;
+		border-radius: 10upx;
+	}
+
+	.index_url1 {
+		width: 357upx;
+		height: 152upx;
+		border-radius: 10upx;
+	}
+
+	.index_list {
+		width: 100%;
+		padding: 0 30upx;
+	}
+
+	.index_li {
+		width: 100%;
+		background: #FFFFFF;
+		border-radius: 10upx;
+	}
+
+	.index_li+.index_li {
+		margin-top: 20upx;
+	}
+
+	.li_d1 {
+		width: 100%;
+		padding: 30upx 20upx;
+	}
+
+	.li_user {
+		font-size: 24upx;
+		color: #666;
+		display: flex;
+		align-items: center;
+		margin-bottom: 15upx;
+	}
+
+	.li_user image {
+		width: 40upx;
+		height: 40upx;
+		border-radius: 20upx;
+		margin-right: 10upx;
+	}
+
+	.li_msg {
+		width: 100%;
+		font-size: 28upx;
 		color: #222;
 	}
+
+	.li_img {
+		width: 100%;
+		height: 345upx;
+	}
+
+	.li_img image{
+		width: 100%;
+		height: 100%;
+	}
+
+	.li_cz {
+		width: 100%;
+		height: 92upx;
+		padding: 0 30upx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.cz_li {
+		width: 40upx;
+		height: 40upx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		margin-left: 10upx;
+		margin-right: 40upx;
+		position: relative;
+	}
+	.cz_li button{
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		left: 0;
+		z-index: 10;
+		opacity: 0;
+	}
 	
+	.cz_li .iconfont {
+		font-size: 32upx;
+	}
+	.cz_num{
+		font-size: 20upx;
+		color: #F4691A;
+		position: absolute;
+		top: -10upx;
+		right: -15upx;
+	}
 </style>

@@ -34,7 +34,7 @@
 					<view class="index_yz dis_flex">要求：
 						<view class="flex_1"><text class="oh1">情况紧急，需要在三天内完成需要在三天内完成需要在三天内完成需要在三天内完成需要在三天内完成</text></view>
 					</view>
-					<view class="go_btn" @tap="jump" data-url="">进入</view>
+					<view class="go_btn" @tap="jump" :data-url="'/pagesA/intell_order_xq/intell_order_xq?type='+1">进入</view>
 				</view>
 			</view>
 			<view v-if="datas.length==0" class="zanwu">暂无数据</view>
@@ -65,46 +65,16 @@
 			// service.wxlogin()
 		},
 		onPageScroll(e) {
-			console.log(e)
-			this.PageScroll = e.scrollTop
-			if(e.scrollTop>10){
-				uni.showToast({
-					title:e.scrollTop
-				})
-			}
+			// console.log(e)
+			// this.PageScroll = e.scrollTop
+			// if(e.scrollTop>10){
+			// 	uni.showToast({
+			// 		title:e.scrollTop
+			// 	})
+			// }
 		},
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data']),
-
-			style0() {
-				var StatusBar = this.StatusBar;
-				var CustomBar = this.CustomBar;
-				var padd_top = CustomBar
-				var style = `padding-top:${padd_top}px;`;
-
-				return style
-			},
-			style() {
-				var StatusBar = this.StatusBar;
-				var CustomBar = this.CustomBar;
-				var style = `height:${CustomBar}px;padding-top:${StatusBar}px;`;
-
-				return style
-			},
-
-			style1() {
-				var StatusBar = this.StatusBar;
-				var style = `top:${StatusBar}px;`;
-
-				return style
-			},
-			style2() {
-				var StatusBar = this.StatusBar;
-				var CustomBar = this.CustomBar;
-				var style = `padding-top:${CustomBar}px;`;
-
-				return style
-			}
 		},
 		onPullDownRefresh() {
 			this.onRetry()

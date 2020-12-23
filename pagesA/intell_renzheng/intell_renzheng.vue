@@ -222,6 +222,9 @@
 		font-size: 30upx;
 		color: #989CA9;
 	}
+	.rz_li input{
+		text-align: right;
+	}
 	.sub_btn{
 		margin: 60upx auto;
 		width: 690upx;

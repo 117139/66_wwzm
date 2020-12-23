@@ -9,7 +9,7 @@
 				},
 				"navigationStyle": "custom"
 			}
-		},{
+		}, {
 			"path": "pages/my/my",
 			"style": {
 				"navigationBarTitleText": "",
@@ -20,7 +20,7 @@
 				"navigationStyle": "custom"
 			}
 
-		},  {
+		}, {
 			"path": "pages/main/main",
 			"style": {
 				"navigationBarTitleText": "",
@@ -119,6 +119,48 @@
 			"style": {
 				"navigationBarTitleText": "工单信息",
 				"enablePullDownRefresh": true
+			}
+
+		}, {
+			"path": "intell_order_xq_pz1/intell_order_xq_pz1",
+			"style": {
+				"navigationBarTitleText": "开始施工",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "intell_order_xq_pz2/intell_order_xq_pz2",
+			"style": {
+				"navigationBarTitleText": "施工进度",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "intell_order_xq_pz3/intell_order_xq_pz3",
+			"style": {
+				"navigationBarTitleText": "竣工",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "user_order_ing/user_order_ing",
+			"style": {
+				"navigationBarTitleText": "施工项目",
+				"enablePullDownRefresh": true
+			}
+
+		}, {
+			"path": "user_edit/user_edit",
+			"style": {
+				"navigationBarTitleText": "编辑资料",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "user_shouhou/user_shouhou",
+			"style": {
+				"navigationBarTitleText": "报修和售后",
+				"enablePullDownRefresh": false
 			}
 
 		}]

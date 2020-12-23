@@ -60,7 +60,12 @@
 					</view>
 				</view>
 			</view>
-			<view @tap="jump" data-url="" class="pz_btn"><text class="iconfont iconshigong"></text>施工前照片</view>
+			<view v-if="type==0" @tap="jump" data-url="/pagesA/intell_order_xq_pz1/intell_order_xq_pz1" class="pz_btn"><text class="iconfont iconshigong"></text>施工前照片</view>
+			<view v-if="type==1" @tap="jump" data-url="/pagesA/intell_order_xq_pz2/intell_order_xq_pz2" class="pz_btn">
+				<text class="iconfont iconshigong"></text>施工结束照片
+			</view><view v-if="type==2" @tap="jump" data-url="/pagesA/intell_order_xq_pz3/intell_order_xq_pz3" class="pz_btn">
+				<text class="iconfont iconshigong"></text>完工签字验收
+			</view>
 		</view>
 	</view>
 </template>
@@ -72,17 +77,21 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
-
+	var that
 	export default {
 		data() {
 			return {
+				type:0,
 				datas:[1,1,1,1,1,1,1],
 				data_last:false,
 				page:1,
 				size:20
 			};
 		},
-		onLoad() {},
+		onLoad(option) {
+			that=this
+			that.type=option.type||0
+		},
 		onShow() {
 			// service.wxlogin()
 		},
@@ -314,7 +323,7 @@
 		align-items: center;
 		width: 100%;
 		height: 85upx;
-		padding: 0 20upx;
+		padding: 0 30upx;
 		border-bottom: 1px solid #EEEEEE;
 	}
 	.index_tx{
@@ -451,6 +460,7 @@
 	.index_li_d4{
 		width: 100%;
 		padding: 20upx 30upx;
+		border-bottom: 1px solid #eee;
 	}
 	.index_li_d4_li{
 		width: 100%;
