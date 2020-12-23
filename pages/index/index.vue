@@ -70,6 +70,9 @@
 			// 	})
 			// }
 		},
+		onShareAppMessage() {
+			
+		},
 		methods: {
 			...mapMutations(['set_xcx']),
 			

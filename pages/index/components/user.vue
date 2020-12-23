@@ -164,6 +164,9 @@
 
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
+			onShareAppMessage() {
+				
+			},
 			getimg(img) {
 				console.log(service.getimg(img))
 				return service.getimg(img)
