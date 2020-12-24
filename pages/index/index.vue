@@ -4,6 +4,7 @@
 			<!-- <image class="head_box_img" src="/static/images/business/my_bg_01.jpg" mode="aspectFill"></image> -->
 			<view class="my_tit_box" :style="style1">
 				<!-- 个人中心 -->
+				万屋智能
 			</view>
 		</view>
 		<business v-if="xcx_status==0"></business>
@@ -70,8 +71,27 @@
 			// 	})
 			// }
 		},
-		onShareAppMessage() {
+		onLoad() {
+			wx.showShareMenu({
+			  withShareTicket: true,
+			  menus: ['shareAppMessage', 'shareTimeline']
+			})
+		},
+		onShareAppMessage(res) {
 			
+			if (res.from === 'button') {
+				console.log(res.target.dataset.type)
+				// this.setData({
+				// 	sharetype:'share'
+				// })
+			}
+			return {
+			  title: '万屋智能',
+			  path: '/pages/share/share?type=fwcz&id='+res.target.dataset.id,
+			  success: function (res) {
+			    console.log('成功', res)
+			  }
+			}
 		},
 		methods: {
 			...mapMutations(['set_xcx']),
@@ -90,7 +110,8 @@
 		font-size: 32upx;
 		font-family: PingFang SC;
 		font-weight: 500;
-		color: #FFFFFF;
+		
+		color: rgba(0,0,0,0);
 		z-index: 99999;
 		display: flex;
 		align-items: center;

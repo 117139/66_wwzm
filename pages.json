@@ -163,7 +163,58 @@
 				"enablePullDownRefresh": false
 			}
 
-		}]
+		}, {
+			"path": "user_xq/user_xq",
+			"style": {
+				"navigationBarTitleText": "美图详情",
+				"enablePullDownRefresh": true
+			}
+
+		}, {
+			"path": "user_xiaoxi/user_xiaoxi",
+			"style": {
+				"navigationBarTitleText": "消息列表",
+				"enablePullDownRefresh": true
+			}
+
+		}, {
+			"path": "user_order_xq/user_order_xq",
+			"style": {
+				"navigationBarTitleText": "订单详情",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "user_imgs/user_imgs",
+			"style": {
+				"navigationBarTitleText": "我的美图",
+				"enablePullDownRefresh": true
+			}
+
+		}, {
+			"path": "user_img_add/user_img_add",
+			"style": {
+				"navigationBarTitleText": "我的美图",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "user_zzsj/user_zzsj",
+			"style": {
+				"navigationBarTitleText": "智能设计",
+				"enablePullDownRefresh": false
+			}
+
+		}    ,{
+                    "path" : "user_list/user_list",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
 	}],
 
 	"preloadRule": {

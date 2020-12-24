@@ -1,44 +1,6 @@
 <template>
 	<view class="content_wrap" style="min-height: 100vh;background: #fafafa;">
-		<swiper class="swiper" :indicator-dots="indicatorDots" indicator-color="rgba(0,0,0,.3)" indicator-active-color="#11A078"
-		 :autoplay="autoplay" :interval="interval" :duration="duration" circular='true'>
-			<swiper-item v-for="(item,idx) in banner">
-				<!-- <image class="swi_img" src="/static/images/user/banner_01.jpg" mode="aspectFill"></image> -->
-				<image class="swi_img" :src="getimg(item)" mode="aspectFill"
-						 @tap="jump" data-url=""></image>
-			</swiper-item>
-
-		</swiper>
-		<view class="index_icons">
-			<view class="index_icon" @tap='jump' data-url="/pagesA/user_zzsj/user_zzsj">
-				<image :src="getimg('/static/images/user/index_icon1.png')" mode="aspectFit"></image>
-				<text>智能设计</text>
-			</view>
-			<view class="index_icon" @tap='jump' data-url="/pagesA/user_order_ing/user_order_ing">
-				<image :src="getimg('/static/images/user/index_icon2.png')"  mode="aspectFit"></image>
-				<text>安装进度</text>
-			</view>
-			<view class="index_icon" @tap='jump' data-url="/pagesA/user_list/user_list?type==2">
-				<image :src="getimg('/static/images/user/index_icon3.png')"  mode="aspectFit"></image>
-				<text>服务案例</text>
-			</view>
-			<view class="index_icon" @tap='jump' data-url="/pagesA/user_list/user_list==3">
-				<image :src="getimg('/static/images/user/index_icon4.png')"  mode="aspectFit"></image>
-				<text>资讯</text>
-			</view>
-		</view>
-		<view class="tc_box">
-			<view class="tc_tit">主推套餐</view>
-			<view class="dis_flex ju_b">
-				<image class="index_url" :src="getimg('/static/images/user/inde_url_04.png')"  mode="aspectFill"></image>
-				<view class="index_url dis_flex_c ju_b" style="width: 357upx;">
-					<image class="index_url1" :src="getimg('/static/images/user/inde_url_06.png')" mode="aspectFill"></image>
-					<image class="index_url1" :src="getimg('/static/images/user/inde_url_09.png')" mode="aspectFill"></image>
-				</view>
-			</view>
-		</view>
-		<view class="index_list">
-			<view class="tc_tit">客户美图</view>
+	<view class="index_list">
 			<view class="index_li" v-for="(item,index) in datas" @tap="jump" :data-url="'/pagesA/user_xq/user_xq?id='+index">
 				<view class="li_d1">
 					<view class="li_user ">
@@ -74,12 +36,13 @@
 			<view v-if="datas.length==0" class="zanwu">暂无数据</view>
 			<!-- <view v-if="data_last" class="data_last">我可是有底线的哟~~~</view> -->
 			<view  class="data_last">我可是有底线的哟~~~</view>
+			<image class="user_add" src="../../static/images/user_add.png" mode="aspectFill"  @tap="jump" data-url="/pagesA/user_img_add/user_img_add"></image>
 		</view>
 	</view>
 </template>
 
 <script>
-	import service from '../../../service.js';
+	import service from '../../service.js';
 	import {
 		mapState,
 		mapMutations
@@ -110,42 +73,11 @@
 		},
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data']),
-
-			style0() {
-				var StatusBar = this.StatusBar;
-				var CustomBar = this.CustomBar;
-				var padd_top = CustomBar
-				var style = `padding-top:${padd_top}px;`;
-
-				return style
-			},
-			style() {
-				var StatusBar = this.StatusBar;
-				var CustomBar = this.CustomBar;
-				var style = `height:${CustomBar}px;padding-top:${StatusBar}px;`;
-
-				return style
-			},
-
-			style1() {
-				var StatusBar = this.StatusBar;
-				var style = `top:${StatusBar}px;`;
-
-				return style
-			},
-			style2() {
-				var StatusBar = this.StatusBar;
-				var CustomBar = this.CustomBar;
-				var style = `padding-top:${CustomBar}px;`;
-
-				return style
-			}
 		},
 
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
 			getimg(img) {
-				console.log(service.getimg(img))
 				return service.getimg(img)
 			},
 			fabu_status() {
@@ -203,82 +135,11 @@
 </script>
 
 <style scoped>
-	.swiper {
-
-		width: 100%;
-		height: 500upx;
-	}
-
-	.swi_img {
-		width: 100%;
-		height: 500upx;
-	}
-
-	.index_icons {
-		width: 100%;
-		height: 240upx;
-		background: #fff;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 0 30upx;
-	}
-
-	.index_icon {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.index_icon image {
-		width: 55upx;
-		height: 55upx;
-		margin-bottom: 25upx;
-	}
-
-	.index_icon text {
-		width: 4em;
-		font-size: 28upx;
-		font-family: PingFang SC;
-		font-weight: 500;
-		color: #000000;
-		text-align: center;
-	}
-
-	.tc_box {
-		margin-top: 20upx;
-		width: 100%;
-		background: #fff;
-		padding: 0 30upx 60upx;
-	}
-
-	.tc_tit {
-		width: 100%;
-		height: 100upx;
-		display: flex;
-		align-items: center;
-		font-size: 32upx;
-		font-family: PingFang;
-		font-weight: bold;
-		color: #000000;
-	}
-
-	.index_url {
-		width: 317upx;
-		height: 320upx;
-		border-radius: 10upx;
-	}
-
-	.index_url1 {
-		width: 357upx;
-		height: 152upx;
-		border-radius: 10upx;
-	}
+	
 
 	.index_list {
 		width: 100%;
-		padding: 0 30upx;
+		padding: 20upx 30upx;
 	}
 
 	.index_li {
@@ -366,5 +227,13 @@
 		position: absolute;
 		top: -10upx;
 		right: -18upx;
+	}
+	.user_add{
+		width: 153upx;
+		height: 153upx;
+		position: fixed;
+		bottom: 50upx;
+		right: 30upx;
+		z-index: 999;
 	}
 </style>

@@ -3,19 +3,13 @@
 		<view style="width: 100%;height: 20upx;"></view>
 		<view class="pz1_box">
 			<view class="pz1_tit dis_flex aic ju_b" style="border-bottom: 1px solid #eee;">
-				产品名称*
-				<input class="flex_1" type="text" placeholder="请填写" v-model="cp_name">
+				<!-- 产品名称* -->
+				<input class="flex_1" type="text" placeholder="请输入标题~" v-model="cp_name">
 			</view>
-			<view class="pz1_tit">故障描述*</view>
-			<textarea class="pz1_cont" value="" placeholder="请输入内容" v-model="content" maxlength="200"/>
-			<view class="dis_flex aic ju_b cont_num">
-				<view></view>
-				<view>{{content.length}}/200</view>
-			</view>
-			<view class="pz1_tit">图片上传</view>
-			<view class="pz_imgs">
+			<!-- <view class="pz1_tit">图片上传</view> -->
+			<view class="pz_imgs" style="margin-top: 40upx;">
 				<view class="pz_img" v-for="(item,index) in sj_img">
-					<image class="img_del" src="../../static/images/img_del.png" mode="aspectFill" @tap="imgdel" :data-idx="index"></image>
+					<image class="img_del" :src="getimg('/static/images/img_del.png')" mode="aspectFill" @tap="imgdel" :data-idx="index"></image>
 					<!-- <image mode="aspectFill" :src="getimg(item)" @tap="pveimg" :data-src="getimg(item)"></image> -->
 					<image mode="aspectFill" :src="item" @tap="pveimg" :data-src="item"></image>
 				</view>
@@ -55,24 +49,17 @@
 				if(!this.cp_name){
 					uni.showToast({
 						icon:'none',
-						title:'请填写产品名称'
+						title:'请输入标题~'
 					})
 					return
 				}
-				if(that.content.length==0){
+				if(that.sj_img.length==0){
 					uni.showToast({
 						icon:'none',
-						title:'请填写故障描述*'
+						title:'请上传图片'
 					})
 					return
 				}
-				// if(that.sj_img.length==0){
-				// 	uni.showToast({
-				// 		icon:'none',
-				// 		title:'请上传图片'
-				// 	})
-				// 	return
-				// }
 				uni.showToast({
 					icon:'none',
 					title:'上传成功'
@@ -85,15 +72,12 @@
 				console.log(datas)
 				setTimeout(()=>{
 					uni.navigateBack({
-						delta:2
+						delta:1
 					})
 				},1000)
 			},
 			pveimg(e) {
 				service.pveimg(e)
-			},
-			getimg(img) {
-				return service.getimg(img)
 			},
 			upimg() {
 				var that = this
@@ -204,7 +188,10 @@
 						}
 					}
 				})
-			}
+			},
+			getimg(img) {
+				return service.getimg(img)
+			},
 		
 		}
 	}
@@ -213,7 +200,7 @@
 <style scoped>
 	.pz1_box {
 		width: 100%;
-		background: #FFFFFF;
+		/* background: #FFFFFF; */
 		padding: 0 30upx 20upx;
 	}
 
@@ -225,7 +212,7 @@
 	}
 	.pz1_tit input{
 		height: 88upx;
-		text-align: right;
+		/* text-align: right; */
 		font-size: 30upx;
 	}
 	.pz_imgs {
@@ -236,17 +223,19 @@
 	}
 
 	.pz_img {
-		width: 150upx;
-		height: 150upx;
+		width: 220upx;
+		height: 220upx;
 		border-radius: 10upx;
 		margin-right: 15upx;
 		margin-bottom: 15upx;
 		position: relative;
 	}
-
+	.pz_img:nth-child(3n){
+		margin-right: 0;
+	}
 	.pz_img image {
-		width: 150upx;
-		height: 150upx;
+		width: 220upx;
+		height: 220upx;
 	}
 
 	.pz_img .img_del {

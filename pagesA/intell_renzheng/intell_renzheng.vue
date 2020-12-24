@@ -195,7 +195,9 @@
 					}
 				})
 			},
-			
+			getimg(img) {
+				return service.getimg(img)
+			},
 		}
 	}
 </script>

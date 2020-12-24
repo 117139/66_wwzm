@@ -1,18 +1,18 @@
 <template>
 	<view class="wrap_box">
-		<cu-custom bgImage="/static/images/wwzm_01.jpg">
+		<cu-custom :bgImage="getimg('/static/images/wwzm_01.jpg')">
 			<block slot="content">万屋智能</block>
 		</cu-custom>
 		<view class="main_box">
 			<view class="main_tit">欢迎使用万屋智能~</view>
 			<view class="more_main" @tap="set_xcx(0)">
-				<image src="../../static/images/wwzm_04.jpg" mode="aspectFill"></image>
+				<image :src="getimg('/static/images/wwzm_04.jpg')" mode="aspectFill"></image>
 			</view>
 			<view class="more_main" @tap="set_xcx(1)">
-				<image src="../../static/images/wwzm_07.jpg" mode="aspectFill"></image>
+				<image :src="getimg('/static/images/wwzm_07.jpg')" mode="aspectFill"></image>
 			</view>
 			<view class="more_main" @tap="set_xcx(2)">
-				<image src="../../static/images/wwzm_09.jpg" mode="aspectFill"></image>
+				<image :src="getimg('/static/images/wwzm_09.jpg')"  mode="aspectFill"></image>
 			</view>
 		</view>
 	</view>
@@ -36,6 +36,9 @@
 		},
 		methods: {
 			...mapMutations(['set_xcx']),
+			getimg(img) {
+				return service.getimg(img)
+			},
 		}
 	}
 </script>

@@ -1,27 +1,28 @@
 <template>
 	<view class="content_wrap" >
 		<view class="head_box" :class="{'cur_H':PageScroll>10}" :style="style">
-			<image class="head_box_img" src="/static/images/user/my_bg_01.png" mode="aspectFill"></image>
+			<image class="head_box_img" :src="getimg('/static/images/user/my_bg_01.png')" mode="aspectFill"></image>
 			<view class="my_tit_box" :style="style1">
 				个人中心
 			</view>
 		</view>
 
 		<view v-if="hasLogin" class="my_box">
-			<image class="my_box_bg" src="/static/images/user/my_bg_01.png" mode="aspectFill"></image>
+			<image class="my_box_bg" :src="getimg('/static/images/user/my_bg_01.png')" mode="aspectFill"></image>
 			<view class="user_box dis_flex aic">
 				<view class="user_tx">
 					<image class="user_tx" :src="getimg(loginDatas.avatarurl)"></image>
 				</view>
 				<view class="flex_1">
 					<view class="user_name">{{loginDatas.nickname}}</view>
-					<image class="user_edit"  @tap="jump" data-url="/pagesA/user_edit/user_edit" :data-login='true' :data-haslogin='hasLogin' src="../../../static/images/user/my_edit.png" mode="aspectFill"></image>
+					<image class="user_edit"  @tap="jump" data-url="/pagesA/user_edit/user_edit" :data-login='true' :data-haslogin='hasLogin' 
+					 :src="getimg('/static/images/user/my_edit.png')" mode="aspectFill"></image>
 				</view>
 				<!-- <view class="iconfont icon-bianji user_edit" @tap="jump" data-url="/pages/my_msg/my_msg"></view> -->
 			</view>
 		</view>
 		<view v-else class="my_box">
-			<image class="my_box_bg" src="/static/images/user/my_bg_01.png" mode="aspectFill"></image>
+			<image class="my_box_bg":src="getimg('/static/images/user/my_bg_01.png')" mode="aspectFill"></image>
 
 			<view class="user_box dis_flex aic ju_c">
 				<view class="flex_1 dis_flex aic ju_c">
@@ -31,17 +32,17 @@
 		</view>
 		<view class="bus_my_list">
 			<view class="user_my1 dis_flex ais ">
-				<view class="user_order"  @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
-					<image src="../../../static/images/user/my_order.png" mode="aspectFit"></image>我的订单
+				<view class="user_order"  @tap="jump" data-url="/pagesA/user_order/user_order" :data-login='true' :data-haslogin='hasLogin'>
+					<image :src="getimg('/static/images/user/my_order.png')" mode="aspectFit"></image>我的订单
 				</view>
-				<view class="user_order" @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
-					<image src="../../../static/images/user/my_xiaoxi.png" mode="aspectFit"></image>我的消息
+				<view class="user_order" @tap="jump" data-url="/pagesA/user_xiaoxi/user_xiaoxi" :data-login='true' :data-haslogin='hasLogin'>
+					<image :src="getimg('/static/images/user/my_xiaoxi.png')" mode="aspectFit"></image>我的消息
 				</view>
 			</view>
 			<view class="user_list">
 				<view class="user_li"  @tap="jump" data-url="/pagesA/user_order_ing/user_order_ing" :data-login='true' :data-haslogin='hasLogin'>
 					<view class="user_li_l">
-						<image src="../../../static/images/user/my_icon1.png" mode="aspectFit"></image>
+						<image :src="getimg('/static/images/user/my_icon1.png')" mode="aspectFit"></image>
 					</view>
 					<view class="user_li_r">
 						<view>施工进度</view>
@@ -50,7 +51,7 @@
 				</view>
 				<view class="user_li" @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
 					<view class="user_li_l">
-						<image src="../../../static/images/user/my_icon2.png" mode="aspectFit"></image>
+						<image :src="getimg('/static/images/user/my_icon2.png')" mode="aspectFit"></image>
 					</view>
 					<view class="user_li_r">
 						<view>我的套餐</view>
@@ -59,7 +60,7 @@
 				</view>
 				<view class="user_li" @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
 					<view class="user_li_l">
-						<image src="../../../static/images/user/my_icon3.png" mode="aspectFit"></image>
+						<image :src="getimg('/static/images/user/my_icon3.png')" mode="aspectFit"></image>
 					</view>
 					<view class="user_li_r">
 						<view>我的收藏</view>
@@ -68,7 +69,7 @@
 				</view>
 				<view class="user_li" @tap="jump" data-url="/pagesA/user_shouhou/user_shouhou" :data-login='true' :data-haslogin='hasLogin'>
 					<view class="user_li_l">
-						<image src="../../../static/images/user/my_icon4.png" mode="aspectFit"></image>
+						<image :src="getimg('/static/images/user/my_icon4.png')" mode="aspectFit"></image>
 					</view>
 					<view class="user_li_r">
 						<view>报修和售后</view>
@@ -79,11 +80,11 @@
 		</view>
 		<view class="my_meitu_tit">
 			<view class="my_meitu_tit_l">我家美图</view>
-			<view  class="my_meitu_tit_r"  @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>发布/更多<text class="iconfont iconnext-m"></text></view>
+			<view  class="my_meitu_tit_r"  @tap="jump" data-url="/pagesA/user_imgs/user_imgs" :data-login='true' :data-haslogin='hasLogin'>发布/更多<text class="iconfont iconnext-m"></text></view>
 		</view>
 		<view class="my_meitu_list">
-			<view class="my_meitu_li" v-for="(item,index) in 10"  @tap="jump" data-url="../my_pwd/my_pwd">
-				<image class="my_meitu_li_img" src="../../../static/images/user/my_mt_03.jpg" mode="aspectFill"></image>
+			<view class="my_meitu_li" v-for="(item,index) in 10"  @tap="jump" :data-url="'/pagesA/user_xq/user_xq?id='+index">
+				<image class="my_meitu_li_img" :src="getimg('/static/images/user/my_mt_03.jpg')" mode="aspectFill"></image>
 				<view class="my_meitu_li_bg">
 					<view class="oh1">客户的实际装修美图</view>
 				</view>

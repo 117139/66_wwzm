@@ -2,37 +2,47 @@
 	<view>
 		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
 		<view v-if="htmlReset==0" style="min-height: 100vh;background: #FAFAFA;">
-
+	
 			<view class='dis_flex ju_a  tab_box'>
 				<block v-for="(item,idx) in data_list">
 					<view :class="type==item.id?'active':''" :data-type="item.id" @tap='bindcur'>{{item.name}}</view>
 				</block>
-
+	
 			</view>
+			
 			<view class="order_list">
-				<view class="order_li " v-for="(item,index) in datas" @tap="jump" :data-url="'/pagesA/bus_order_xq/bus_order_xq?type='+type">
-					<view class="order_li_d1 oh1">木泓设计家装精致工艺0增加</view>
-					<view class="order_li_d2 oh1">时间：2020/10/07</view>
-					<view class="order_li_d2 oh1">地址：新天地世纪百货写字楼16-26号</view>
-					<view class="order_li_d2 oh1">负责人：刘明</view>
-					<view class="order_li_d2 oh1">合同：浙江后海房产装修合同</view>
-					<view v-if="type!=1" class="order_li_d2 oh1">施工团队：刘明</view>
-					<view v-if="type!=1" class="order_li_d2 oh1">施工联系方式：1786526552</view>
-					<view class="dis_flex order_li_d3">
-						<view class="flex_1"></view>
-						<view v-if="type==1" class="order_li_btn">待接单</view>
-						<view v-if="type>1" class="order_li_btn" @tap.stop="jump" data-url="">施工流程</view>
-						<view v-if="type==2" class="order_li_btn">进行中</view>
-						<view v-if="type==3" class="order_li_btn"  @tap.stop="jump" data-url="">售后</view>
-						
+				<block v-if="type==1">
+					<view class="order_li dis_flex_c" v-for="(item,index) in 10">
+						<image class="order_li_img" :src="getimg('/static/images/user/xz_03.jpg')" mode="aspectFill"></image>
+						<view class="order_li_msg">
+							<view class="oh2">Allone Pro 多功能智能主机充电</view>
+							<view class="order_buy dis_flex aic ju_b">
+								<view class="order_pri"><text>￥</text>998</view>
+								<image @tap="addcar(item)" class="order_car" src="../../static/images/user/gouwuche.png" mode="aspectFit"></image>
+							</view>
+						</view>
 					</view>
-				</view>
-				<view v-if="datas.length==0" class="zanwu">暂无数据</view>
-				<view v-if="data_last" class="data_last">我可是有底线的哟~</view>
-				<view class="order_bottom"></view>
-				<view class="order_bottom" style="position: fixed;">
-					<view  class="order_bottom_btn" @tap="jump" data-url="/pagesA/bus_order_edit/bus_order_edit">添加工程</view>
-				</view>
+				</block>
+				<block v-if="type==2">
+					<view class="order_li dis_flex_c" v-for="(item,index) in 10">
+						<image class="order_li_img_al" :src="getimg('/static/images/user/xz_03.jpg')" mode="aspectFill"></image>
+						<view class="order_li_msg">
+							<view class="oh2">10多家媒体到场报道，100余位设计师顺势而...</view>
+							<view class="order_bqs">
+								<view class="order_bq">现代</view>
+								<view class="order_bq">公寓</view>
+							</view>
+						</view>
+					</view>
+				</block>
+				<block v-if="type==3">
+					<view class="order_li dis_flex_c" v-for="(item,index) in 10">
+						<image class="order_li_img" :src="getimg('/static/images/user/xz_03.jpg')" mode="aspectFill"></image>
+						<view class="order_li_msg">
+							<view class="oh2">10多家媒体到场报道，100余位设计师顺势而...</view>
+						</view>
+					</view>
+				</block>
 			</view>
 		</view>
 	</view>
@@ -49,15 +59,15 @@
 		data() {
 			return {
 				data_list: [{
-						name: '待接单',
+						name: '智能家居',
 						id: 1
 					},
 					{
-						name: '施工中',
+						name: '案例',
 						id: 2
 					},
 					{
-						name: '已完成',
+						name: '智能家居',
 						id: 3
 					},
 				],
@@ -65,15 +75,19 @@
 				htmlReset: 0,
 				datas: [
 					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-				],
-				data_last:false
+				]
 			}
-		},
-		computed: {
+		},	computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas']),
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform', 'setfj_data']),
+			addcar(item){
+				uni.showToast({
+					icon:'none',
+					title:'加入购物车成功'
+				})
+			},
 			bindcur(e) {
 				var that = this
 				console.log(e.currentTarget.dataset.type)
@@ -182,7 +196,9 @@
 
 				service.jump(e)
 			},
-
+			getimg(e){
+				return service.getimg(e)
+			}
 		}
 	}
 </script>
@@ -203,7 +219,7 @@
 		padding: 0 30upx;
 		border-bottom: 1px solid #F5F5F5;
 	}
-
+	
 	.tab_box view {
 		height: 72upx;
 		display: flex;
@@ -214,12 +230,12 @@
 		font-weight: 500;
 		color: #999999;
 	}
-
+	
 	.tab_box view.active {
 		color: #00A079;
 		position: relative;
 	}
-
+	
 	.tab_box view.active::before {
 		content: '';
 		position: absolute;
@@ -230,81 +246,73 @@
 		margin-left: -26upx;
 		background: #11A078;
 	}
-
+	
 	.order_list {
 		width: 100%;
 		padding: 100upx 30upx 20upx;
+		display: flex;
+		flex-wrap: wrap;
 	}
-
+	
 	.order_li {
-		width: 100%;
-		/* min-height: 420upx; */
+		width: 337upx;
 		background: #FFFFFF;
 		border-radius: 10upx;
-		padding: 30upx;
-		/* box-shadow: 0px 0px 10upx 0px rgba(0, 0, 0, 0.1); */
-	}
-
-	.order_li+.order_li {
-		margin-top: 30upx;
-	}
-
-	.order_li_d1 {
-		font-size: 30upx;
-		font-family: PingFangSC;
-		font-weight: 500;
-		color: #222222;
-		margin-bottom: 25upx;
-	}
-
-	.order_li_d2 {
-		font-size: 26upx;
-		font-family: PingFangSC;
-		font-weight: 400;
-		color: #999999;
 		margin-bottom: 15upx;
+		overflow: hidden;
 	}
-
-	.order_li_d3 {
+	.order_li:nth-child(2n){
+		margin-left: 15upx;
+	}
+	.order_li_img{
+		width: 337upx;
+		height: 337upx;
+		/* border-radius: 10upx 10upx 0upx 0upx; */
+	}
+	.order_li_msg{
 		width: 100%;
+		min-height: 122upx;
+		padding: 20upx;
+		font-size: 24upx;
+		color: #222;
 	}
-
-	.order_li_btn {
-		min-width: 120upx;
-		height: 50upx;
-		padding: 0 15upx;
+	.order_li_msg .oh2{
+		line-height: 30upx;
+		height: 60upx;
+	}
+	.order_li_img_al{
+		width: 337upx;
+		height: 410upx;
+	}
+	.order_bqs{
+		margin-top: 20upx;
 		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 22upx;
-		font-family: PingFangSC;
-		font-weight: 400;
-		color: #00A079;
-		margin-left: 30upx;
-		border: 1px solid #00A079;
+		flex-wrap: wrap;
+	}
+	.order_bq{
+		padding: 10upx 20upx;
+		font-size: 24upx;
+		line-height: 24upx;
+		font-family: PingFang SC;
+		font-weight: 500;
+		color: #F4691A;
+		margin-right: 15upx;
+		margin-bottom: 15upx;
+		border: 1px solid #F4691A;
 		border-radius: 10upx;
 	}
-	.order_bottom{
-		width: 100%;
-		height: 180upx;
-		padding-bottom: 30upx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background: #fafafa;
-		bottom: 0;
-		left: 0;
-		z-index: 100;
+	.order_pri{
+		color: #F4691A;
+		font-size: 28upx;
 	}
-	.order_bottom_btn{
-		width: 690upx;
-		height: 100upx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 30upx;
-		color: #00A079;
-		background: #FFFFFF;
-		border-radius: 10px;
+	.order_pri text{
+		font-size: 24upx;
+	}
+	.order_buy{
+		margin-top: 20upx;
+	}
+	.order_car{
+		width: 44upx;
+		height: 44upx;
 	}
 </style>
