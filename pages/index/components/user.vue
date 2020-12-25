@@ -4,7 +4,7 @@
 		 :autoplay="autoplay" :interval="interval" :duration="duration" circular='true'>
 			<swiper-item v-for="(item,idx) in banner">
 				<!-- <image class="swi_img" src="/static/images/user/banner_01.jpg" mode="aspectFill"></image> -->
-				<image class="swi_img" :src="getimg(item.img_url)" mode="aspectFill"
+				<image class="swi_img" :src="getimg(item)" mode="aspectFill"
 						 @tap="jump" data-url=""></image>
 			</swiper-item>
 
