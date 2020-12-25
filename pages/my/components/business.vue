@@ -11,7 +11,7 @@
 			<image class="my_box_bg" src="/static/images/business/my_bg_01.jpg" mode="aspectFill"></image>
 			<view class="user_box dis_flex aic">
 				<view class="user_tx">
-					<image class="user_tx" :src="getimg(loginDatas.avatarurl)"></image>
+					<image class="user_tx" :src="getimg(loginDatas.cover)" @tap="jump" data-url="/pagesA/user_edit/user_edit"></image>
 					<!-- <avatar  stretch="short" selWidth="400upx" selHeight="400upx" @upload="myUpload"
 					:avatarSrc="tximg?getimg(tximg):loginDatas.avatarurl"
 					 avatarStyle="width: 140upx; height:140upx; border-radius: 50%;">
@@ -27,8 +27,10 @@
 				<view class="flex_1">
 					<view class="user_name">{{loginDatas.nickname}}</view>
 					<view class="user_time">{{loginDatas.gs}}</view>
+					<image class="user_edit"  @tap="jump" data-url="/pagesA/user_edit/user_edit" :data-login='true' :data-haslogin='hasLogin' 
+					 :src="getimg('/static/images/user/my_edit.png')" mode="aspectFill"></image>
 				</view>
-				<view class="iconfont icon-bianji user_edit" @tap="jump" data-url="/pages/my_msg/my_msg"></view>
+				<!-- <view class="iconfont icon-bianji user_edit" @tap="jump" data-url="/pages/my_msg/my_msg"></view> -->
 			</view>
 		</view>
 		<view v-else class="my_box">
@@ -37,7 +39,7 @@
 			<view class="user_box dis_flex aic ju_c">
 				<!-- <image class="user_tx" src="/static/logo.png"></image> -->
 				<view class="flex_1 dis_flex aic ju_c">
-					<view class="user_name" @tap="jump" data-url="../login/login" >登录/注册</view>
+					<view class="user_name" @tap="jump" data-url="/pages/login/login" >登录/注册</view>
 				</view>
 			</view>
 		</view>
@@ -555,7 +557,11 @@
 		line-height: 30px;
 		opacity: 0.8;
 	}
-
+	.user_edit {
+		width: 150upx;
+		height: 44upx;
+		border-radius: 22upx;
+	}
 	.bus_my_list{
 		position: relative;
 		z-index: 10;

@@ -9,7 +9,7 @@
 		</view>
 		<business v-if="xcx_status==0"></business>
 		<user v-if="xcx_status==1"></user>
-		<intelligence v-if="xcx_status==2"></intelligence>
+		<intelligence v-if="xcx_status==2" ></intelligence>
 	</view>
 </template>
 
@@ -71,12 +71,12 @@
 			// 	})
 			// }
 		},
-		onLoad() {
-			wx.showShareMenu({
-			  withShareTicket: true,
-			  menus: ['shareAppMessage', 'shareTimeline']
-			})
-		},
+		// onLoad() {
+		// 	wx.showShareMenu({
+		// 	  withShareTicket: true,
+		// 	  menus: ['shareAppMessage', 'shareTimeline']
+		// 	})
+		// },
 		onShareAppMessage(res) {
 			
 			if (res.from === 'button') {

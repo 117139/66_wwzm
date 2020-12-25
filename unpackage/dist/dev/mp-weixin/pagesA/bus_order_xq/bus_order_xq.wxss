@@ -1,0 +1,113 @@
+
+.order_box.data-v-303612cb{
+	width: 100%;
+	padding:20rpx 30rpx 0;
+}
+.order_main.data-v-303612cb{
+	width: 100%;
+	background: #fff;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
+	padding: 0 30rpx;
+}
+.order_li.data-v-303612cb{
+	width: 100%;
+	padding-top: 30rpx;
+	border-bottom: 1px solid #EEEEEE;
+}
+.order_li_tit.data-v-303612cb{
+	font-size: 30rpx;
+	color: #222;
+	line-height: 30rpx;
+}
+.order_li_msg.data-v-303612cb{
+	width: 100%;
+	min-height: 87rpx;
+	font-size: 30rpx;
+	line-height: 40rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-flex-wrap: wrap;
+	        flex-wrap: wrap;
+	padding: 15rpx 0;
+	color: #222222;
+	opacity: 0.5;
+}
+.order_bottom.data-v-303612cb {
+	width: 100%;
+	height: 180rpx;
+	padding-bottom: 30rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	background: #fff;
+	bottom: 0;
+	left: 0;
+	z-index: 100;
+}
+.order_status.data-v-303612cb{
+	padding-top: 10rpx;
+	line-height: 90rpx;
+	font-size: 40rpx;
+	font-family: PingFang;
+	font-weight: bold;
+	color: #EC5B5B;
+}
+.weixin_dblist.data-v-303612cb{
+	width: 100%;
+	height: 320rpx;
+	white-space:nowrap;
+	padding-top: 10rpx;
+}
+.taocan_li.data-v-303612cb{
+	width: 162rpx;
+	height: 281rpx;
+	background: #FAFAFA;
+	margin-right: 14rpx;
+	padding: 5rpx;
+	display: -webkit-inline-box;
+	display: -webkit-inline-flex;
+	display: inline-flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+}
+.taocan_li_img.data-v-303612cb{
+	width: 152rpx;
+	height: 152rpx;
+	margin-bottom: 15rpx;
+}
+.taocan_li_msg.data-v-303612cb{
+	width: 95%;
+	text-align: center;
+	line-height: 30rpx;
+	height: 60rpx;
+	font-size: 20rpx;
+	font-family: PingFang SC;
+	font-weight: 500;
+	color: #222222;
+	margin-bottom: 10rpx;
+	white-space: pre-wrap;
+}
+.taocan_li_pri.data-v-303612cb{
+	color: #F4691A;
+	font-size: 22rpx;
+}
+

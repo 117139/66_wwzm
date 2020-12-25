@@ -4,9 +4,11 @@ import event from 'common/event.js'
 // 管理账号信息
 const USERS_KEY = 'USERS_KEY';
 const STATE_KEY = 'STATE_KEY';
-const IPurl = 'https://datixcx.com.aa.800123456.top/api/';
+// const IPurl = 'https://datixcx.com.aa.800123456.top/api/';
 // const imgurl = 'https://datixcx.com.aa.800123456.top/';
-const imgurl = 'http://www.wanbonet.com/suxin/images/66_wwzn';
+const imgurl = 'http://192.168.129.246/';
+const IPurl=imgurl+'api/'
+// const IPurl='http://192.168.129.246/api/'
 // const adminurl='https://datixcx.com.aa.800123456.top/admin/';
 // appid:wx4c41cc50c5a53df9
 // appid:wx49a560f7feac0feb   cj
@@ -234,12 +236,12 @@ const wxlogin=function (num){
 	                let data = {
 	                  code: res.code,
 	                  nickname: uinfo.nickName,
-	                  avatarurl: uinfo.avatarUrl
+	                  cover: uinfo.avatarUrl
 	                }
 	                let rcode = res.code
 	                console.log(res.code)
 	                uni.request({
-	                  url: IPurl+'/login',
+	                  url: IPurl+'user/login',
 	                  data: data,
 	                  header: {
 	                    'content-type': 'application/x-www-form-urlencoded'
@@ -252,7 +254,7 @@ const wxlogin=function (num){
 	                    if (res.data.code == 1) {
 	                      console.log('登录成功')
 	                      console.log(res.data)
-	                      uni.setStorageSync('token', res.data.data.userToken)
+	                      uni.setStorageSync('token', res.data.data.token)
 												//获取手机号
 												/*
 												if(!res.data.data.phone){
@@ -267,7 +269,20 @@ const wxlogin=function (num){
 												store.commit('login', res.data.data.nickname)
 												
 	                      uni.setStorageSync('loginmsg', res.data.data)
-												
+												//0 商家端  1 用户端  2智能安装端
+												if(store.xcx_status==1){
+													if(res.data.data.is_owner==1){
+														store.commit('set_xcx', 1)
+														return
+													}
+													if(res.data.data.is_engineer==1){
+														store.commit('set_xcx', 2)
+														return
+													}
+													if(res.data.data.is_seller==1){
+														store.commit('set_xcx', 0)
+													}
+												}
 												// im login
 												
 												
@@ -315,10 +330,17 @@ const wxlogin=function (num){
 	                    } else {
 	                      uni.removeStorageSync('userInfo')
 	                      uni.removeStorageSync('token')
-	                      uni.showToast({
-	                        icon: 'none',
-	                        title: '登录失败',
-	                      })
+	                      if(res.msg){
+													uni.showToast({
+													  icon: 'none',
+													  title: res.msg,
+													})
+												}else{
+													uni.showToast({
+													  icon: 'none',
+													  title: '登录失败',
+													})
+												}
 	                    }
 	
 	                  },
@@ -389,7 +411,61 @@ const setUsermsg=function(data){
 }
 
 
-
+const wx_upload=function(tximg){
+	return new Promise((resolve,reject)=>{
+		uni.showLoading({
+			mask:true,
+			title:'正在上传'
+		})
+		uni.uploadFile({
+			url: IPurl + 'user/upload_img', 
+			filePath: tximg,
+			name: 'img',
+			formData: {
+				token: uni.getStorageSync('token')
+			},
+			// success: (uploadFileRes) => {
+			// 	console.log(uploadFileRes.data);
+			// 	var ndata = JSON.parse(uploadFileRes.data)
+			// 	resolve(uploadFileRes)
+			// },
+			complete:(res)=>{
+			    uni.hideLoading();
+			    uni.stopPullDownRefresh();//慎用hideLoading,会关闭wx.showToast弹窗
+			    // console.log(`耗时${Date.now() - timeStart}`);
+					console.log(res)
+			    if(res.statusCode ==200){//请求成功
+						var ndata = JSON.parse(res.data)
+						if(ndata.code==-1){
+							store.commit('logout')
+							uni.navigateTo({
+								url:'/pages/login/login'
+							})
+							return
+						}else if(ndata.code==0){
+							if(ndata.msg){
+								
+								uni.showToast({
+									icon:'none',
+									title:ndata.msg
+								})
+							}else{
+								
+								uni.showToast({
+									icon:'none',
+									title:'操作失败'
+								})
+							}
+						}
+			      resolve(ndata)
+			    }else{
+			      reject(res);
+			    }
+			}
+		});
+	})
+	
+}
 
 
 
@@ -452,6 +528,13 @@ const http =({url ='',param ={},method='',header={'content-type': 'application/x
 }
 // 获取url
 const getUrl = (url)=>{
+	if(!url){
+		return url
+	}
+	if(url.slice(0,1) == "/"){
+	    console.log(true);
+			url = url.substr(1);
+	}
   if(url.indexOf('://')== -1){
     url = IPurl +url ;
   }
@@ -615,5 +698,6 @@ export default {
 	P_delete,
 	gettime,
 	getimg,
-	get_fwb
+	get_fwb,
+	wx_upload
 }

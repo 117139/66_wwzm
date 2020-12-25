@@ -26,8 +26,8 @@
 				<view class="index_li_d3">
 					<view class="index_li_d3_tit">安防套餐(详单)</view>
 					<view class="tc_list">
-						<view class="tc_li" v-for="(item,index) in 4">
-							<image class="tc_li_img" src="/static/images/business/tc_img_03.png" mode="aspectFit"></image>
+						<view class="tc_li" v-for="(item,index) in datas">
+							<image class="tc_li_img" :src="getimg(item.img)" mode="aspectFit"></image>
 							<view class="tc_msg flex_1">
 								<view class="dis_flex tc_d1 ju_b">
 									<view class="tc_d1_l">智能门锁 T1C</view>
@@ -82,7 +82,26 @@
 		data() {
 			return {
 				type:0,
-				datas:[1,1,1,1,1,1,1],
+				datas:[
+					{
+						img:'/static/images/business/tc_img_03.png'
+					},
+					{
+						img:'/static/images/business/tc_img_03.png'
+					},
+					{
+						img:'/static/images/business/tc_img_03.png'
+					},
+					{
+						img:'/static/images/business/tc_img_03.png'
+					},
+					{
+						img:'/static/images/business/tc_img_03.png'
+					},
+					{
+						img:'/static/images/business/tc_img_03.png'
+					},
+				],
 				data_last:false,
 				page:1,
 				size:20

@@ -57,7 +57,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wxb7d2d0d41c3cd9ff",
+        "appid" : "wxa86c7396bd0f2eec",
         "setting" : {
             "urlCheck" : false
         },
@@ -67,12 +67,12 @@
                 "desc" : "获取位置信息"
             }
         },
-				"plugins": {
-					"routePlan": {
-						"version": "1.0.11",
-						"provider": "wx50b5593e81dd937a"
-					}
-				}
+        "plugins" : {
+            "routePlan" : {
+                "version" : "1.0.11",
+                "provider" : "wx50b5593e81dd937a"
+            }
+        }
     },
     "mp-alipay" : {
         "usingComponents" : true

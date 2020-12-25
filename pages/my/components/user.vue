@@ -11,7 +11,7 @@
 			<image class="my_box_bg" :src="getimg('/static/images/user/my_bg_01.png')" mode="aspectFill"></image>
 			<view class="user_box dis_flex aic">
 				<view class="user_tx">
-					<image class="user_tx" :src="getimg(loginDatas.avatarurl)"></image>
+					<image class="user_tx" :src="getimg(loginDatas.cover)"  @tap="jump" data-url="/pagesA/user_edit/user_edit"  mode="aspectFill"></image>
 				</view>
 				<view class="flex_1">
 					<view class="user_name">{{loginDatas.nickname}}</view>
@@ -26,7 +26,7 @@
 
 			<view class="user_box dis_flex aic ju_c">
 				<view class="flex_1 dis_flex aic ju_c">
-					<view class="user_name" @tap="jump" data-url="../login/login">登录/注册</view>
+					<view class="user_name" @tap="jump" data-url="/pages/login/login">登录/注册</view>
 				</view>
 			</view>
 		</view>
@@ -49,7 +49,7 @@
 						<view class="iconfont iconnext-m"></view>
 					</view>
 				</view>
-				<view class="user_li" @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
+				<view class="user_li" @tap="jump" data-url="/pagesA/user_taocan_list/user_taocan_list" :data-login='true' :data-haslogin='hasLogin'>
 					<view class="user_li_l">
 						<image :src="getimg('/static/images/user/my_icon2.png')" mode="aspectFit"></image>
 					</view>
@@ -58,7 +58,7 @@
 						<view class="iconfont iconnext-m"></view>
 					</view>
 				</view>
-				<view class="user_li" @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin'>
+				<view class="user_li"@tap="jump" data-url="/pagesA/user_shoucang/user_shoucang" :data-login='true' :data-haslogin='hasLogin'>
 					<view class="user_li_l">
 						<image :src="getimg('/static/images/user/my_icon3.png')" mode="aspectFit"></image>
 					</view>

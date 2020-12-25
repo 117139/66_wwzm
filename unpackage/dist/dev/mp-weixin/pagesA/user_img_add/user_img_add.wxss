@@ -1,0 +1,102 @@
+
+.pz1_box.data-v-8bee306a {
+	width: 100%;
+	/* background: #FFFFFF; */
+	padding: 0 30rpx 20rpx;
+}
+.pz1_tit.data-v-8bee306a {
+	width: 100%;
+	font-size: 30rpx;
+	color: #222;
+	line-height: 88rpx;
+}
+.pz1_tit input.data-v-8bee306a{
+	height: 88rpx;
+	/* text-align: right; */
+	font-size: 30rpx;
+}
+.pz_imgs.data-v-8bee306a {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	        flex-wrap: wrap;
+	padding-bottom: 30rpx;
+	/* border-bottom: 1px solid #eee; */
+}
+.pz_img.data-v-8bee306a {
+	width: 220rpx;
+	height: 220rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
+	margin-right: 15rpx;
+	margin-bottom: 15rpx;
+	position: relative;
+}
+.pz_img.data-v-8bee306a:nth-child(3n){
+	margin-right: 0;
+}
+.pz_img image.data-v-8bee306a {
+	width: 220rpx;
+	height: 220rpx;
+}
+.pz_img .img_del.data-v-8bee306a {
+	width: 30rpx;
+	height: 30rpx;
+	background: #FF4B4B;
+	-webkit-border-radius: 15rpx;
+	        border-radius: 15rpx;
+	position: absolute;
+	top: -10rpx;
+	right: -10rpx;
+	z-index: 10;
+}
+.pz1_cont.data-v-8bee306a{
+	width: 100%;
+	height: 200rpx;
+	background: #fff;
+	border: 1px solid #EEEEEE;
+	padding: 20rpx;
+	line-height: 40rpx;
+	font-size: 30rpx;
+}
+.cont_num.data-v-8bee306a{
+	margin-top: 15rpx;
+	margin-bottom: 15rpx;
+	font-size: 24rpx;
+	color: #666;
+}
+.pz_tip.data-v-8bee306a{
+	font-size: 24rpx;
+	color: #000;
+}
+.pz_tip .iconfont.data-v-8bee306a{
+	color: #3778FE;
+	font-size: 24rpx;
+	margin-right: 4rpx;
+}
+.pz_tip_tit.data-v-8bee306a{
+	color: #999;
+}
+.pz_btn.data-v-8bee306a{
+	width: 690rpx;
+	height: 88rpx;
+	background: #11A078;
+	-webkit-border-radius: 44rpx;
+	        border-radius: 44rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	font-size: 32rpx;
+	font-family: PingFang SC;
+	font-weight: 500;
+	color: #FFFFFF;
+	margin: 140rpx auto;
+}
+

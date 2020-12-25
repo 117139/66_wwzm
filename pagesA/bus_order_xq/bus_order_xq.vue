@@ -31,7 +31,7 @@
 							<scroll-view class="weixin_dblist" scroll-x="true" bindscroll="scroll" style="width: 100%">
 								
 									<view v-for="(item,index) in taocan_list" class="taocan_li">
-										<image class="taocan_li_img" src="../../static/images/business/tc_img_03.png" mode="aspectFit"></image>
+										<image class="taocan_li_img" :src="getimg('/static/images/business/tc_img_03.png')" mode="aspectFit"></image>
 										<view class="taocan_li_msg oh2">{{item.name}}</view>
 										<view class="taocan_li_pri"><text style="font-size: 18upx;">￥</text>998</view>
 									</view>
@@ -178,11 +178,14 @@
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform', 'setfj_data']),
+			getimg(e){
+				return service.getimg(e)
+			},
 			map_dp(data) {
 				let that = this
 				let plugin = requirePlugin('routePlan');
-				let key = '56LBZ-EYRK6-TODSV-EY4P2-RC367-HAFGD'; //使用在腾讯位置服务申请的key
-				let referer = '达鑫达'; //调用插件的app的名称
+				let key = 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'; //使用在腾讯位置服务申请的key
+				let referer = '万屋智能'; //调用插件的app的名称
 				let endPoint = JSON.stringify({ //终点
 					'name': 'dd',
 					'latitude':  parseFloat('38.912884929705875')||'',

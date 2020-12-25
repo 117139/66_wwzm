@@ -7,7 +7,7 @@
 		</view> -->
 
 		<view v-if="hasLogin" class="my_box">
-			<image class="my_box_bg" src="/static/images/business/my_bg_01.jpg" mode="aspectFill"></image>
+			<image class="my_box_bg" :src="getimg('/static/images/business/my_bg_01.jpg')" mode="aspectFill"></image>
 			<view class="user_box dis_flex aic">
 				<view class="user_tx">
 					<image class="user_tx" :src="getimg(loginDatas.avatarurl)"></image>
@@ -20,7 +20,7 @@
 			</view>
 		</view>
 		<view v-else class="my_box">
-			<image class="my_box_bg" src="/static/images/business/my_bg_01.jpg" mode="aspectFill"></image>
+			<image class="my_box_bg" :src="getimg('/static/images/business/my_bg_01.jpg')" mode="aspectFill"></image>
 
 			<view class="user_box dis_flex aic ju_c">
 				<view class="flex_1 dis_flex aic ju_c">
@@ -31,10 +31,10 @@
 		<view class="bus_my_list">
 			
 			<view class="more_main" @tap="jump" data-url="/pagesA/bus_hetong/bus_hetong">
-				<image src="/static/images/business/index_03.jpg" mode="aspectFill"></image>
+				<image :src="getimg('/static/images/business/index_03.jpg')" mode="aspectFill"></image>
 			</view>
 			<view class="more_main" @tap="jump" data-url="/pagesA/bus_order/bus_order">
-				<image src="/static/images/business/index_06.jpg" mode="aspectFill"></image>
+				<image :src="getimg('/static/images/business/index_06.jpg')" mode="aspectFill"></image>
 			</view>
 			
 		</view>

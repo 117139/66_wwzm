@@ -1,0 +1,122 @@
+
+.tab_box.data-v-dfddd45e {
+	/* border-top: 8upx solid #f5f5f5; */
+	width: 100%;
+	height: 75rpx;
+	background: #fff;
+	position: fixed;
+	top: 0;
+
+
+
+	z-index: 90;
+	font-size: 30rpx;
+	padding: 0 30rpx;
+	border-bottom: 1px solid #F5F5F5;
+}
+.tab_box view.data-v-dfddd45e {
+	height: 72rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	font-size: 30rpx;
+	font-family: PingFangSC;
+	font-weight: 500;
+	color: #999999;
+}
+.tab_box view.active.data-v-dfddd45e {
+	color: #00A079;
+	position: relative;
+}
+.tab_box view.active.data-v-dfddd45e::before {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	width: 53rpx;
+	height: 4rpx;
+	margin-left: -26rpx;
+	background: #11A078;
+}
+.order_list.data-v-dfddd45e {
+	width: 100%;
+	padding: 100rpx 30rpx 20rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	        flex-wrap: wrap;
+}
+.order_li.data-v-dfddd45e {
+	width: 337rpx;
+	background: #FFFFFF;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
+	margin-bottom: 15rpx;
+	overflow: hidden;
+}
+.order_li.data-v-dfddd45e:nth-child(2n){
+	margin-left: 15rpx;
+}
+.order_li_img.data-v-dfddd45e{
+	width: 337rpx;
+	height: 337rpx;
+	/* border-radius: 10upx 10upx 0upx 0upx; */
+}
+.order_li_msg.data-v-dfddd45e{
+	width: 100%;
+	min-height: 122rpx;
+	padding: 20rpx;
+	font-size: 24rpx;
+	color: #222;
+}
+.order_li_msg .oh2.data-v-dfddd45e{
+	line-height: 30rpx;
+	height: 60rpx;
+}
+.order_li_img_al.data-v-dfddd45e{
+	width: 337rpx;
+	height: 410rpx;
+}
+.order_bqs.data-v-dfddd45e{
+	margin-top: 20rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	        flex-wrap: wrap;
+}
+.order_bq.data-v-dfddd45e{
+	padding: 10rpx 20rpx;
+	font-size: 24rpx;
+	line-height: 24rpx;
+	font-family: PingFang SC;
+	font-weight: 500;
+	color: #F4691A;
+	margin-right: 15rpx;
+	margin-bottom: 15rpx;
+	border: 1px solid #F4691A;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
+}
+.order_pri.data-v-dfddd45e{
+	color: #F4691A;
+	font-size: 28rpx;
+}
+.order_pri text.data-v-dfddd45e{
+	font-size: 24rpx;
+}
+.order_buy.data-v-dfddd45e{
+	margin-top: 20rpx;
+}
+.order_car.data-v-dfddd45e{
+	width: 44rpx;
+	height: 44rpx;
+}
+

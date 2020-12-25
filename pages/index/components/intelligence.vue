@@ -6,7 +6,7 @@
 		<view class="index_list">
 			<view class="index_li" v-for="(item,index) in datas">
 				<view class="index_li_d1">
-					<image class="index_tx" src="../../../static/images/tx_m2.jpg" lazy-load="true" mode="aspectFill"></image>
+					<image class="index_tx" :src="getimg('/static/images/tx_m2.jpg')" lazy-load="true" mode="aspectFill"></image>
 					<view class="index_yz">业主：<text>孙三三</text></view>
 					<view @tap="call" data-tel="18300000000" class="iconfont iconphone"></view>
 				</view>
@@ -27,8 +27,9 @@
 				</view>
 				<view class="index_li_d3">
 					<view class="index_li_d3_tit">安防套餐</view>
-					<scroll-view class="weixin_dblist" scroll-x="true" bindscroll="scroll" style="width: 100%">
-						<image v-for="(item,index) in 10" @tap="pveimg" lazy-load="true" data-src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1306508493,2006189766&fm=26&gp=0.jpg" class="taocan_li" src="/static/images/business/tc_img_03.png" mode="aspectFit"></image>
+					<scroll-view class="weixin_dblist" scroll-x="true"  style="width: 100%">
+						<image v-for="(item,index) in datas" @tap="pveimg" lazy-load="true" :src="getimg(item.img)"  
+						:data-src="getimg(item.img)" class="taocan_li"  mode="aspectFit"></image>
 							
 					</scroll-view>
 				</view>
@@ -56,7 +57,26 @@
 	export default {
 		data() {
 			return {
-				datas:[1,1,1,1,1,1,1],
+				datas:[
+					{
+						img:'/static/images/business/tc_img_03.png'
+					},
+					{
+						img:'/static/images/business/tc_img_03.png'
+					},
+					{
+						img:'/static/images/business/tc_img_03.png'
+					},
+					{
+						img:'/static/images/business/tc_img_03.png'
+					},
+					{
+						img:'/static/images/business/tc_img_03.png'
+					},
+					{
+						img:'/static/images/business/tc_img_03.png'
+					},
+				],
 				data_last:false,
 				page:1,
 				size:20
@@ -116,7 +136,7 @@
 			map_dp(data) {
 				let that = this
 				let plugin = requirePlugin('routePlan');
-				let key = '56LBZ-EYRK6-TODSV-EY4P2-RC367-HAFGD'; //使用在腾讯位置服务申请的key
+				let key = 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'; //使用在腾讯位置服务申请的key
 				let referer = '达鑫达'; //调用插件的app的名称
 				let endPoint = JSON.stringify({ //终点
 					'name': 'dd',

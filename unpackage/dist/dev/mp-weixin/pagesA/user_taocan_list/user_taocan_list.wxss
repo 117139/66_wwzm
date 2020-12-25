@@ -1,0 +1,59 @@
+
+.order_li_tit.data-v-ccd043ea{
+	line-height: 90rpx;
+	font-size: 34rpx;
+	font-family: PingFang;
+	font-weight: bold;
+	color: #000000;
+	padding: 0 30rpx;
+	background: #fff;
+}
+.weixin_dblist.data-v-ccd043ea {
+	width: 100%;
+	height: 300rpx;
+	white-space: nowrap;
+	padding-top:0;
+	background: #fff;margin-bottom: 20rpx;
+}
+.taocan_li.data-v-ccd043ea {
+	width: 162rpx;
+	height: 281rpx;
+	background: #FAFAFA;
+	margin-right: 14rpx;
+	padding: 5rpx;
+	display: -webkit-inline-box;
+	display: -webkit-inline-flex;
+	display: inline-flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+}
+.taocan_li_img.data-v-ccd043ea {
+	width: 152rpx;
+	height: 152rpx;
+	margin-bottom: 15rpx;
+}
+.taocan_li_msg.data-v-ccd043ea {
+	width: 95%;
+	text-align: center;
+	line-height: 30rpx;
+	height: 60rpx;
+	font-size: 20rpx;
+	font-family: PingFang SC;
+	font-weight: 500;
+	color: #222222;
+	margin-bottom: 10rpx;
+	white-space: pre-wrap;
+}
+.taocan_li_pri.data-v-ccd043ea {
+	color: #F4691A;
+	font-size: 22rpx;
+}
+

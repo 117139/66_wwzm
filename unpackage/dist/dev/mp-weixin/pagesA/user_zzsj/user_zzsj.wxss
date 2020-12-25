@@ -1,0 +1,84 @@
+
+.zzsj_bg.data-v-59ce8383 {
+	width: 100%;
+	height: 640rpx;
+}
+.zzsj_box.data-v-59ce8383 {
+	width: 690rpx;
+	height: 540rpx;
+	background: #FFFFFF;
+	-webkit-border-radius: 20rpx;
+	        border-radius: 20rpx;
+	padding: 60rpx 30rpx;
+	margin: -90rpx auto 60rpx;
+	position: relative;
+	z-index: 10;
+}
+.sj_li.data-v-59ce8383 {
+	width: 100%;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+	margin-bottom: 30rpx;
+}
+.sj_li_l.data-v-59ce8383 {
+	font-size: 24rpx;
+	font-family: PingFang SC;
+	font-weight: 500;
+	color: #000000;
+}
+.sj_li_r.data-v-59ce8383 {
+	width: 503rpx;
+	height: 60rpx;
+	padding: 0 30rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	border: 1px solid #DDDDDD;
+	-webkit-border-radius: 30rpx;
+	        border-radius: 30rpx;
+}
+.sj_int.data-v-59ce8383 {
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	        flex: 1;
+	padding-left: 45rpx;
+	font-size: 24rpx;
+	font-family: PingFang SC;
+	font-weight: 500;
+	color: #000000;
+}
+.iconoff.data-v-59ce8383 {
+	font-size: 16rpx;
+}
+.sub_btn.data-v-59ce8383 {
+	width: 690rpx;
+	height: 88rpx;
+	background: #11A078;
+	-webkit-border-radius: 44rpx;
+	        border-radius: 44rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	font-size: 36rpx;
+	font-family: PingFang;
+	font-weight: bold;
+	color: #FFFFFF;
+	margin: 60rpx auto;
+}
+

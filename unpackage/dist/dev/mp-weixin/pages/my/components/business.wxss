@@ -67,6 +67,15 @@
 	-webkit-box-shadow: 0rpx 0rpx 0rpx;
 	box-shadow: 0rpx 0rpx 0rpx;
 	z-index: 9999;
+	overflow: hidden;
+}
+.head_box_img.data-v-1fddd322{
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 498rpx;
+	left: 0;
+	right: 0;
 }
 .cur_H.data-v-1fddd322{
 	background: #fff;
@@ -145,6 +154,12 @@ view.user_tx.data-v-1fddd322{
 	color: #FFFFFF;
 	line-height: 30px;
 	opacity: 0.8;
+}
+.user_edit.data-v-1fddd322 {
+	width: 150rpx;
+	height: 44rpx;
+	-webkit-border-radius: 22rpx;
+	        border-radius: 22rpx;
 }
 .bus_my_list.data-v-1fddd322{
 	position: relative;
@@ -250,7 +265,7 @@ view.user_tx.data-v-1fddd322{
 	margin-right: 20rpx;
 }
 .td_user_msg.data-v-1fddd322{
-	height: 52rpx;
+	height: 62rpx;
 }
 .td_uname.data-v-1fddd322{
 	color: #3a3a3a;
@@ -259,5 +274,10 @@ view.user_tx.data-v-1fddd322{
 .td_utb.data-v-1fddd322{
 	font-size: 14rpx;
 	color: #a8a8a8;
+}
+.td_ximg.data-v-1fddd322{
+	width: 18rpx;
+	height: 16rpx;
+	margin-right: 20rpx;
 }
 

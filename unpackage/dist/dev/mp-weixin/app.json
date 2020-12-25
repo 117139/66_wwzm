@@ -1,26 +1,55 @@
 {
   "pages": [
+    "pages/index/index",
     "pages/my/my",
     "pages/main/main",
-    "pages/index/index"
+    "pages/kefu/kefu",
+    "pages/login/login"
   ],
   "subPackages": [
     {
       "root": "pagesA",
       "pages": [
-        "about/about"
+        "about/about",
+        "bus_hetong/bus_hetong",
+        "bus_order/bus_order",
+        "bus_order_edit/bus_order_edit",
+        "bus_order_xq/bus_order_xq",
+        "intell_renzheng/intell_renzheng",
+        "intell_shouhou/intell_shouhou",
+        "intell_end/intell_end",
+        "intell_ing/intell_ing",
+        "intell_order_xq/intell_order_xq",
+        "intell_order_xq_pz1/intell_order_xq_pz1",
+        "intell_order_xq_pz2/intell_order_xq_pz2",
+        "intell_order_xq_pz3/intell_order_xq_pz3",
+        "user_order_ing/user_order_ing",
+        "user_edit/user_edit",
+        "user_shouhou/user_shouhou",
+        "user_xq/user_xq",
+        "user_xiaoxi/user_xiaoxi",
+        "user_order_xq/user_order_xq",
+        "user_imgs/user_imgs",
+        "user_img_add/user_img_add",
+        "user_zzsj/user_zzsj",
+        "user_list/user_list",
+        "user_al_xq/user_al_xq",
+        "user_goods_xq/user_goods_xq",
+        "user_shoucang/user_shoucang",
+        "user_taocan_list/user_taocan_list",
+        "user_order/user_order"
       ]
     }
   ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "万屋智能",
-    "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
+    "navigationBarBackgroundColor": "#fff",
+    "backgroundColor": "#fafafa"
   },
   "tabBar": {
-    "color": "#C4C9D5",
-    "selectedColor": "#5373FF",
+    "color": "#B8B8B8",
+    "selectedColor": "#11A078",
     "backgroundColor": "#ffffff",
     "list": [
       {
@@ -30,7 +59,7 @@
         "selectedIconPath": "static/images/tabbar/tab12.png"
       },
       {
-        "pagePath": "pages/my/my",
+        "pagePath": "pages/kefu/kefu",
         "text": "客服",
         "iconPath": "static/images/tabbar/tab2.png",
         "selectedIconPath": "static/images/tabbar/tab22.png"
@@ -38,14 +67,14 @@
       {
         "pagePath": "pages/my/my",
         "text": "我的",
-        "iconPath": "static/images/tabbar/tab2.png",
-        "selectedIconPath": "static/images/tabbar/tab22.png"
+        "iconPath": "static/images/tabbar/tab3.png",
+        "selectedIconPath": "static/images/tabbar/tab32.png"
       },
       {
         "pagePath": "pages/main/main",
         "text": "更多",
-        "iconPath": "static/images/tabbar/tab2.png",
-        "selectedIconPath": "static/images/tabbar/tab22.png"
+        "iconPath": "static/images/tabbar/tab4.png",
+        "selectedIconPath": "static/images/tabbar/tab42.png"
       }
     ]
   },
@@ -63,7 +92,19 @@
       ]
     }
   },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "获取位置信息"
+    }
+  },
+  "plugins": {
+    "routePlan": {
+      "version": "1.0.11",
+      "provider": "wx50b5593e81dd937a"
+    }
+  },
   "usingComponents": {
     "cu-custom": "/colorui/components/cu-custom"
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }

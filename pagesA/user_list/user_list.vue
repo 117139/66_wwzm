@@ -12,7 +12,7 @@
 			
 			<view class="order_list">
 				<block v-if="type==1">
-					<view class="order_li dis_flex_c" v-for="(item,index) in 10">
+					<view class="order_li dis_flex_c" v-for="(item,index) in 10" @tap="jump" :data-url="'/pagesA/user_goods_xq/user_goods_xq?id='+index">
 						<image class="order_li_img" :src="getimg('/static/images/user/xz_03.jpg')" mode="aspectFill"></image>
 						<view class="order_li_msg">
 							<view class="oh2">Allone Pro 多功能智能主机充电</view>
@@ -24,7 +24,7 @@
 					</view>
 				</block>
 				<block v-if="type==2">
-					<view class="order_li dis_flex_c" v-for="(item,index) in 10">
+					<view class="order_li dis_flex_c" v-for="(item,index) in 10" @tap="jump" :data-url="'/pagesA/user_al_xq/user_al_xq?id='+index">
 						<image class="order_li_img_al" :src="getimg('/static/images/user/xz_03.jpg')" mode="aspectFill"></image>
 						<view class="order_li_msg">
 							<view class="oh2">10多家媒体到场报道，100余位设计师顺势而...</view>
@@ -55,6 +55,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that 
 	export default {
 		data() {
 			return {
@@ -67,7 +68,7 @@
 						id: 2
 					},
 					{
-						name: '智能家居',
+						name: '资讯',
 						id: 3
 					},
 				],
@@ -77,8 +78,13 @@
 					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 				]
 			}
-		},	computed: {
+		},
+		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas']),
+		},
+		onLoad(option) {
+			that=this
+			this.type=option.type
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform', 'setfj_data']),

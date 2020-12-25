@@ -4,7 +4,7 @@
 		 :autoplay="autoplay" :interval="interval" :duration="duration" circular='true'>
 			<swiper-item v-for="(item,idx) in banner">
 				<!-- <image class="swi_img" src="/static/images/user/banner_01.jpg" mode="aspectFill"></image> -->
-				<image class="swi_img" :src="getimg(item)" mode="aspectFill"
+				<image class="swi_img" :src="getimg(item.img_url)" mode="aspectFill"
 						 @tap="jump" data-url=""></image>
 			</swiper-item>
 
@@ -18,11 +18,11 @@
 				<image :src="getimg('/static/images/user/index_icon2.png')"  mode="aspectFit"></image>
 				<text>安装进度</text>
 			</view>
-			<view class="index_icon" @tap='jump' data-url="/pagesA/user_list/user_list?type==2">
+			<view class="index_icon" @tap='jump' data-url="/pagesA/user_list/user_list?type=2">
 				<image :src="getimg('/static/images/user/index_icon3.png')"  mode="aspectFit"></image>
 				<text>服务案例</text>
 			</view>
-			<view class="index_icon" @tap='jump' data-url="/pagesA/user_list/user_list==3">
+			<view class="index_icon" @tap='jump' data-url="/pagesA/user_list/user_list?type=3">
 				<image :src="getimg('/static/images/user/index_icon4.png')"  mode="aspectFit"></image>
 				<text>资讯</text>
 			</view>
@@ -84,7 +84,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
-
+var that =this
 	export default {
 		data() {
 			return {
@@ -104,7 +104,10 @@
 				tximg: '/static/logo.png'
 			};
 		},
-		onLoad() {},
+		onLoad() {
+			that=this
+			this.getdata()
+		},
 		onShow() {
 			// service.wxlogin()
 		},
@@ -144,6 +147,54 @@
 
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
+			getdata(keyword){
+				
+				///api/info/list
+				var that =this
+				var data = {}
+				
+				//selectSaraylDetailByUserCard
+				var jkurl = '/homepage/banner'
+				uni.showLoading({
+					title: '正在获取数据'
+				})
+				service.P_get(jkurl, data).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						console.log(typeof datas)
+							
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						
+						that.banner = datas
+						console.log(datas)
+							
+							
+					} else {
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			},
 			getimg(img) {
 				console.log(service.getimg(img))
 				return service.getimg(img)

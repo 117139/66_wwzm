@@ -1,5 +1,9 @@
 {
   "navigationBarTitleText": "万屋智能",
   "navigationStyle": "custom",
-  "usingComponents": {}
+  "usingComponents": {
+    "business": "/pages/index/components/business",
+    "user": "/pages/index/components/user",
+    "intelligence": "/pages/index/components/intelligence"
+  }
 }

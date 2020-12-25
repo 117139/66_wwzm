@@ -11,7 +11,7 @@
 			</view>
 			<view class="order_list">
 				<view class="order_li dis_flex" v-for="(item,index) in datas">
-					<image class="order_li_img" src="../../static/images/business/hetong_03.jpg" mode="aspectFill"></image>
+					<image class="order_li_img" :src="getimg('/static/images/business/hetong_03.jpg')" mode="aspectFill"></image>
 					<view class="order_li_msg flex_1 dis_flex_c ju_c">
 						<view class="order_li_d1">套数: 15 套</view>
 						<view class="order_li_d2">2020/10/10 | 价值50万</view>
@@ -57,6 +57,9 @@
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform','setfj_data']),
+			getimg(e){
+			 return	service.getimg(e)
+			},
 			bindcur(e){
 				var that =this
 			  console.log(e.currentTarget.dataset.type)

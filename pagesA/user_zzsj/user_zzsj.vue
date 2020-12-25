@@ -1,6 +1,6 @@
 <template>
 	<view style="min-height: 100vh;background: #FAFAFA;">
-		<image class="zzsj_bg" src="../../static/images/user/znsj_02.jpg" mode="aspectFill"></image>
+		<image class="zzsj_bg" :src="getimg('/static/images/user/znsj_02.jpg')" mode="aspectFill"></image>
 		<view class="zzsj_box">
 			<picker @change="bindPickerChange" data-type="hx" value="" :range="hx_list" range-key="name">
 				<view class="sj_li">
@@ -96,6 +96,9 @@
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
+			getimg(e){
+				return service.getimg(e)
+			},
 			bindPickerChange(e) {
 				console.log(e)
 				var datas = e.currentTarget.dataset

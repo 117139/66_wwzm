@@ -11,11 +11,11 @@
 			<image class="my_box_bg" src="/static/images/intell/my_bg_01.png" mode="aspectFill"></image>
 			<view class="user_box dis_flex aic">
 				<view class="user_tx">
-					<image class="user_tx" :src="getimg(loginDatas.avatarurl)"></image>
+					<image class="user_tx" :src="getimg(loginDatas.cover)" @tap="jump" data-url="/pagesA/user_edit/user_edit" mode="aspectFill"></image>
 				</view>
 				<view class="flex_1">
 					<view class="user_name">{{loginDatas.nickname}}</view>
-					<image class="user_edit"  @tap="jump" data-url="../my_pwd/my_pwd" :data-login='true' :data-haslogin='hasLogin' src="../../../static/images/user/my_edit.png" mode="aspectFill"></image>
+					<image class="user_edit"  @tap="jump" data-url="/pagesA/user_edit/user_edit" :data-login='true' :data-haslogin='hasLogin' src="../../../static/images/user/my_edit.png" mode="aspectFill"></image>
 				</view>
 				<!-- <view class="iconfont icon-bianji user_edit" @tap="jump" data-url="/pages/my_msg/my_msg"></view> -->
 			</view>
@@ -25,7 +25,7 @@
 
 			<view class="user_box dis_flex aic ju_c">
 				<view class="flex_1 dis_flex aic ju_c">
-					<view class="user_name" @tap="jump" data-url="../login/login">登录/注册</view>
+					<view class="user_name" @tap="jump" data-url="/pages/login/login">登录/注册</view>
 				</view>
 			</view>
 		</view>
@@ -33,7 +33,7 @@
 			<view class="user_list">
 				<view class="user_li"  @tap="jump" data-url="/pagesA/intell_ing/intell_ing" :data-login='true' :data-haslogin='hasLogin'>
 					<view class="user_li_l">
-						<image src="../../../static/images/intell/my_icon1.png" mode="aspectFit"></image>
+						<image :src="getimg('/static/images/intell/my_icon1.png')" mode="aspectFit"></image>
 					</view>
 					<view class="user_li_r">
 						<view>施工中</view>
@@ -42,7 +42,7 @@
 				</view>
 				<view class="user_li" @tap="jump" data-url="/pagesA/intell_end/intell_end" :data-login='true' :data-haslogin='hasLogin'>
 					<view class="user_li_l">
-						<image src="../../../static/images/intell/my_icon2.png" mode="aspectFit"></image>
+						<image :src="getimg('/static/images/intell/my_icon2.png')" mode="aspectFit"></image>
 					</view>
 					<view class="user_li_r">
 						<view>已完成</view>
@@ -51,7 +51,7 @@
 				</view>
 				<view class="user_li" @tap="jump" data-url="/pagesA/intell_shouhou/intell_shouhou" :data-login='true' :data-haslogin='hasLogin'>
 					<view class="user_li_l">
-						<image src="../../../static/images/intell/my_icon3.png" mode="aspectFit"></image>
+						<image :src="getimg('/static/images/intell/my_icon3.png')" mode="aspectFit"></image>
 					</view>
 					<view class="user_li_r">
 						<view>售后处理</view>
@@ -60,7 +60,7 @@
 				</view>
 				<view class="user_li" @tap="jump" data-url="/pagesA/intell_renzheng/intell_renzheng" :data-login='true' :data-haslogin='hasLogin'>
 					<view class="user_li_l">
-						<image src="../../../static/images/intell/my_icon4.png" mode="aspectFit"></image>
+						<image :src="getimg('/static/images/intell/my_icon4.png')" mode="aspectFit"></image>
 					</view>
 					<view class="user_li_r">
 						<view>我的认证</view>

@@ -9334,29 +9334,18 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 4:
-/*!******************************************!*\
-  !*** E:/phpStudy/WWW/66_wwzm/pages.json ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
-
-/***/ }),
-
-/***/ 75:
+/***/ 333:
 /*!**********************************************************!*\
   !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
   \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! regenerator-runtime */ 76);
+module.exports = __webpack_require__(/*! regenerator-runtime */ 334);
 
 /***/ }),
 
-/***/ 76:
+/***/ 334:
 /*!************************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
   \************************************************************/
@@ -9387,7 +9376,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(/*! ./runtime */ 77);
+module.exports = __webpack_require__(/*! ./runtime */ 335);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -9404,7 +9393,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 77:
+/***/ 335:
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
   \*****************************************************/
@@ -10136,6 +10125,17 @@ if (hadRuntime) {
 
 /***/ }),
 
+/***/ 4:
+/*!******************************************!*\
+  !*** E:/phpStudy/WWW/66_wwzm/pages.json ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
 /***/ 8:
 /*!******************************************!*\
   !*** E:/phpStudy/WWW/66_wwzm/service.js ***!
@@ -10150,8 +10150,11 @@ var _event = _interopRequireDefault(__webpack_require__(/*! common/event.js */ 1
 // 管理账号信息
 var USERS_KEY = 'USERS_KEY';
 var STATE_KEY = 'STATE_KEY';
-var IPurl = 'https://datixcx.com.aa.800123456.top/api/';
-var imgurl = 'https://datixcx.com.aa.800123456.top/';
+// const IPurl = 'https://datixcx.com.aa.800123456.top/api/';
+// const imgurl = 'https://datixcx.com.aa.800123456.top/';
+var imgurl = 'http://192.168.129.246/';
+var IPurl = imgurl + 'api/';
+// const IPurl='http://192.168.129.246/api/'
 // const adminurl='https://datixcx.com.aa.800123456.top/admin/';
 // appid:wx4c41cc50c5a53df9
 // appid:wx49a560f7feac0feb   cj
@@ -10334,8 +10337,22 @@ var call = function call(e) {
   console.log(e);
   // return
   if (e.currentTarget.dataset.tel) {
-    wx.makePhoneCall({
-      phoneNumber: e.currentTarget.dataset.tel + '' });
+    // wx.makePhoneCall({
+    // 	phoneNumber: e.currentTarget.dataset.tel+''
+    // })
+    uni.showModal({
+      title: '提示',
+      content: '是否拨打' + e.currentTarget.dataset.tel + '?',
+      success: function success(res) {
+        if (res.confirm) {
+          wx.makePhoneCall({
+            phoneNumber: e.currentTarget.dataset.tel + '' });
+
+          console.log('用户点击确定');
+        } else if (res.cancel) {
+          console.log('用户点击取消');
+        }
+      } });
 
   }
 };
@@ -10365,12 +10382,12 @@ var wxlogin = function wxlogin(num) {
                   var data = {
                     code: res.code,
                     nickname: uinfo.nickName,
-                    avatarurl: uinfo.avatarUrl };
+                    cover: uinfo.avatarUrl };
 
                   var rcode = res.code;
                   console.log(res.code);
                   uni.request({
-                    url: IPurl + '/login',
+                    url: IPurl + 'user/login',
                     data: data,
                     header: {
                       'content-type': 'application/x-www-form-urlencoded' },
@@ -10383,7 +10400,7 @@ var wxlogin = function wxlogin(num) {
                       if (res.data.code == 1) {
                         console.log('登录成功');
                         console.log(res.data);
-                        uni.setStorageSync('token', res.data.data.userToken);
+                        uni.setStorageSync('token', res.data.data.token);
                         //获取手机号
                         /*
                         if(!res.data.data.phone){
@@ -10398,7 +10415,20 @@ var wxlogin = function wxlogin(num) {
                         _index.default.commit('login', res.data.data.nickname);
 
                         uni.setStorageSync('loginmsg', res.data.data);
-
+                        //0 商家端  1 用户端  2智能安装端
+                        if (_index.default.xcx_status == 1) {
+                          if (res.data.data.is_owner == 1) {
+                            _index.default.commit('set_xcx', 1);
+                            return;
+                          }
+                          if (res.data.data.is_engineer == 1) {
+                            _index.default.commit('set_xcx', 2);
+                            return;
+                          }
+                          if (res.data.data.is_seller == 1) {
+                            _index.default.commit('set_xcx', 0);
+                          }
+                        }
                         // im login
 
 
@@ -10446,10 +10476,17 @@ var wxlogin = function wxlogin(num) {
                       } else {
                         uni.removeStorageSync('userInfo');
                         uni.removeStorageSync('token');
-                        uni.showToast({
-                          icon: 'none',
-                          title: '登录失败' });
+                        if (res.msg) {
+                          uni.showToast({
+                            icon: 'none',
+                            title: res.msg });
 
+                        } else {
+                          uni.showToast({
+                            icon: 'none',
+                            title: '登录失败' });
+
+                        }
                       }
 
                     },
@@ -10520,7 +10557,61 @@ var setUsermsg = function setUsermsg(data) {
 };
 
 
+var wx_upload = function wx_upload(tximg) {
+  return new Promise(function (resolve, reject) {
+    uni.showLoading({
+      mask: true,
+      title: '正在上传' });
 
+    uni.uploadFile({
+      url: IPurl + 'user/upload_img',
+      filePath: tximg,
+      name: 'img',
+      formData: {
+        token: uni.getStorageSync('token') },
+
+      // success: (uploadFileRes) => {
+      // 	console.log(uploadFileRes.data);
+      // 	var ndata = JSON.parse(uploadFileRes.data)
+      // 	resolve(uploadFileRes)
+      // },
+      complete: function complete(res) {
+        uni.hideLoading();
+        uni.stopPullDownRefresh(); //慎用hideLoading,会关闭wx.showToast弹窗
+        // console.log(`耗时${Date.now() - timeStart}`);
+        console.log(res);
+        if (res.statusCode == 200) {//请求成功
+          var ndata = JSON.parse(res.data);
+          if (ndata.code == -1) {
+            _index.default.commit('logout');
+            uni.navigateTo({
+              url: '/pages/login/login' });
+
+            return;
+          } else if (ndata.code == 0) {
+            if (ndata.msg) {
+
+              uni.showToast({
+                icon: 'none',
+                title: ndata.msg });
+
+            } else {
+
+              uni.showToast({
+                icon: 'none',
+                title: '操作失败' });
+
+            }
+          }
+          resolve(ndata);
+        } else {
+          reject(res);
+        }
+      } });
+
+  });
+
+};
 
 
 
@@ -10583,6 +10674,13 @@ var http = function http() {var _ref = arguments.length > 0 && arguments[0] !== 
 };
 // 获取url
 var getUrl = function getUrl(url) {
+  if (!url) {
+    return url;
+  }
+  if (url.slice(0, 1) == "/") {
+    console.log(true);
+    url = url.substr(1);
+  }
   if (url.indexOf('://') == -1) {
     url = IPurl + url;
   }
@@ -10746,7 +10844,8 @@ var get_fwb = function get_fwb(str) {
   P_delete: P_delete,
   gettime: gettime,
   getimg: getimg,
-  get_fwb: get_fwb };exports.default = _default;
+  get_fwb: get_fwb,
+  wx_upload: wx_upload };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
@@ -10770,7 +10869,7 @@ var store = new _vuex.default.Store({
             * 是否需要强制登录
             */
     forcedLogin: false,
-    hasLogin: true,
+    hasLogin: false,
     platform: '',
     userName: "游客",
     loginDatas: {
@@ -10797,12 +10896,10 @@ var store = new _vuex.default.Store({
     bj_prodata: '',
 
 
-    h5_uid: '',
 
 
 
-
-    xcx_status: 0 //0 商家端  1 用户端  2智能安装端
+    xcx_status: 1 //0 商家端  1 用户端  2智能安装端
   },
   mutations: {
     set_xcx: function set_xcx(state, xcx_status) {
@@ -10866,6 +10963,478 @@ var store = new _vuex.default.Store({
 
 store;exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 92:
+/*!******************************************************!*\
+  !*** E:/phpStudy/WWW/66_wwzm/libs/qqmap-wx-jssdk.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;} /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * 微信小程序JavaScriptSDK
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * @version 1.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * @date 2017-01-10
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               * @author jaysonzhou@tencent.com
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               */
+
+var ERROR_CONF = {
+  KEY_ERR: 311,
+  KEY_ERR_MSG: 'key格式错误',
+  PARAM_ERR: 310,
+  PARAM_ERR_MSG: '请求参数信息有误',
+  SYSTEM_ERR: 600,
+  SYSTEM_ERR_MSG: '系统错误',
+  WX_ERR_CODE: 1000,
+  WX_OK_CODE: 200 };
+
+var BASE_URL = 'https://apis.map.qq.com/ws/';
+var URL_SEARCH = BASE_URL + 'place/v1/search';
+var URL_SUGGESTION = BASE_URL + 'place/v1/suggestion';
+var URL_GET_GEOCODER = BASE_URL + 'geocoder/v1/';
+var URL_CITY_LIST = BASE_URL + 'district/v1/list';
+var URL_AREA_LIST = BASE_URL + 'district/v1/getchildren';
+var URL_DISTANCE = BASE_URL + 'distance/v1/';
+var Utils = {
+  /**
+               * 得到终点query字符串
+               * @param {Array|String} 检索数据
+               */
+  location2query: function location2query(data) {
+    if (typeof data == 'string') {
+      return data;
+    }
+    var query = '';
+    for (var i = 0; i < data.length; i++) {
+      var d = data[i];
+      if (!!query) {
+        query += ';';
+      }
+      if (d.location) {
+        query = query + d.location.lat + ',' + d.location.lng;
+      }
+      if (d.latitude && d.longitude) {
+        query = query + d.latitude + ',' + d.longitude;
+      }
+    }
+    return query;
+  },
+
+  /**
+      * 使用微信接口进行定位
+      */
+  getWXLocation: function getWXLocation(success, fail, complete) {
+    wx.getLocation({
+      type: 'gcj02',
+      success: success,
+      fail: fail,
+      complete: complete });
+
+  },
+
+  /**
+      * 获取location参数
+      */
+  getLocationParam: function getLocationParam(location) {
+    if (typeof location == 'string') {
+      var locationArr = location.split(',');
+      if (locationArr.length === 2) {
+        location = {
+          latitude: location.split(',')[0],
+          longitude: location.split(',')[1] };
+
+      } else {
+        location = {};
+      }
+    }
+    return location;
+  },
+
+  /**
+      * 回调函数默认处理
+      */
+  polyfillParam: function polyfillParam(param) {
+    param.success = param.success || function () {};
+    param.fail = param.fail || function () {};
+    param.complete = param.complete || function () {};
+  },
+
+  /**
+      * 验证param对应的key值是否为空
+      * 
+      * @param {Object} param 接口参数
+      * @param {String} key 对应参数的key
+      */
+  checkParamKeyEmpty: function checkParamKeyEmpty(param, key) {
+    if (!param[key]) {
+      var errconf = this.buildErrorConfig(ERROR_CONF.PARAM_ERR, ERROR_CONF.PARAM_ERR_MSG + key + '参数格式有误');
+      param.fail(errconf);
+      param.complete(errconf);
+      return true;
+    }
+    return false;
+  },
+
+  /**
+      * 验证参数中是否存在检索词keyword
+      * 
+      * @param {Object} param 接口参数
+      */
+  checkKeyword: function checkKeyword(param) {
+    return !this.checkParamKeyEmpty(param, 'keyword');
+  },
+
+  /**
+      * 验证location值
+      * 
+      * @param {Object} param 接口参数
+      */
+  checkLocation: function checkLocation(param) {
+    var location = this.getLocationParam(param.location);
+    if (!location || !location.latitude || !location.longitude) {
+      var errconf = this.buildErrorConfig(ERROR_CONF.PARAM_ERR, ERROR_CONF.PARAM_ERR_MSG + ' location参数格式有误');
+      param.fail(errconf);
+      param.complete(errconf);
+      return false;
+    }
+    return true;
+  },
+
+  /**
+      * 构造错误数据结构
+      * @param {Number} errCode 错误码
+      * @param {Number} errMsg 错误描述
+      */
+  buildErrorConfig: function buildErrorConfig(errCode, errMsg) {
+    return {
+      status: errCode,
+      message: errMsg };
+
+  },
+
+  /**
+      * 构造微信请求参数，公共属性处理
+      * 
+      * @param {Object} param 接口参数
+      * @param {Object} param 配置项
+      */
+  buildWxRequestConfig: function buildWxRequestConfig(param, options) {
+    var that = this;
+    options.header = { "content-type": "application/json" };
+    options.method = 'GET';
+    options.success = function (res) {
+      var data = res.data;
+      if (data.status === 0) {
+        param.success(data);
+      } else {
+        param.fail(data);
+      }
+    };
+    options.fail = function (res) {
+      res.statusCode = ERROR_CONF.WX_ERR_CODE;
+      param.fail(that.buildErrorConfig(ERROR_CONF.WX_ERR_CODE, result.errMsg));
+    };
+    options.complete = function (res) {
+      var statusCode = +res.statusCode;
+      switch (statusCode) {
+        case ERROR_CONF.WX_ERR_CODE:{
+            param.complete(that.buildErrorConfig(ERROR_CONF.WX_ERR_CODE, res.errMsg));
+            break;
+          }
+        case ERROR_CONF.WX_OK_CODE:{
+            var data = res.data;
+            if (data.status === 0) {
+              param.complete(data);
+            } else {
+              param.complete(that.buildErrorConfig(data.status, data.message));
+            }
+            break;
+          }
+        default:{
+            param.complete(that.buildErrorConfig(ERROR_CONF.SYSTEM_ERR, ERROR_CONF.SYSTEM_ERR_MSG));
+          }}
+
+
+    };
+    return options;
+  },
+
+  /**
+      * 处理用户参数是否传入坐标进行不同的处理
+      */
+  locationProcess: function locationProcess(param, locationsuccess, locationfail, locationcomplete) {
+    var that = this;
+    locationfail = locationfail || function (res) {
+      res.statusCode = ERROR_CONF.WX_ERR_CODE;
+      param.fail(that.buildErrorConfig(ERROR_CONF.WX_ERR_CODE, res.errMsg));
+    };
+    locationcomplete = locationcomplete || function (res) {
+      if (res.statusCode == ERROR_CONF.WX_ERR_CODE) {
+        param.complete(that.buildErrorConfig(ERROR_CONF.WX_ERR_CODE, res.errMsg));
+      }
+    };
+    if (!param.location) {
+      that.getWXLocation(locationsuccess, locationfail, locationcomplete);
+    } else if (that.checkLocation(param)) {
+      var location = Utils.getLocationParam(param.location);
+      locationsuccess(location);
+    }
+  } };var
+
+
+
+QQMapWX = /*#__PURE__*/function () {"use strict";
+
+  /**
+                                                   * 构造函数
+                                                   * 
+                                                   * @param {Object} options 接口参数,key 为必选参数
+                                                   */
+  function QQMapWX(options) {_classCallCheck(this, QQMapWX);
+    if (!options.key) {
+      throw Error('key值不能为空');
+    }
+    this.key = options.key;
+  }
+
+  /**
+     * POI周边检索
+     *
+     * @param {Object} options 接口参数对象
+     * 
+     * 参数对象结构可以参考
+     * @see http://lbs.qq.com/webservice_v1/guide-search.html
+     */_createClass(QQMapWX, [{ key: "search", value: function search(
+    options) {
+      var that = this;
+      options = options || {};
+
+      Utils.polyfillParam(options);
+
+      if (!Utils.checkKeyword(options)) {
+        return;
+      }
+
+      var requestParam = {
+        keyword: options.keyword,
+        orderby: options.orderby || '_distance',
+        page_size: options.page_size || 10,
+        page_index: options.page_index || 1,
+        output: 'json',
+        key: that.key };
+
+
+      if (options.address_format) {
+        requestParam.address_format = options.address_format;
+      }
+
+      if (options.filter) {
+        requestParam.filter = options.filter;
+      }
+
+      var distance = options.distance || "1000";
+      var auto_extend = options.auto_extend || 1;
+
+      var locationsuccess = function locationsuccess(result) {
+        requestParam.boundary = "nearby(" + result.latitude + "," + result.longitude + "," + distance + "," + auto_extend + ")";
+        wx.request(Utils.buildWxRequestConfig(options, {
+          url: URL_SEARCH,
+          data: requestParam }));
+
+      };
+      Utils.locationProcess(options, locationsuccess);
+    }
+
+    /**
+       * sug模糊检索
+       *
+       * @param {Object} options 接口参数对象
+       * 
+       * 参数对象结构可以参考
+       * http://lbs.qq.com/webservice_v1/guide-suggestion.html
+       */ }, { key: "getSuggestion", value: function getSuggestion(
+    options) {
+      var that = this;
+      options = options || {};
+      Utils.polyfillParam(options);
+
+      if (!Utils.checkKeyword(options)) {
+        return;
+      }
+
+      var requestParam = {
+        keyword: options.keyword,
+        region: options.region || '全国',
+        region_fix: options.region_fix || 0,
+        policy: options.policy || 0,
+        output: 'json',
+        key: that.key };
+
+      wx.request(Utils.buildWxRequestConfig(options, {
+        url: URL_SUGGESTION,
+        data: requestParam }));
+
+    }
+
+    /**
+       * 逆地址解析
+       *
+       * @param {Object} options 接口参数对象
+       * 
+       * 请求参数结构可以参考
+       * http://lbs.qq.com/webservice_v1/guide-gcoder.html
+       */ }, { key: "reverseGeocoder", value: function reverseGeocoder(
+    options) {
+      var that = this;
+      options = options || {};
+      Utils.polyfillParam(options);
+      var requestParam = {
+        coord_type: options.coord_type || 5,
+        get_poi: options.get_poi || 0,
+        output: 'json',
+        key: that.key };
+
+      if (options.poi_options) {
+        requestParam.poi_options = options.poi_options;
+      }
+
+      var locationsuccess = function locationsuccess(result) {
+        requestParam.location = result.latitude + ',' + result.longitude;
+        wx.request(Utils.buildWxRequestConfig(options, {
+          url: URL_GET_GEOCODER,
+          data: requestParam }));
+
+      };
+      Utils.locationProcess(options, locationsuccess);
+    }
+
+    /**
+       * 地址解析
+       *
+       * @param {Object} options 接口参数对象
+       * 
+       * 请求参数结构可以参考
+       * http://lbs.qq.com/webservice_v1/guide-geocoder.html
+       */ }, { key: "geocoder", value: function geocoder(
+    options) {
+      var that = this;
+      options = options || {};
+      Utils.polyfillParam(options);
+
+      if (Utils.checkParamKeyEmpty(options, 'address')) {
+        return;
+      }
+
+      var requestParam = {
+        address: options.address,
+        output: 'json',
+        key: that.key };
+
+
+      wx.request(Utils.buildWxRequestConfig(options, {
+        url: URL_GET_GEOCODER,
+        data: requestParam }));
+
+    }
+
+
+    /**
+       * 获取城市列表
+       *
+       * @param {Object} options 接口参数对象
+       * 
+       * 请求参数结构可以参考
+       * http://lbs.qq.com/webservice_v1/guide-region.html
+       */ }, { key: "getCityList", value: function getCityList(
+    options) {
+      var that = this;
+      options = options || {};
+      Utils.polyfillParam(options);
+      var requestParam = {
+        output: 'json',
+        key: that.key };
+
+
+      wx.request(Utils.buildWxRequestConfig(options, {
+        url: URL_CITY_LIST,
+        data: requestParam }));
+
+    }
+
+    /**
+       * 获取对应城市ID的区县列表
+       *
+       * @param {Object} options 接口参数对象
+       * 
+       * 请求参数结构可以参考
+       * http://lbs.qq.com/webservice_v1/guide-region.html
+       */ }, { key: "getDistrictByCityId", value: function getDistrictByCityId(
+    options) {
+      var that = this;
+      options = options || {};
+      Utils.polyfillParam(options);
+
+      if (Utils.checkParamKeyEmpty(options, 'id')) {
+        return;
+      }
+
+      var requestParam = {
+        id: options.id || '',
+        output: 'json',
+        key: that.key };
+
+
+      wx.request(Utils.buildWxRequestConfig(options, {
+        url: URL_AREA_LIST,
+        data: requestParam }));
+
+    }
+
+    /**
+       * 用于单起点到多终点的路线距离(非直线距离)计算：
+       * 支持两种距离计算方式：步行和驾车。
+       * 起点到终点最大限制直线距离10公里。
+       *
+       * @param {Object} options 接口参数对象
+       * 
+       * 请求参数结构可以参考
+       * http://lbs.qq.com/webservice_v1/guide-distance.html
+       */ }, { key: "calculateDistance", value: function calculateDistance(
+    options) {
+      var that = this;
+      options = options || {};
+      Utils.polyfillParam(options);
+
+      if (Utils.checkParamKeyEmpty(options, 'to')) {
+        return;
+      }
+
+      var requestParam = {
+        mode: options.mode || 'walking',
+        to: Utils.location2query(options.to),
+        output: 'json',
+        key: that.key };
+
+
+      var locationsuccess = function locationsuccess(result) {
+        requestParam.from = result.latitude + ',' + result.longitude;
+        wx.request(Utils.buildWxRequestConfig(options, {
+          url: URL_DISTANCE,
+          data: requestParam }));
+
+      };
+      if (options.from) {
+        options.location = options.from;
+      }
+
+      Utils.locationProcess(options, locationsuccess);
+    } }]);return QQMapWX;}();
+
+
+module.exports = QQMapWX;
 
 /***/ })
 

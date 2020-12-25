@@ -26,6 +26,9 @@
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName','loginDatas','xcx_status']),
 		},
+		onPullDownRefresh() {
+			service.wxlogin()
+		},
 		methods: {
 			...mapMutations(['set_xcx']),
 			

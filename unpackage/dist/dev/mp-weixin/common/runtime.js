@@ -105,11 +105,11 @@
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"pages/my/components/business":1,"pages/my/components/intelligence":1,"pages/my/components/user":1,"components/yq-avatar/yq-avatar":1};
+/******/ 		var cssChunks = {"colorui/components/cu-custom":1,"pages/index/components/intelligence":1,"pages/index/components/business":1,"pages/index/components/user":1,"pages/my/components/business":1,"pages/my/components/intelligence":1,"pages/my/components/user":1,"components/yq-avatar/yq-avatar":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
-/******/ 				var href = "" + ({"colorui/components/cu-custom":"colorui/components/cu-custom","pages/my/components/business":"pages/my/components/business","pages/my/components/intelligence":"pages/my/components/intelligence","pages/my/components/user":"pages/my/components/user","components/yq-avatar/yq-avatar":"components/yq-avatar/yq-avatar"}[chunkId]||chunkId) + ".wxss";
+/******/ 				var href = "" + ({"colorui/components/cu-custom":"colorui/components/cu-custom","pages/index/components/intelligence":"pages/index/components/intelligence","pages/index/components/business":"pages/index/components/business","pages/index/components/user":"pages/index/components/user","pages/my/components/business":"pages/my/components/business","pages/my/components/intelligence":"pages/my/components/intelligence","pages/my/components/user":"pages/my/components/user","components/yq-avatar/yq-avatar":"components/yq-avatar/yq-avatar"}[chunkId]||chunkId) + ".wxss";
 /******/ 				var fullhref = __webpack_require__.p + href;
 /******/ 				var existingLinkTags = document.getElementsByTagName("link");
 /******/ 				for(var i = 0; i < existingLinkTags.length; i++) {
