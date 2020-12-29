@@ -37,7 +37,8 @@
         "user_goods_xq/user_goods_xq",
         "user_shoucang/user_shoucang",
         "user_taocan_list/user_taocan_list",
-        "user_order/user_order"
+        "user_order/user_order",
+        "bus_tj_list/bus_tj_list"
       ]
     }
   ],
@@ -105,6 +106,5 @@
   },
   "usingComponents": {
     "cu-custom": "/colorui/components/cu-custom"
-  },
-  "sitemapLocation": "sitemap.json"
+  }
 }

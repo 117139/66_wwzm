@@ -1,23 +1,23 @@
 <template>
 	<view class="content_wrap" style="min-height: 100vh;background: #fafafa;">
 	<view class="index_list">
-			<view class="index_li" v-for="(item,index) in datas" @tap="jump" :data-url="'/pagesA/user_xq/user_xq?id='+index">
-				<view class="li_d1">
+			<view class="index_li" v-for="(item,index) in datas" >
+				<view class="li_d1" @tap="jump" :data-url="'/pagesA/user_xq/user_xq?id='+item.id">
 					<view class="li_user ">
-						<image class="flex_0" :src="getimg('/static/images/tx_m.jpg')" mode="aspectFill"></image>
-						<text class="oh1">智能小管家</text>
+						<image class="flex_0" :src="getimg(item.owner_cover)" mode="aspectFill"></image>
+						<text class="oh1">{{item.owner_nickname}}</text>
 					</view>
-					<view class="li_msg">客户的实际装修美图</view>
+					<view class="li_msg">{{item.title}}</view>
 				</view>
-				<view class="li_img">
-					<image :src="getimg('/static/images/user/banner_01.jpg')" mode="aspectFill"></image>
+				<view class="li_img" @tap="jump" :data-url="'/pagesA/user_xq/user_xq?id='+item.id">
+					<image :src="getimgarr(item.photo)[0]" mode="aspectFill"></image>
 				</view>
 				<view class="li_cz">
 					<view class="cz_li">
-						<button type="default" open-type="share" :data-id="index"></button>
+						<button type="default" open-type="share" :data-id="item.id"></button>
 						<text class="iconfont iconfenxiang1"></text>
 					</view>
-					<view class="dis_flex aic">
+					<view class="dis_flex aic"  @tap="jump" :data-url="'/pagesA/user_xq/user_xq?id='+item.id">
 						<view class="cz_li">
 							<text class="iconfont iconpinlun"></text>
 						</view>
@@ -26,17 +26,19 @@
 							<text class="cz_num">33</text>
 						</view> -->
 						<view class="cz_li">
-							<text class="iconfont iconzan2"></text>
-							<text class="cz_num">33</text>
+							<text v-if="item.like_status==1" class="iconfont iconzan3" style="color: #F4691A;"></text>
+							<text v-else class="iconfont iconzan2"></text>
+							<text v-if="item.like_count>0" class="cz_num">{{item.like_count}}</text>
 						</view>
 
 					</view>
 				</view>
 			</view>
 			<view v-if="datas.length==0" class="zanwu">暂无数据</view>
-			<!-- <view v-if="data_last" class="data_last">我可是有底线的哟~~~</view> -->
-			<view  class="data_last">我可是有底线的哟~~~</view>
+			<view v-if="data_last" class="data_last">我可是有底线的哟~~~</view>
+			<!-- <view  class="data_last">我可是有底线的哟~~~</view> -->
 			<image class="user_add" src="../../static/images/user_add.png" mode="aspectFill"  @tap="jump" data-url="/pagesA/user_img_add/user_img_add"></image>
+			
 		</view>
 	</view>
 </template>
@@ -47,7 +49,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
-
+	var that
 	export default {
 		data() {
 			return {
@@ -58,27 +60,143 @@
 				StatusBar: this.StatusBar,
 				CustomBar: this.CustomBar,
 
-				banner: ['/static/images/user/banner_01.jpg', '/static/images/user/banner_01.jpg', '/static/images/user/banner_01.jpg'],
-				datas: [1,1,1,1,1,1,1,1,1,1,1],
-
+				banner: [],
+				datas: [],
+				page:1,
+				size:20,
 				PageScroll: '',
 				fk_show: false,
 				tk_show: true,
 				tximg: '/static/logo.png'
 			};
 		},
-		onLoad() {},
+		onLoad() {
+			that=this
+			this.onRetry()
+		},
 		onShow() {
-			// service.wxlogin()
+			let pages = getCurrentPages();
+			let currPage = pages[pages.length - 1];
+			if (currPage.data.img_new) {  
+			      //将携带的参数赋值
+			        
+			    that.onRetry()
+			    // this.addressBack=true 
+					currPage.setData({
+					  //直接给上一个页面赋值
+					  img_new: false,
+					});
+				
+			}
 		},
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data']),
 		},
-
+		onPullDownRefresh() {
+			that.onRetry()
+		},
+		onReachBottom() {
+			that.getdata()
+		},
+		onShareAppMessage(res) {
+			
+			if (res.from === 'button') {
+				console.log(res.target.dataset.type)
+				// this.setData({
+				// 	sharetype:'share'
+				// })
+			}
+			return {
+			  title: '万屋智能',
+			  path: '/pagesA/user_xq/user_xq?type=fwcz&id='+res.target.dataset.id,
+			  success: function (res) {
+			    console.log('成功', res)
+			  }
+			}
+		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
+			onRetry() {
+				this.page = 1
+				this.datas = []
+				this.data_last = false
+				this.getdata()
+			},
+			getdata() {
+			
+				///api/info/list
+				var that = this
+				var data = {
+					token: this.loginDatas.token || '',
+					page: this.page,
+					size: this.size
+				}
+				if (this.data_last) {
+					return
+				}
+				if (this.btn_kg == 1) {
+					return
+				}
+				this.btn_kg = 1
+				//selectSaraylDetailByUserCard
+				var jkurl = '/user/my_dynamic'
+				uni.showLoading({
+					title: '正在获取数据'
+				})
+				var page_that = this.page
+				service.P_get(jkurl, data).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+			
+						if (page_that == 1) {
+			
+							that.datas = datas
+						} else {
+							if (datas.length == 0) {
+								that.data_last = true
+								return
+							}
+							that.datas = that.datas.concat(datas)
+						}
+						that.page++
+			
+			
+					} else {
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			},
+			
 			getimg(img) {
+				console.log(service.getimg(img))
 				return service.getimg(img)
+			},
+			getimgarr(img) {
+				return service.getimgarr(img)
 			},
 			fabu_status() {
 				var that = this
@@ -226,7 +344,8 @@
 		color: #F4691A;
 		position: absolute;
 		top: -10upx;
-		right: -18upx;
+		/* right: -18upx; */
+		left: 30upx;
 	}
 	.user_add{
 		width: 153upx;

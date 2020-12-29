@@ -10,16 +10,16 @@
 					</view>
 				</view>
 				<view class="goodsImg" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
-					<image class="goodsImg" :lazy-load='true' :src="getimg(item.img)" mode="aspectFill"></image>
+					<image class="goodsImg" :lazy-load='true' :src="getimg(item.cover)" mode="aspectFill"></image>
 				</view>
 				<view class="goodsinr" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
-					<view class="goodsname fz30 c30 oh1">{{item.name}}</view>
+					<view class="goodsname fz30 c30 oh1">{{item.title}}</view>
 					<view class="goodsname1">
-						<text>{{item.jj}}</text>
+						<text>{{item.description}}</text>
 					</view>
 					<view class="dis_flex aic ju_b">
 						<view class="goodspri1">
-							<text style="font-size: 24upx;">￥</text><text class="">{{item.pri}}</text>
+							<text style="font-size: 24upx;">￥</text><text class="">{{item.price}}</text>
 						</view>
 						<view class="goodspri1">
 
@@ -37,7 +37,8 @@
 					</view>
 				</view>
 			</view>
-
+			<view v-if="datas.length==0" class="zanwu">暂无数据</view>
+			<view v-if="data_last" class="data_last">我可是有底线的哟~~~</view>
 		</view>
 
 
@@ -99,6 +100,8 @@
 						img: '/static/images/user/goods_02.jpg',
 					},
 				],
+				page:1,
+				size:20,
 				all:false
 			}
 		},
@@ -107,9 +110,80 @@
 		},
 		onLoad() {
 			that = this
+			that.onRetry()
+		},
+		onPullDownRefresh() {
+			this.onRetry()
+		},
+		onReachBottom() {
+			this.getcar()
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
+			onRetry() {
+				this.page = 1
+				this.datas = []
+				this.data_last = false
+			
+				this.getcar()
+			},
+			getcar() {
+				var that =this
+				var jkurl = '/user/collect_list'
+				var datas = {
+					token: that.loginDatas.token || '',
+					page:this.page,
+					size:this.size
+				}
+				var page_that=this.page
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+			
+						if (page_that == 1) {
+						
+							that.datas = datas.goods
+						} else {
+							if (datas.goods.length == 0) {
+								that.data_last = true
+								return
+							}
+							that.data_last = false
+							that.datas = that.datas.concat(datas.goods)
+						}
+						that.page++
+			
+					} else {
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			},
+			
 			selecAll() {
 				let kg
 				var that = this
@@ -341,12 +415,54 @@
 			    }
 			
 			  }
-				uni.showToast({
-					icon: 'none',
-					title: '操作成功'
-				})
+			
 				return
+				var jkurl='/user/defined'
+				var datas={
+					token:this.loginDatas.token,
+					id:idG
+				}
 			  console.log(idG)
+				service.P_post(jkurl, datas).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+				
+						uni.showToast({
+							icon: 'none',
+							title: '操作成功'
+						})
+						setTimeout(()=>{
+							that.onRetry()
+						},500)
+					} else {
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
 				if(kc_tip&&idG !== ''){
 					uni.showToast({
 						icon:'none',

@@ -97,14 +97,23 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var m0 = _vm.getimg("/static/images/tx_m.jpg")
-  var m1 = _vm.getimg("/static/images/user/banner_01.jpg")
+  var l0 = _vm.__map(_vm.datas, function(item, index) {
+    var $orig = _vm.__get_orig(item)
+
+    var m0 = _vm.getimg(item.owner_cover)
+    var m1 = _vm.getimgarr(item.photo)
+    return {
+      $orig: $orig,
+      m0: m0,
+      m1: m1
+    }
+  })
+
   _vm.$mp.data = Object.assign(
     {},
     {
       $root: {
-        m0: m0,
-        m1: m1
+        l0: l0
       }
     }
   )
@@ -141,7 +150,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
 
 
 
@@ -186,11 +197,11 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 8));
-var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
+var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
 
 
-
+var that;var _default =
 {
   data: function data() {
     return {
@@ -201,27 +212,143 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
       StatusBar: this.StatusBar,
       CustomBar: this.CustomBar,
 
-      banner: ['/static/images/user/banner_01.jpg', '/static/images/user/banner_01.jpg', '/static/images/user/banner_01.jpg'],
-      datas: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-
+      banner: [],
+      datas: [],
+      page: 1,
+      size: 20,
       PageScroll: '',
       fk_show: false,
       tk_show: true,
       tximg: '/static/logo.png' };
 
   },
-  onLoad: function onLoad() {},
+  onLoad: function onLoad() {
+    that = this;
+    this.onRetry();
+  },
   onShow: function onShow() {
-    // service.wxlogin()
+    var pages = getCurrentPages();
+    var currPage = pages[pages.length - 1];
+    if (currPage.data.img_new) {
+      //将携带的参数赋值
+
+      that.onRetry();
+      // this.addressBack=true 
+      currPage.setData({
+        //直接给上一个页面赋值
+        img_new: false });
+
+
+    }
   },
   computed: _objectSpread({},
   (0, _vuex.mapState)(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data'])),
 
+  onPullDownRefresh: function onPullDownRefresh() {
+    that.onRetry();
+  },
+  onReachBottom: function onReachBottom() {
+    that.getdata();
+  },
+  onShareAppMessage: function onShareAppMessage(res) {
 
+    if (res.from === 'button') {
+      console.log(res.target.dataset.type);
+      // this.setData({
+      // 	sharetype:'share'
+      // })
+    }
+    return {
+      title: '万屋智能',
+      path: '/pagesA/user_xq/user_xq?type=fwcz&id=' + res.target.dataset.id,
+      success: function success(res) {
+        console.log('成功', res);
+      } };
+
+  },
   methods: _objectSpread(_objectSpread({},
   (0, _vuex.mapMutations)(['login', 'logindata', 'logout', 'setplatform'])), {}, {
+    onRetry: function onRetry() {
+      this.page = 1;
+      this.datas = [];
+      this.data_last = false;
+      this.getdata();
+    },
+    getdata: function getdata() {
+
+      ///api/info/list
+      var that = this;
+      var data = {
+        token: this.loginDatas.token || '',
+        page: this.page,
+        size: this.size };
+
+      if (this.data_last) {
+        return;
+      }
+      if (this.btn_kg == 1) {
+        return;
+      }
+      this.btn_kg = 1;
+      //selectSaraylDetailByUserCard
+      var jkurl = '/user/my_dynamic';
+      uni.showLoading({
+        title: '正在获取数据' });
+
+      var page_that = this.page;
+      _service.default.P_get(jkurl, data).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          var datas = res.data;
+          console.log(typeof datas);
+
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+
+          if (page_that == 1) {
+
+            that.datas = datas;
+          } else {
+            if (datas.length == 0) {
+              that.data_last = true;
+              return;
+            }
+            that.datas = that.datas.concat(datas);
+          }
+          that.page++;
+
+
+        } else {
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '获取数据失败' });
+
+          }
+        }
+      }).catch(function (e) {
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '获取数据失败' });
+
+      });
+    },
+
     getimg: function getimg(img) {
+      console.log(_service.default.getimg(img));
       return _service.default.getimg(img);
+    },
+    getimgarr: function getimgarr(img) {
+      return _service.default.getimgarr(img);
     },
     fabu_status: function fabu_status() {
       var that = this;
@@ -272,6 +399,7 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
 
       _service.default.jump(e);
     } }) };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

@@ -81,6 +81,13 @@
 		background: #fff;
 		color: #333;
 }
+.scroll_H.data-v-c4382f0c{
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		height: 100vh;
+		z-index: 100;
+}
 .my_box.data-v-c4382f0c {
 		width: 100%;
 		height: 417rpx;

@@ -25,17 +25,20 @@
 	/* border-bottom: 1px solid #eee; */
 }
 .pz_img.data-v-7a3fd2ea {
-	width: 150rpx;
-	height: 150rpx;
+	width: 220rpx;
+	height: 220rpx;
 	-webkit-border-radius: 10rpx;
 	        border-radius: 10rpx;
 	margin-right: 15rpx;
 	margin-bottom: 15rpx;
 	position: relative;
 }
+.pz_img.data-v-7a3fd2ea:nth-child(3n){
+	margin-right: 0;
+}
 .pz_img image.data-v-7a3fd2ea {
-	width: 150rpx;
-	height: 150rpx;
+	width: 220rpx;
+	height: 220rpx;
 }
 .pz_img .img_del.data-v-7a3fd2ea {
 	width: 30rpx;

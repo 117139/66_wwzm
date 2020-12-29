@@ -1,4 +1,76 @@
 
+.head_box.data-v-11da59be {
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+	/* text-align: center; */
+	font-size: 32rpx;
+	font-family: PingFang SC;
+	font-weight: 500;
+	
+	color: rgba(0,0,0,0);
+	z-index: 99999;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+	-webkit-transition: all .5s;
+	transition: all .5s;
+
+
+	padding-right: 220rpx;
+	-webkit-box-shadow: 0rpx 0rpx 0rpx;
+	box-shadow: 0rpx 0rpx 0rpx;
+	z-index: 9999;
+	overflow: hidden;
+}
+.head_box_img.data-v-11da59be{
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 417rpx;
+	left: 0;
+	right: 0;
+}
+.my_tit_box.data-v-11da59be {
+	width: calc(100% - 440rpx);
+	position: absolute;
+	text-align: center;
+	/* width: calc(100% - 340rpx); */
+	left: 0;
+
+	right: 0;
+	bottom: 0;
+	top: 0;
+	margin: auto;
+	height: 60rpx;
+	font-size: 32rpx;
+	line-height: 60rpx;
+	cursor: none;
+	pointer-events: none;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.cur_H.data-v-11da59be {
+	background: #fff;
+	color: #333;
+}
+.scroll_H.data-v-11da59be{
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	height: 100vh;
+	z-index: 100;
+}
 .swiper.data-v-11da59be {
 
 	width: 100%;
@@ -127,7 +199,7 @@
 	width: 100%;
 	height: 345rpx;
 }
-.li_img image.data-v-11da59be{
+.li_img image.data-v-11da59be {
 	width: 100%;
 	height: 100%;
 }
@@ -162,7 +234,7 @@
 	margin-right: 30rpx;
 	position: relative;
 }
-.cz_li button.data-v-11da59be{
+.cz_li button.data-v-11da59be {
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -174,11 +246,12 @@
 .cz_li .iconfont.data-v-11da59be {
 	font-size: 32rpx;
 }
-.cz_num.data-v-11da59be{
+.cz_num.data-v-11da59be {
 	font-size: 20rpx;
 	color: #F4691A;
 	position: absolute;
 	top: -10rpx;
-	right: -18rpx;
+	/* right: -18upx; */
+	left: 30rpx;
 }
 

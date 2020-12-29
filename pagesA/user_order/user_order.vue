@@ -13,33 +13,34 @@
 			<view style="width: 100%;height: 90upx;"></view>
 			<view v-for="(item,index) in datas">
 				<view class="order_d1">
-					<view class="order_tel" @tap="call" data-tel="18300000000">
-						<text  class="iconfont iconphone"></text>1786523500
+					<view class="order_tel" @tap="call" :data-tel="item.engineer_phone">
+						<text  class="iconfont iconphone"></text>{{item.engineer_phone}}
 					</view>
-					<view v-if="index==1" class="order_type">
+					<view v-if="item.status==1" class="order_type">
 						待处理
 					</view>
-					<view v-else-if="index==2" class="order_type" style="color: #0B8EE1;">
+					<view v-else-if="item.status==2" class="order_type" style="color: #0B8EE1;">
 						施工中
 					</view>
 					<view v-else class="order_type" style="color:#A2A2A2;">已完成</view>
 				</view>
-				<view class="order_li_tit">{{item.name}}</view>
+				<view class="order_li_tit">{{item.order_name}}</view>
 				<view class="order_li_msg">
 					<scroll-view class="weixin_dblist" scroll-x="true" bindscroll="scroll" style="width: 100%">
-						<view v-for="(item,index) in taocan_list" class="taocan_li" @tap.stop="jump" :data-url="'/pagesA/user_goods_xq/user_goods_xq?id='+index">
-							<image class="taocan_li_img" :src="getimg('/static/images/business/tc_img_03.png')" mode="aspectFit"></image>
-							<view class="taocan_li_msg oh2">{{item.name}}</view>
-							<view class="taocan_li_pri"><text style="font-size: 18upx;">￥</text>998</view>
+						<view v-for="(item1,index1) in item.goods_list" class="taocan_li" @tap.stop="jump" :data-url="'/pagesA/user_goods_xq/user_goods_xq?id='+item1.id">
+							<image class="taocan_li_img" :src="getimg(item1.cover)" mode="aspectFit"></image>
+							<view class="taocan_li_msg oh2">{{item1.title}}</view>
+							<view class="taocan_li_pri"><text style="font-size: 18upx;">￥</text>{{item1.price}}</view>
 						</view>
 					</scroll-view>
 				</view>
 				<view class="order_cz">
-					<view class="order_time">下单时间：2020-09-20</view>
-					<view v-if="index!=1" class="order_btn" @tap='jump' :data-url="'/pagesA/user_order_xq/user_order_xq?id='+index">查看进度</view>
+					<view class="order_time">下单时间：{{item.created_at}}</view>
+					<view v-if="item.status!=1" class="order_btn" @tap='jump' :data-url="'/pagesA/user_order_xq/user_order_xq?id='+item.id">查看进度</view>
 				</view>
 			</view>
-
+			<view v-if="datas.length==0" class="zanwu">暂无数据</view>
+			<view v-if="data_last" class="data_last">我可是有底线的哟~~~</view>
 
 		</view>
 	</view>
@@ -58,34 +59,26 @@
 			return {
 				data_list: [{
 						name: '全部',
-						id: 1
+						id: 0
 					},
 					{
 						name: '待处理',
-						id: 2
+						id: 1
 					},
 					{
 						name: '施工中',
-						id: 3
+						id: 2
 					},
 					{
 						name: '已完成',
-						id: 4
+						id: 3
 					},
 				],
-				type: 1,
+				type: 0,
 				htmlReset: 0,
-				datas:[
-					{
-						name:'智能套餐A'
-					},
-					{
-						name:'智能套餐B'
-					},
-					{
-						name:'智能套餐C'
-					},
-				],
+				datas:[],
+				pages:1,
+				size:20,
 				taocan_list: [{
 						name: 'Mini 主机',
 						id: 1
@@ -126,6 +119,12 @@
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas']),
 		},
+		onLoad() {
+			this.onRetry()
+		},
+		onReachBottom() {
+			this.getdata()
+		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform', 'setfj_data']),
 			bindcur(e) {
@@ -146,25 +145,24 @@
 
 				this.getdata()
 			},
-			getdata(num) {
+			getdata() {
 				var that = this
-				this.datas = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-				return
+				
 				if (that.data_last) {
 					return
 				}
 				var datas = {
-					token: that.loginDatas.userToken || '',
+					token: that.loginDatas.token || '',
 					page: that.page,
 					size: that.size,
-					type: this.type,
+					status: this.type==0?'':this.type,
 				}
 				if (this.btn_kg == 1) {
 					return
 				}
 				this.btn_kg = 1
 				//selectSaraylDetailByUserCard
-				var jkurl = '/user/productOrder/list'
+				var jkurl = '/user/rate'
 				uni.showLoading({
 					title: '正在获取数据'
 				})

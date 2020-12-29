@@ -178,6 +178,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
 var _service = _interopRequireDefault(__webpack_require__(/*! @/service.js */ 8));
 var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
@@ -187,43 +191,12 @@ var that = void 0;var _default =
 {
   data: function data() {
     return {
-      hx_list: [{
-        name: '三室一厅两卫',
-        id: 1 },
-
-      {
-        name: '三室一厅一卫',
-        id: 2 },
-
-      {
-        name: '两室一厅一卫',
-        id: 3 },
-
-      {
-        name: '一室一厅一卫',
-        id: 4 }],
-
-
+      hx_list: [],
       hx_idx: 0,
-      lx_list: [{
-        name: '智能安防1',
-        id: 1 },
-
-      {
-        name: '智能安防2',
-        id: 2 },
-
-      {
-        name: '智能安防3',
-        id: 3 },
-
-      {
-        name: '智能安防4',
-        id: 4 }],
-
-
+      lx_list: [],
       lx_idx: 0,
-      phone: '' };
+      phone: '',
+      htmlReset: -1 };
 
   },
   computed: _objectSpread({},
@@ -231,6 +204,7 @@ var that = void 0;var _default =
 
   onLoad: function onLoad() {
     that = this;
+    that.getdata();
   },
   onPullDownRefresh: function onPullDownRefresh() {
     this.onRetry();
@@ -266,25 +240,119 @@ var that = void 0;var _default =
         return;
       }
       var datas = {
-        hx: this.hx_list[this.hx_idx].id,
-        lx: this.lx_list[this.lx_idx].id,
+        token: that.loginDatas.token,
+        house_type: this.hx_list[this.hx_idx].id,
+        goods_type: this.lx_list[this.lx_idx].id,
         phone: that.phone };
 
-      uni.showToast({
-        icon: 'none',
-        title: '提交成功' });
 
-      var datas = {
-        hx: this.hx,
-        lx: that.lx,
-        phone: that.phone };
 
       console.log(datas);
-      setTimeout(function () {
-        uni.navigateBack({
-          delta: 1 });
+      var jkurl = '/user/design';
+      if (this.btn_kg == 1) {
+        return;
+      }
+      this.btn_kg = 1;
+      uni.showLoading({
+        mask: true,
+        title: '正在提交' });
 
-      }, 1000);
+      _service.default.P_post(jkurl, datas).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          that.htmlReset = 0;
+          var datas = res.count;
+          console.log(typeof datas);
+
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+          console.log(res);
+          uni.showToast({
+            icon: 'none',
+            title: '提交成功' });
+
+          setTimeout(function () {
+            uni.navigateBack({
+              delta: 1 });
+
+          }, 1000);
+        } else {
+
+          that.htmlReset = 1;
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '操作失败' });
+
+          }
+        }
+      }).catch(function (e) {
+
+        that.htmlReset = 1;
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '操作失败' });
+
+      });
+
+
+    },
+    getdata: function getdata() {
+      var that = this;
+      var jkurl = '/user/form_type';
+      var datas = {
+        token: that.loginDatas.token || '' };
+
+      _service.default.P_get(jkurl, datas).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          that.htmlReset = 0;
+          var datas = res.data;
+          console.log(typeof datas);
+
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+          console.log(res);
+
+          that.hx_list = datas.house_type_name;
+          that.lx_list = datas.type_name;
+
+        } else {
+
+          that.htmlReset = 1;
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '获取数据失败' });
+
+          }
+        }
+      }).catch(function (e) {
+
+        that.htmlReset = 1;
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '获取数据失败' });
+
+      });
     } }) };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

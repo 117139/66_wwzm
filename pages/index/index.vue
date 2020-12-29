@@ -87,7 +87,7 @@
 			}
 			return {
 			  title: '万屋智能',
-			  path: '/pages/share/share?type=fwcz&id='+res.target.dataset.id,
+			  path: '/pagesA/user_xq/user_xq?type=fwcz&id='+res.target.dataset.id,
 			  success: function (res) {
 			    console.log('成功', res)
 			  }

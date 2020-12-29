@@ -97,25 +97,16 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var l0 = _vm.__map(_vm.banner, function(item, idx) {
-    var $orig = _vm.__get_orig(item)
-
-    var m0 = _vm.getimg(item)
-    var m1 = _vm.getimg(item)
-    return {
-      $orig: $orig,
-      m0: m0,
-      m1: m1
-    }
-  })
-
-  var m2 = _vm.getimg("/static/images/user/goods_02.jpg")
+  var l0 = _vm.getimgarr(_vm.datas.photo)
+  var m0 = _vm.getimgarr(_vm.datas.photo)
+  var m1 = _vm.get_fwb(_vm.datas.content)
   _vm.$mp.data = Object.assign(
     {},
     {
       $root: {
         l0: l0,
-        m2: m2
+        m0: m0,
+        m1: m1
       }
     }
   )
@@ -200,10 +191,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 8));
-var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
+var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
 
 
+var that;var _default =
 {
   data: function data() {
     return {
@@ -212,20 +204,138 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
       interval: 3000,
       duration: 500,
       banner: ['/static/images/user/goods_02.jpg', '/static/images/user/goods_02.jpg', '/static/images/user/goods_02.jpg'],
-      banner_type: 1 };
+      banner_type: 1,
+      datas: '',
+      car_num: 0 };
 
   },
   computed: _objectSpread({},
   (0, _vuex.mapState)(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data'])),
 
 
+  onPullDownRefresh: function onPullDownRefresh() {
+    this.getdata();
+  },
+  onLoad: function onLoad(option) {
+    that = this;
+    this.type = option.type;
+    this.id = option.id;
+    this.getdata();
+    this.getcar();
+  },
   methods: _objectSpread(_objectSpread({},
   (0, _vuex.mapMutations)(['login', 'logindata', 'logout', 'setplatform'])), {}, {
+    getdata: function getdata() {
+      var that = this;
+      var jkurl = '/goods/list';
+      var datas = {
+        token: that.loginDatas.token || '',
+        id: that.id };
+
+
+      _service.default.P_get(jkurl, datas).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          var datas = res.data;
+          console.log(typeof datas);
+
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+          console.log(res);
+
+          that.datas = datas;
+
+        } else {
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '操作失败' });
+
+          }
+        }
+      }).catch(function (e) {
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '获取数据失败' });
+
+      });
+    },
+    getcar: function getcar() {
+      var that = this;
+      var jkurl = '/user/collect_list';
+      var datas = {
+        token: that.loginDatas.token || '',
+        load_mode: true };
+
+
+      _service.default.P_get(jkurl, datas).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          var datas = res.data;
+          console.log(typeof datas);
+
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+          console.log(res);
+
+          if (datas.goods.length > 0) {
+
+            that.car_num = res.data.count;
+          } else {
+            that.car_num = 0;
+          }
+
+        } else {
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '操作失败' });
+
+          }
+        }
+      }).catch(function (e) {
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '获取数据失败' });
+
+      });
+    },
     getimg: function getimg(img) {
       return _service.default.getimg(img);
     },
     pveimg: function pveimg(e) {
       _service.default.pveimg(e);
+    },
+    getimgarr: function getimgarr(img) {
+      // console.log(service.getimgarr(img))
+      return _service.default.getimgarr(img);
+    },
+    getarr: function getarr(str) {
+      if (!str) {
+        return;
+      }
+      console.log(str);
+      str = str.split(',');
+      console.log(str);
+      return str;
     },
     get_fwb: function get_fwb(str) {
       return _service.default.get_fwb(str);
@@ -235,9 +345,50 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
       this.banner_type = e.detail.current + 1;
     },
     addcar: function addcar(item) {
-      uni.showToast({
-        icon: 'none',
-        title: '加入购物车成功' });
+      var jkurl = '/user/collect';
+      var datas = {
+        token: that.loginDatas.token || '',
+        id: that.id };
+
+
+      _service.default.P_post(jkurl, datas).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          var datas = res.data;
+          console.log(typeof datas);
+
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+          console.log(res);
+
+          uni.showToast({
+            icon: 'none',
+            title: '收藏成功' });
+
+
+        } else {
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '操作失败' });
+
+          }
+        }
+      }).catch(function (e) {
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '获取数据失败' });
+
+      });
 
     },
     jump: function jump(e) {

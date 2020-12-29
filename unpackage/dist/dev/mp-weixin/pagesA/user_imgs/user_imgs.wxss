@@ -95,7 +95,8 @@
 	color: #F4691A;
 	position: absolute;
 	top: -10rpx;
-	right: -18rpx;
+	/* right: -18upx; */
+	left: 30rpx;
 }
 .user_add.data-v-1fbe3e35{
 	width: 153rpx;

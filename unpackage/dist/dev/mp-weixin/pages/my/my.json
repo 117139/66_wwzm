@@ -1,6 +1,6 @@
 {
   "navigationBarTitleText": "",
-  "enablePullDownRefresh": true,
+  "enablePullDownRefresh": false,
   "navigationStyle": "custom",
   "usingComponents": {
     "business": "/pages/my/components/business",

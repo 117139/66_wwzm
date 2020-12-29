@@ -1,36 +1,36 @@
 <template>
 	<view style="min-height: 100vh;background: #fff;">
+		<view v-if="htmlReset==1" class="zanwu" @tap='getdata'>获取失败，请点击重试</view>
+		<block v-if="htmlReset==0">
 		<view class="xq_box">
-			<view class="xq_tit">客户的实际装修美图</view>
+			<view class="xq_tit">{{datas.title}}</view>
 			<view class="li_user ">
-				<image class="flex_0" :src="getimg('/static/images/tx_m.jpg')" mode="aspectFill"></image>
-				<text class="oh1">智能小管家</text>
+				<image class="flex_0" :src="getimg(datas.owner_cover)" mode="aspectFill"></image>
+				<text class="oh1">{{datas.owner_nickname}}</text>
 			</view>
 			<view class="xq_img">
-				<image :src="getimg('/static/images/user/banner_01.jpg')" mode="widthFix" lazy-load="true"></image>
-				<image :src="getimg('/static/images/user/banner_01.jpg')" mode="widthFix" lazy-load="true"></image>
-				<image :src="getimg('/static/images/user/banner_01.jpg')" mode="widthFix" lazy-load="true"></image>
+				<image v-for="(item,index) in getimgarr(datas.photo)" :src="item" @tap='pveimg' :data-src="item" mode="widthFix" lazy-load="true"></image>
 			</view>
 			<view class="xq_pl_tit">评论</view>
 			<view class="pl_list">
-				<view class="pl_li" v-for="(item,index) in datas">
-					<image class="pl_li_tx" :src="getimg('/static/images/tx_m.jpg')" mode="aspectFill"></image>
+				<view class="pl_li" v-for="(item,index) in comments"  @tap="pl_show(item)">
+					<image class="pl_li_tx" :src="getimg(item.owner_cover)" mode="aspectFill"></image>
 					<view class="pl_li_msg">
-						<view class="pl_user">Uzi</view>
-						<view class="pl_time">2020.04.03</view>
-						<view class="pl_text">真棒，我也想住上这样的家，期待我的家能装 成这样</view>
-						<view class="pl_num" @tap="pl_show(item)">1条评论<text class="iconfont iconduobianxing"></text></view>
+						<view class="pl_user">{{item.owner_nickname}}</view>
+						<view class="pl_time">{{item.created_at}}</view>
+						<view class="pl_text">{{item.content}}</view>
+						<view v-if="item.count>0" class="pl_num">{{item.count}}条评论<text class="iconfont iconduobianxing"></text></view>
 					</view>
 				</view>
-				<view v-if="datas.length==0" class="zanwu">暂无数据</view>
-				<!-- <view v-if="data_last" class="data_last">我可是有底线的哟~~~</view> -->
-				<view class="data_last">我可是有底线的哟~~~</view>
+				<view v-if="comments.length==0" class="zanwu">暂无数据</view>
+				<view v-if="data_last" class="data_last">我可是有底线的哟~~~</view>
+				<!-- <view class="data_last">我可是有底线的哟~~~</view> -->
 			</view>
 		</view>
 		<view class="pl_bbox">
 			<view class="xq_cz">
 				<!-- <input type="text" value="" placeholder="请输入您的评论" v-model="content" /> -->
-				<view class="xq_cz_int" @tap="tk_show=true">请输入您的评论</view>
+				<view class="xq_cz_int" @tap="pl_fuc">请输入您的评论</view>
 				<view class="cz_li">
 					<button type="default" open-type="share" :data-id="index"></button>
 					<text class="iconfont iconfenxiang1"></text>
@@ -41,9 +41,9 @@
 					<text class="cz_num">{{shoucang_num}}</text>
 				</view> -->
 				<view class="cz_li" @tap="zan">
-					<text v-if="zan_type" class="iconfont iconzan3" style="color: #F4691A;"></text>
+					<text v-if="datas.like_status==1" class="iconfont iconzan3" style="color: #F4691A;"></text>
 					<text v-else class="iconfont iconzan2"></text>
-					<text class="cz_num">{{zan_num}}</text>
+					<text v-if="datas.like_count>0" class="cz_num">{{datas.like_count}}</text>
 				</view>
 			</view>
 		</view>
@@ -55,7 +55,7 @@
 		</view>
 
 
-		<view v-if="tk_show" class="tk_box dis_flex_c" @touchmove.stop.prevent='test'>
+		<view v-if="tk_show" class="tk_box dis_flex_c" @touchmove.stop.prevent='test' style="z-index: 910;">
 			<view class="tk_off" @tap="tk_show=false"></view>
 			<view class="tk_main" :style="jt_h">
 				<!-- <view class="tk_main"> -->
@@ -79,39 +79,47 @@
 					<view @tap="tk_show1=false"><text class="iconfont iconcuowu"></text></view>
 				</view>
 				<view class="tk_sq_box">
-					<scroll-view class="tk_sq_box_scroll" scroll-y="true" @scrolltolower="getpl_hf">
+					<scroll-view class="tk_sq_box_scroll" scroll-y="true" @scrolltolower="getdata_pl">
 						<view class="pl_li" style="border-bottom: 0;">
-							<image class="pl_li_tx" :src="getimg('/static/images/tx_m.jpg')" mode="aspectFill"></image>
+							<image class="pl_li_tx" :src="getimg(p_item.owner_cover)" mode="aspectFill"></image>
 							<view class="pl_li_msg">
-								<view class="pl_user">Uzi</view>
-								<view class="pl_time">2020.04.03</view>
-								<view class="pl_text">真棒，我也想住上这样的家，期待我的家能装 成这样</view>
+								<view class="pl_user">{{p_item.owner_nickname}}</view>
+								<view class="pl_time">{{p_item.created_at}}</view>
+								<view class="pl_text">{{p_item.content}}</view>
 							</view>
 						</view>
-						<view class="pl_hf_tit">回复(10)</view>
+						<view class="pl_hf_tit">
+							<text>回复({{p_item.count}})</text>
+						</view>
 						<view class="pl_list">
 							
-							<view class="pl_li" v-for="(item,index) in datas">
-								<image class="pl_li_tx" :src="getimg('/static/images/tx_m.jpg')" mode="aspectFill"></image>
+							<view class="pl_li" v-for="(item,index) in hf_comments">
+								<image class="pl_li_tx" :src="getimg(item.owner_cover)" mode="aspectFill"></image>
 								<view class="pl_li_msg">
-									<view class="pl_user">Uzi</view>
-									<view class="pl_time">2020.04.03</view>
-									<view class="pl_text">真棒，我也想住上这样的家，期待我的家能装 成这样</view>
+									<view class="pl_user">{{item.owner_nickname}}</view>
+									<view class="pl_time">{{item.created_at}}</view>
+									<view class="pl_text">{{item.content}}</view>
 								</view>
 							</view>
-							<view v-if="datas.length==0" class="zanwu">暂无数据</view>
-							<!-- <view v-if="data_last" class="data_last">我可是有底线的哟~~~</view> -->
-							<view class="data_last">我可是有底线的哟~~~</view>
+							<view v-if="hf_comments.length==0" class="zanwu">暂无数据</view>
+							<view v-if="hf_comments_last" class="data_last">我可是有底线的哟~~~</view>
+							<!-- <view class="data_last">我可是有底线的哟~~~</view> -->
 						</view>
 					</scroll-view>
+					<view class="xq_cz_int" @tap="pl_fuc">请输入您的评论</view>
+					<view style="width: 100px;height: 20px;"></view>
 				</view>
 			</view>
 		</view>
+		
+			
+		</block>
 	</view>
 </template>
 
 
 <script>
+	import Vue from 'vue'
 	import service from '../../service.js';
 	import {
 		mapState,
@@ -123,14 +131,25 @@
 			return {
 				index:'',
 				content:'',
-				datas:[1,1,1,1,1,1,1,1,1,1,1],
+				datas:'',
+				page:1,
+				size:20,
+				comments:[],
+				data_last:false,
+				p_id:'',
+				p_item:'',
+				hf_page:1,
+				hf_size:20,
+				hf_comments:[],
+				hf_comments_last:false,
 				tk_show:false,
 				tk_show1:false,
 				shoucang_type:false,
 				shoucang_num:33,
 				zan_type:false,
 				zan_num:33,
-				Height:0
+				Height:0,
+				htmlReset:-1
 			}
 		},
 		onLoad(option) {
@@ -140,6 +159,10 @@
 			  console.log(res.height)
 				this.Height=res.height
 			})
+			wx.showLoading({
+			  title: '请求中，请耐心等待...',
+			});
+			this.onRetry()
 		},
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data']),
@@ -175,10 +198,25 @@
 			// }
 		},
 		onPullDownRefresh() {
-			uni.stopPullDownRefresh()
+			wx.showLoading({
+			  title: '请求中，请耐心等待...',
+			});
+			this.onRetry()
+		},
+		onReachBottom() {
+			wx.showLoading({
+			  title: '请求中，请耐心等待...',
+			});
+			this.getdata()
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
+			onRetry(){
+				this.page=1
+				this.comments=[]
+				this.data_last=false
+				this.getdata()
+			},
 			test(){},
 			shoucang(){
 				this.shoucang_type=!this.shoucang_type
@@ -188,19 +226,76 @@
 					this.shoucang_num--
 				}
 			},
-			zan(){
-				this.zan_type=!this.zan_type
-				if(this.zan_type){
-					this.zan_num++
+			pl_fuc(){
+				this.tk_show=true
+				if(this.tk_show1){
+					
 				}else{
-					this.zan_num--
+					this.p_id=''
 				}
 			},
-			pl_show(item){
-				this.tk_show1=true
+			zan(){
+				this.zan_type=!this.zan_type
+				///homepage/like
+				if (this.btn_kg == 1) {
+					return
+				}
+				this.btn_kg = 1
+				var datas={
+					token: that.loginDatas.token||'',
+					id:that.id,
+				}
+				var jkurl='/homepage/like'
+				service.P_post(jkurl, datas).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset=0
+						var datas = res.data
+						console.log(typeof datas)
+							
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+							
+						uni.showToast({
+							icon: 'none',
+							title: '操作成功'
+						})
+						that.onRetry()
+					} else {
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				}).catch(e => {
+					
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '操作失败'
+					})
+				})
+				
 			},
-			getpl_hf(){
-				console.log('触底')
+			pl_show(item){
+				this.p_item=item
+				this.tk_show1=true
+				this.p_id=item.id
+				this.hf_page=1
+				this.hf_comments=[]
+				that.hf_comments_last=false
+				this.getdata_pl()
 			},
 			new_sub(){
 				if(!this.content){
@@ -212,15 +307,18 @@
 				}
 				var datas={
 					token: that.loginDatas.token,
+					dynamic_id:that.id,
 					content:that.content
 				}
-				that.tk_show=false
-				that.content=''
-				uni.showToast({
-					icon:'none',
-					title:'提交成功'
-				})
-				return
+				if(this.tk_show1){
+					datas={
+						token: that.loginDatas.token,
+						dynamic_id:that.id,
+						content:that.content,
+						parent_id:that.p_id
+					}
+				}
+				var jkurl='/user/comment'
 				service.P_post(jkurl, datas).then(res => {
 					that.btn_kg = 0
 					console.log(res)
@@ -233,7 +331,21 @@
 						}
 						console.log(res)
 							
-						that.datas = datas
+						that.tk_show=false
+						if(that.tk_show1){
+							that.hf_page=1
+							that.hf_comments=[]
+							that.hf_comments_last=false
+							that.getdata_pl()
+						}else{
+							that.onRetry()
+						}
+					
+						that.content=''
+						uni.showToast({
+							icon:'none',
+							title:'提交成功'
+						})
 							
 					} else {
 						if (res.msg) {
@@ -259,16 +371,29 @@
 			},
 			getdata() {
 				var that =this
-				var jkurl = '/data/refer_record'
+				var jkurl = '/homepage/dynamic_detail'
 				var datas = {
 					token: that.loginDatas.token||'',
-					id:that.id
+					dynamic_id:that.id,
+					page:that.page,
+					size:that.size,
+					load_mode:true
 				}
-				service.P_post(jkurl, datas).then(res => {
+				if(this.data_last){
+					uni.hideLoading()
+					return
+				}
+				if (this.btn_kg == 1) {
+					return
+				}
+				this.btn_kg = 1
+				var page_that=this.page
+				service.P_get(jkurl, datas).then(res => {
 					that.btn_kg = 0
 					console.log(res)
 					if (res.code == 1) {
-						var datas = res.count
+						that.htmlReset=0
+						var datas = res.data
 						console.log(typeof datas)
 			
 						if (typeof datas == 'string') {
@@ -276,9 +401,23 @@
 						}
 						console.log(res)
 			
-						that.datas = datas
+						that.datas = datas.dynamic
+						if (page_that == 1) {
+						
+							that.comments = datas.comments
+						} else {
+							if (datas.comments.length == 0) {
+								that.data_last = true
+								return
+							}
+							that.comments = that.comments.concat(datas.comments)
+						}
+						that.page++
+						
 			
 					} else {
+						
+						that.htmlReset=1
 						if (res.msg) {
 							uni.showToast({
 								icon: 'none',
@@ -287,7 +426,75 @@
 						} else {
 							uni.showToast({
 								icon: 'none',
-								title: '操作失败'
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					
+					that.htmlReset=1
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			},
+			getdata_pl() {
+				var that =this
+				var jkurl = '/homepage/dynamic_detail'
+				var datas = {
+					token: that.loginDatas.token||'',
+					dynamic_id:that.id,
+					comment_id:that.p_id,
+					page:that.hf_page,
+					size:that.hf_size
+				}
+				if(this.hf_comments_last){
+					return
+				}
+				if (this.btn_kg == 1) {
+					return
+				}
+				this.btn_kg = 1
+				var page_that = this.hf_page
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						if (page_that == 1) {
+							Vue.set(that.p_item,'count',datas.list_count)
+							that.hf_comments = datas.list_comments
+						} else {
+							if ( datas.list_comments.length == 0) {
+								that.hf_comments_last = true
+								return
+							}
+							that.hf_comments = that.hf_comments.concat( datas.list_comments)
+						}
+						that.hf_page++
+						
+						
+			
+					} else {
+						
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
 							})
 						}
 					}
@@ -304,6 +511,12 @@
 			getimg(img) {
 				return service.getimg(img)
 			},
+			getimgarr(img) {
+				return service.getimgarr(img)
+			},
+			pveimg(e){
+				service.pveimg(e)
+			}
 		}
 	}
 </script>
@@ -466,7 +679,8 @@
 		color: #F4691A;
 		position: absolute;
 		top: -10upx;
-		right: -18upx;
+		/* right: -18upx; */
+		left: 30upx;
 	}
 	.pl_num{
 		font-size: 24upx;

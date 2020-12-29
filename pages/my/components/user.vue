@@ -6,7 +6,9 @@
 				个人中心
 			</view>
 		</view>
-
+		<scroll-view class="scroll_H" style="top: 0px;" scroll-y="true" refresher-enabled='true' :refresher-triggered="triggered"
+		 :refresher-threshold="100" @refresherpulling="onPulling" @refresherrefresh="onRefresh" @refresherrestore="onRestore"
+		 @refresherabort="onAbort" @scrolltolower="getdata" @scroll="scroll_fuc">
 		<view v-if="hasLogin" class="my_box">
 			<image class="my_box_bg" :src="getimg('/static/images/user/my_bg_01.png')" mode="aspectFill"></image>
 			<view class="user_box dis_flex aic">
@@ -58,7 +60,7 @@
 						<view class="iconfont iconnext-m"></view>
 					</view>
 				</view>
-				<view class="user_li"@tap="jump" data-url="/pagesA/user_shoucang/user_shoucang" :data-login='true' :data-haslogin='hasLogin'>
+				<view class="user_li" @tap="jump" data-url="/pagesA/user_shoucang/user_shoucang" :data-login='true' :data-haslogin='hasLogin'>
 					<view class="user_li_l">
 						<image :src="getimg('/static/images/user/my_icon3.png')" mode="aspectFit"></image>
 					</view>
@@ -83,13 +85,16 @@
 			<view  class="my_meitu_tit_r"  @tap="jump" data-url="/pagesA/user_imgs/user_imgs" :data-login='true' :data-haslogin='hasLogin'>发布/更多<text class="iconfont iconnext-m"></text></view>
 		</view>
 		<view class="my_meitu_list">
-			<view class="my_meitu_li" v-for="(item,index) in 10"  @tap="jump" :data-url="'/pagesA/user_xq/user_xq?id='+index">
-				<image class="my_meitu_li_img" :src="getimg('/static/images/user/my_mt_03.jpg')" mode="aspectFill"></image>
+			<view class="my_meitu_li" v-for="(item,index) in datas"  @tap="jump" :data-url="'/pagesA/user_xq/user_xq?id='+item.id">
+				<image class="my_meitu_li_img" :src="getimgarr(item.photo)[0]" mode="aspectFill"></image>
 				<view class="my_meitu_li_bg">
-					<view class="oh1">客户的实际装修美图</view>
+					<view class="oh1">{{item.title}}</view>
 				</view>
 			</view>
+			<view v-if="datas.length==0" class="zanwu">暂无数据</view>
+			<view v-if="data_last" class="data_last">我可是有底线的哟~~~</view>
 		</view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -99,7 +104,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
-
+	var that
 	export default {
 		data() {
 			return {
@@ -111,26 +116,17 @@
 				time_zz: '你好',
 				StatusBar: this.StatusBar,
 				CustomBar: this.CustomBar,
-				datas: '',
+				datas: [],
+				page: 1,
+				size: 20,
+				data_last: false,
+				triggered: true, //设置当前下拉刷新状态
 
 				PageScroll: '',
 				fk_show: false,
 				tk_show: true,
 				tximg: '/static/logo.png'
 			};
-		},
-		onLoad() {},
-		onShow() {
-			// service.wxlogin()
-		},
-		onPageScroll(e) {
-			console.log(e)
-			this.PageScroll = e.scrollTop
-			if(e.scrollTop>10){
-				uni.showToast({
-					title:e.scrollTop
-				})
-			}
 		},
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data']),
@@ -165,12 +161,119 @@
 				return style
 			}
 		},
-
+		mounted() {
+			that=this
+			this.onRetry()
+		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
+			scroll_fuc(e){
+				console.log("scroll_fuc", e.detail.scrollTop);
+				this.PageScroll =e.detail.scrollTop
+			},
+			onPulling(e) {
+				console.log("onpulling", e);
+			},
+			onRefresh() {
+				if (this.btn_kg == 1) {
+					return
+				}
+				if (that._freshing) return;
+				that._freshing = true;
+				this.onRetry()
+				setTimeout(()=>{
+					that.triggered=false
+					that._freshing =false
+				},500)
+			},
+			onRestore() {
+				this.triggered = 'restore'; // 需要重置
+				console.log("onRestore");
+			},
+			onAbort() {
+				console.log("onAbort");
+			},
+			onRetry() {
+				this.page = 1
+				this.datas = []
+				this.data_last = false
+				this.getdata()
+			},
+			getdata() {
+			
+				///api/info/list
+				var that = this
+				var data = {
+					token: this.loginDatas.token || '',
+					page: this.page,
+					size: this.size
+				}
+				if (this.data_last) {
+					return
+				}
+				if (this.btn_kg == 1) {
+					return
+				}
+				this.btn_kg = 1
+				//selectSaraylDetailByUserCard
+				var jkurl = '/user/my_dynamic'
+				uni.showLoading({
+					title: '正在获取数据'
+				})
+				var page_that = this.page
+				service.P_get(jkurl, data).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+			
+						if (page_that == 1) {
+			
+							that.datas = datas
+						} else {
+							if (datas.length == 0) {
+								that.data_last = true
+								return
+							}
+							that.datas = that.datas.concat(datas)
+						}
+						that.page++
+			
+			
+					} else {
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			},
+			
 			getimg(img) {
 				console.log(service.getimg(img))
 				return service.getimg(img)
+			},
+			getimgarr(img) {
+				return service.getimgarr(img)
 			},
 			myUpload(rsp) {
 				var that = this
@@ -487,7 +590,13 @@
 		background: #fff;
 		color: #333;
 	}
-
+	.scroll_H{
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		height: 100vh;
+		z-index: 100;
+	}
 
 	.my_box {
 		width: 100%;

@@ -84,28 +84,42 @@ var render = function() {
   var l0 = _vm.__map(_vm.banner, function(item, idx) {
     var $orig = _vm.__get_orig(item)
 
-    var m0 = _vm.getimg(item)
+    var m0 = _vm.getimg(item.img_url)
+    var m1 = _vm.getimg(item.img_url)
     return {
       $orig: $orig,
-      m0: m0
+      m0: m0,
+      m1: m1
     }
   })
 
-  var m1 = _vm.getimg("/static/images/user/index_icon1.png")
-  var m2 = _vm.getimg("/static/images/user/index_icon2.png")
-  var m3 = _vm.getimg("/static/images/user/index_icon3.png")
-  var m4 = _vm.getimg("/static/images/user/index_icon4.png")
-  var m5 = _vm.getimg("/static/images/user/inde_url_04.png")
-  var m6 = _vm.getimg("/static/images/user/inde_url_06.png")
-  var m7 = _vm.getimg("/static/images/user/inde_url_09.png")
-  var m8 = _vm.getimg("/static/images/tx_m.jpg")
-  var m9 = _vm.getimg("/static/images/user/banner_01.jpg")
+  var m2 = _vm.getimg("/static/images/user/index_icon1.png")
+  var m3 = _vm.getimg("/static/images/user/index_icon2.png")
+  var m4 = _vm.getimg("/static/images/user/index_icon3.png")
+  var m5 = _vm.getimg("/static/images/user/index_icon4.png")
+  var m6 = _vm.getimg("/static/images/user/inde_url_04.png")
+  var m7 = _vm.getimg("/static/images/user/inde_url_06.png")
+  var m8 = _vm.getimg("/static/images/user/inde_url_09.png")
+
+  var l1 = _vm.__map(_vm.datas, function(item, index) {
+    var $orig = _vm.__get_orig(item)
+
+    var m9 = _vm.getimg(item.owner_cover)
+    var m10 = _vm.getimgarr(item.photo)
+    var m11 = m10.length > 0 ? _vm.getimgarr(item.photo) : null
+    return {
+      $orig: $orig,
+      m9: m9,
+      m10: m10,
+      m11: m11
+    }
+  })
+
   _vm.$mp.data = Object.assign(
     {},
     {
       $root: {
         l0: l0,
-        m1: m1,
         m2: m2,
         m3: m3,
         m4: m4,
@@ -113,7 +127,7 @@ var render = function() {
         m6: m6,
         m7: m7,
         m8: m8,
-        m9: m9
+        l1: l1
       }
     }
   )
@@ -231,6 +245,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../../service.js */ 8));
 var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
@@ -247,8 +278,13 @@ var that = void 0;var _default =
       StatusBar: this.StatusBar,
       CustomBar: this.CustomBar,
 
-      banner: ['/static/images/user/banner_01.jpg', '/static/images/user/banner_01.jpg', '/static/images/user/banner_01.jpg'],
-      datas: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      banner: [],
+      ad_data: [],
+      datas: [],
+      page: 1,
+      size: 20,
+      data_last: false,
+      triggered: true, //设置当前下拉刷新状态
 
       PageScroll: '',
       fk_show: false,
@@ -256,9 +292,12 @@ var that = void 0;var _default =
       tximg: '/static/logo.png' };
 
   },
-  onLoad: function onLoad() {
+  mounted: function mounted() {
     that = this;
-    this.getdata();
+    this._freshing = false;
+    this.getbanner();
+    // this.getmenu()
+    this.onRetry();
   },
   onShow: function onShow() {
     // service.wxlogin()
@@ -297,9 +336,59 @@ var that = void 0;var _default =
     } }),
 
 
+
+  watch: {
+    hasLogin: function hasLogin(newval, oldval) {
+      console.log(newval);
+      if (newval == true) {
+        this.btn_kg = 0;
+        this.onRetry()();
+      }
+    } },
+
   methods: _objectSpread(_objectSpread({},
   (0, _vuex.mapMutations)(['login', 'logindata', 'logout', 'setplatform'])), {}, {
-    getdata: function getdata(keyword) {
+    scroll_fuc: function scroll_fuc(e) {
+      console.log("scroll_fuc", e.detail.scrollTop);
+      this.PageScroll = e.detail.scrollTop;
+    },
+    onPulling: function onPulling(e) {
+      console.log("onpulling", e);
+    },
+    onRefresh: function onRefresh() {
+      if (this.btn_kg == 1) {
+        return;
+      }
+      if (that._freshing) return;
+      that._freshing = true;
+      this.onRetry();
+      setTimeout(function () {
+        that.triggered = false;
+        that._freshing = false;
+      }, 500);
+    },
+    onRestore: function onRestore() {
+      this.triggered = 'restore'; // 需要重置
+      console.log("onRestore");
+    },
+    onAbort: function onAbort() {
+      console.log("onAbort");
+    },
+    onRetry: function onRetry() {
+      this.page = 1;
+      this.datas = [];
+      this.data_last = false;
+      this.getdata();
+    },
+    onPullDownRefresh: function onPullDownRefresh() {
+      this.getbanner();
+      // this.getmenu()
+      this.onRetry();
+    },
+    onReachBottom: function onReachBottom() {
+      this.getdata();
+    },
+    getbanner: function getbanner() {
 
       ///api/info/list
       var that = this;
@@ -347,9 +436,132 @@ var that = void 0;var _default =
 
       });
     },
+    getmenu: function getmenu() {
+
+      ///api/info/list
+      var that = this;
+      var data = {};
+
+      //selectSaraylDetailByUserCard
+      var jkurl = '/homepage/menu';
+      // uni.showLoading({
+      // 	title: '正在获取数据'
+      // })
+      _service.default.P_get(jkurl, data).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          var datas = res.data;
+          console.log(typeof datas);
+
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+
+          that.ad_data = datas;
+          console.log(datas);
+
+
+        } else {
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '操作失败' });
+
+          }
+        }
+      }).catch(function (e) {
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '获取数据失败' });
+
+      });
+    },
+    getdata: function getdata() {
+
+      ///api/info/list
+      var that = this;
+      var data = {
+        token: this.loginDatas.token || '',
+        page: this.page,
+        size: this.size };
+
+      if (this.data_last) {
+        return;
+      }
+      if (this.btn_kg == 1) {
+        return;
+      }
+      this.btn_kg = 1;
+      //selectSaraylDetailByUserCard
+      var jkurl = '/homepage/dynamic';
+      uni.showLoading({
+        title: '正在获取数据' });
+
+      var page_that = this.page;
+      _service.default.P_get(jkurl, data).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          var datas = res.data;
+          console.log(typeof datas);
+
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+
+          if (page_that == 1) {
+
+            that.datas = datas;
+          } else {
+            if (datas.length == 0) {
+              that.data_last = true;
+              return;
+            }
+            that.datas = that.datas.concat(datas);
+          }
+          that.page++;
+
+
+        } else {
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '操作失败' });
+
+          }
+        }
+      }).catch(function (e) {
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '获取数据失败' });
+
+      });
+    },
     getimg: function getimg(img) {
       console.log(_service.default.getimg(img));
       return _service.default.getimg(img);
+    },
+    getimgarr: function getimgarr(img) {
+      // console.log(service.getimgarr(img))
+      return _service.default.getimgarr(img);
+    },
+    pveimg: function pveimg(e) {
+      _service.default.pveimg(e);
     },
     fabu_status: function fabu_status() {
       var that = this;

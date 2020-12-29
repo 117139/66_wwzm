@@ -229,7 +229,7 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
     }
     return {
       title: '万屋智能',
-      path: '/pages/share/share?type=fwcz&id=' + res.target.dataset.id,
+      path: '/pagesA/user_xq/user_xq?type=fwcz&id=' + res.target.dataset.id,
       success: function success(res) {
         console.log('成功', res);
       } };

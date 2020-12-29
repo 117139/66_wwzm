@@ -97,13 +97,22 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var l0 = _vm.__map(_vm.datas, function(item, index) {
+  var l1 = _vm.__map(_vm.datas, function(item, index) {
     var $orig = _vm.__get_orig(item)
 
-    var m0 = _vm.getimg("/static/images/business/tc_img_03.png")
+    var l0 = _vm.__map(item.children, function(item1, index1) {
+      var $orig = _vm.__get_orig(item1)
+
+      var m0 = _vm.getimg(item1.cover)
+      return {
+        $orig: $orig,
+        m0: m0
+      }
+    })
+
     return {
       $orig: $orig,
-      m0: m0
+      l0: l0
     }
   })
 
@@ -111,7 +120,7 @@ var render = function() {
     {},
     {
       $root: {
-        l0: l0
+        l1: l1
       }
     }
   )
@@ -170,10 +179,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 8));
-var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
+var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
 
 
+var that;var _default =
 {
   data: function data() {
     return {
@@ -188,6 +198,9 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
         name: '智能套餐C' }],
 
 
+      page: 1,
+      size: 20,
+      data_last: false,
       taocan_list: [{
         name: 'Mini 主机',
         id: 1 },
@@ -227,13 +240,98 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
   (0, _vuex.mapState)(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data'])),
 
   onPullDownRefresh: function onPullDownRefresh() {
-    uni.stopPullDownRefresh();
+    that.onRetry();
+  },
+  onReachBottom: function onReachBottom() {
+    // that.getdata()
+  },
+  onLoad: function onLoad() {
+    that = this;
+    that.onRetry();
   },
   methods: _objectSpread(_objectSpread({},
   (0, _vuex.mapMutations)(['login', 'logindata', 'logout', 'setplatform'])), {}, {
+    onRetry: function onRetry() {
+      this.page = 1;
+      this.datas = [];
+      this.data_last = false;
+      this.getdata();
+    },
+    getdata: function getdata() {
+
+      ///api/info/list
+      var that = this;
+      var data = {
+        token: this.loginDatas.token || '',
+        page: this.page,
+        size: this.size };
+
+      if (this.data_last) {
+        return;
+      }
+      if (this.btn_kg == 1) {
+        return;
+      }
+      this.btn_kg = 1;
+      //selectSaraylDetailByUserCard
+      var jkurl = '/gp/list';
+      uni.showLoading({
+        title: '正在获取数据' });
+
+      var page_that = this.page;
+      _service.default.P_get(jkurl, data).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          var datas = res.data;
+          console.log(typeof datas);
+
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+
+          if (page_that == 1) {
+
+            that.datas = datas;
+          } else {
+            if (datas.length == 0) {
+              that.data_last = true;
+              return;
+            }
+            that.datas = that.datas.concat(datas);
+          }
+          that.page++;
+
+
+        } else {
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '获取数据失败' });
+
+          }
+        }
+      }).catch(function (e) {
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '获取数据失败' });
+
+      });
+    },
+
     getimg: function getimg(img) {
       console.log(_service.default.getimg(img));
       return _service.default.getimg(img);
+    },
+    getimgarr: function getimgarr(img) {
+      return _service.default.getimgarr(img);
     },
     jump: function jump(e) {
       var that = this;

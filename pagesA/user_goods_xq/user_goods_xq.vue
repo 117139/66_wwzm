@@ -3,40 +3,40 @@
 		<view class="swiper_box">
 			<swiper class="swiper" :indicator-dots="indicatorDots" indicator-color="rgba(0,0,0,.3)" indicator-active-color="#11A078"
 			 :autoplay="autoplay" :interval="interval" :duration="duration" circular='true' @change="swiper_change">
-				<swiper-item v-for="(item,idx) in banner">
+				<swiper-item v-for="(item,idx) in getimgarr(datas.photo)">
 					<!-- <image class="swi_img" src="/static/images/user/banner_01.jpg" mode="aspectFill"></image> -->
-					<image class="swi_img" :src="getimg(item)" mode="aspectFill"
-							 @tap="pveimg" :data-src="getimg(item)" ></image>
+					<image class="swi_img" :src="item" mode="aspectFill"
+							 @tap="pveimg" :data-src="item" ></image>
 				</swiper-item>
 			
 			</swiper>
-			<view class="swi_num">{{banner_type}}/{{banner.length}}</view>
+			<view class="swi_num">{{banner_type}}/{{getimgarr(datas.photo).length}}</view>
 		</view>
 		<view class="goods_msg">
-			<view class="goods_name">智能水浸探测器</view>
-			<view class="goods_jj">白色多功能智能主机</view>
+			<view class="goods_name">{{datas.title}}</view>
+			<view class="goods_jj">{{datas.description}}</view>
 			<view class="dis_flex ju_b aic">
-				<view class="goods_pri"><text>¥</text>998</view>
-				<view class="goods_num"><image src="../../static/images/user/gouwuche1.png" mode="aspectFit"></image>已售：0</view>
+				<view class="goods_pri"><text>¥</text>{{datas.price}}</view>
+				<view class="goods_num"><image src="../../static/images/user/gouwuche1.png" mode="aspectFit"></image>已售：{{datas.sold}}</view>
 			</view>
 		</view>
 		<view class="goods_xq">
 			<view class="goods_xq_tit">详情介绍</view>
-			<!-- <view class="goods_fwb" v-html="get_fwb(datas.fwfw)"></view> -->
-			<view class="goods_fwb" >
+			<view class="goods_fwb" v-html="get_fwb(datas.content)"></view>
+			<!-- <view class="goods_fwb" >
 				
 				1、多控智能开关通过ZigBee无线网络连接到智能网关，与其它ZigBee设备组成网络，通过本地按键、场景联动。
 				<br>2、APP控制智能开关各回路所接负载的开关状态,并在产品上指示当前负载状态。
 				<br>3、智能单火开关无需重新布置零线，安装简单便捷。
 				<image class="swi_img" :src="getimg('/static/images/user/goods_02.jpg')" mode="aspectFill" style="margin-top: 20upx;"></image> 
-			</view>
+			</view> -->
 		</view>
 		<view class="pl_bbox">
 			<view class="xq_cz dis_flex aic ju_b">
 				<view class="gwc_btn" @tap="jump" data-url="/pagesA/user_shoucang/user_shoucang">
 					<image src="../../static/images/user/gouwuche1.png" mode="aspectFit"></image>
 					<text>收藏</text>
-					<text class="gwc_num">3</text>
+					<text v-if="car_num>0" class="gwc_num">{{car_num}}</text>
 				</view>
 				<view @tap="addcar" class="addsc">加入收藏</view>
 			</view>
@@ -50,6 +50,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that
 	export default {
 		data() {
 			return {
@@ -58,20 +59,138 @@
 				interval: 3000,
 				duration: 500,
 				banner: ['/static/images/user/goods_02.jpg', '/static/images/user/goods_02.jpg', '/static/images/user/goods_02.jpg'],
-				banner_type:1
+				banner_type:1,
+				datas:'',
+				car_num:0,
 			}
 		},
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data']),
 		},
 		
+		onPullDownRefresh() {
+			this.getdata()
+		},
+		onLoad(option) {
+			that=this
+			this.type=option.type
+			this.id=option.id
+			this.getdata()
+			this.getcar()
+		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
+			getdata() {
+				var that =this
+				var jkurl = '/goods/list'
+				var datas = {
+					token: that.loginDatas.token || '',
+					id: that.id,
+				}
+				
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+			
+						that.datas = datas
+			
+					} else {
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			},
+			getcar() {
+				var that =this
+				var jkurl = '/user/collect_list'
+				var datas = {
+					token: that.loginDatas.token || '',
+					load_mode:true
+				}
+				
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+			
+						if(datas.goods.length>0){
+							
+							that.car_num=res.data.count
+						}else{
+							that.car_num=0
+						}
+			
+					} else {
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			},
 			getimg(img) {
 				return service.getimg(img)
 			},
 			pveimg(e){
 				service.pveimg(e)
+			},
+			getimgarr(img) {
+				// console.log(service.getimgarr(img))
+				return service.getimgarr(img)
+			},
+			getarr(str){
+				if(!str){
+					return
+				}				
+				console.log(str)
+				str=str.split(',')
+				console.log(str)
+				return str
 			},
 			get_fwb(str){
 				return service.get_fwb(str)
@@ -81,10 +200,51 @@
 				this.banner_type=e.detail.current+1
 			},
 			addcar(item){
-				uni.showToast({
-					icon:'none',
-					title:'加入购物车成功'
+				var jkurl = '/user/collect'
+				var datas = {
+					token: that.loginDatas.token || '',
+					id: that.id,
+				}
+				
+				service.P_post(jkurl, datas).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						console.log(typeof datas)
+							
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+							
+						uni.showToast({
+							icon:'none',
+							title:'收藏成功'
+						})
+							
+					} else {
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
 				})
+				
 			},
 			jump(e) {
 				var that = this

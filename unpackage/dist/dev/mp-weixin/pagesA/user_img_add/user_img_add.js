@@ -98,14 +98,28 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   var m0 = _vm.getimg("/static/images/img_del.png")
-  var m1 =
+
+  var l0 = _vm.__map(_vm.sj_img, function(item, index) {
+    var $orig = _vm.__get_orig(item)
+
+    var m1 = _vm.getimg(item)
+    var m2 = _vm.getimg(item)
+    return {
+      $orig: $orig,
+      m1: m1,
+      m2: m2
+    }
+  })
+
+  var m3 =
     _vm.sj_img.length < 9 ? _vm.getimg("/static/images/upimg1.png") : null
   _vm.$mp.data = Object.assign(
     {},
     {
       $root: {
         m0: m0,
-        m1: m1
+        l0: l0,
+        m3: m3
       }
     }
   )
@@ -204,21 +218,66 @@ var that;var _default =
 
         return;
       }
-      uni.showToast({
-        icon: 'none',
-        title: '上传成功' });
-
+      // uni.showToast({
+      // 	icon:'none',
+      // 	title:'上传成功'
+      // })
       var datas = {
-        cp_name: this.cp_name,
-        sj_img: that.sj_img.join(','),
-        content: that.content };
+        token: that.loginDatas.token,
+        title: this.cp_name,
+        photo: that.sj_img.join(',') };
 
-      console.log(datas);
-      setTimeout(function () {
-        uni.navigateBack({
-          delta: 1 });
+      var jkurl = '/user/dynamic';
+      _service.default.P_post(jkurl, datas).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          var datas = res.data;
+          console.log(typeof datas);
 
-      }, 1000);
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+          console.log(res);
+
+          uni.showToast({
+            icon: 'none',
+            title: '操作成功' });
+
+          console.log(datas);
+          var pages = getCurrentPages(); //当前页面
+          var prevPage = pages[pages.length - 2]; //上一页面
+          prevPage.setData({
+            //直接给上一个页面赋值
+            img_new: true });
+
+          setTimeout(function () {
+            uni.navigateBack({
+              delta: 1 });
+
+          }, 1000);
+        } else {
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '操作失败' });
+
+          }
+        }
+      }).catch(function (e) {
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '操作失败' });
+
+      });
+
     },
     pveimg: function pveimg(e) {
       _service.default.pveimg(e);
@@ -254,9 +313,9 @@ var that;var _default =
 
                 return;
               } else {
-                that.sj_img = that.sj_img.concat(res.tempFilePaths).slice(0, 9);
-              }
-              return;
+
+              } // that.sj_img=that.sj_img.concat(res.tempFilePaths).slice(0,9)
+              // return
               that.upimg1(tempFilePaths, 0);
 
             } });
@@ -281,40 +340,41 @@ var that;var _default =
         return;
       }
       var newdata = that.sj_img;
+      _service.default.wx_upload(imgs[i]).then(function (res) {
 
-      uni.uploadFile({
-        url: _service.default.IPurl + '/upload', //仅为示例，非真实的接口地址
-        filePath: imgs[i],
-        name: 'file',
-        formData: {
-          token: that.loginDatas.token },
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          var datas = res.data;
+          console.log(i);
+          that.sj_img.push(datas);
 
-        success: function success(res) {
-          // console.log(res.data)
-          var ndata = JSON.parse(res.data);
-          if (ndata.code == 1) {
-            console.log(imgs[i], i, ndata.data);
-            var newdata = that.sj_img;
-            console.log(i);
-            newdata.push(ndata.data);
-            that.sj_img = newdata;
-            // i++
-            // that.upimg(imgs, i)
-            var news1 = that.sj_img.length;
+          var news1 = that.sj_img.length;
+          if (news1 < 9 && i < imgs.length - 1) {
+            i++;
+            that.upimg1(imgs, i);
+          }
+        } else {
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
 
-            var news1 = that.sj_img.length;
-            if (news1 < 9 && i < imgs.length - 1) {
-              i++;
-              that.upimg1(imgs, i);
-            }
           } else {
             uni.showToast({
               icon: "none",
               title: "上传失败" });
 
           }
-        } });
+        }
+      }).catch(function (e) {
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '操作失败' });
 
+      });
     },
     imgdel: function imgdel(e) {
       var that = this;

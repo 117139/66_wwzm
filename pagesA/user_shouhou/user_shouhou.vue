@@ -17,7 +17,7 @@
 				<view class="pz_img" v-for="(item,index) in sj_img">
 					<image class="img_del" src="../../static/images/img_del.png" mode="aspectFill" @tap="imgdel" :data-idx="index"></image>
 					<!-- <image mode="aspectFill" :src="getimg(item)" @tap="pveimg" :data-src="getimg(item)"></image> -->
-					<image mode="aspectFill" :src="item" @tap="pveimg" :data-src="item"></image>
+					<image mode="aspectFill" :src="getimg(item)" @tap="pveimg" :data-src="getimg(item)"></image>
 				</view>
 				<view class="pz_img" v-if="sj_img.length<9">
 					<image mode="aspectFill" :src="getimg('/static/images/upimg1.png')" @tap="upimg"></image>
@@ -25,6 +25,7 @@
 			</view>
 		</view>
 		<view @tap="sub"  class="pz_btn">提交</view>
+		<view style="width: 100%;height: 10upx;"></view>
 	</view>
 </template>
 
@@ -73,21 +74,58 @@
 				// 	})
 				// 	return
 				// }
-				uni.showToast({
-					icon:'none',
-					title:'上传成功'
-				})
+				
 				var datas={
-					cp_name:this.cp_name,
-					sj_img:that.sj_img.join(','),
-					content:that.content
+					token:that.loginDatas.token,
+					goods_name:this.cp_name,
+					photo:that.sj_img.join(','),
+					hitch_content:that.content
 				}
-				console.log(datas)
-				setTimeout(()=>{
-					uni.navigateBack({
-						delta:2
+				var jkurl='/aftersale/create'
+				service.P_post(jkurl, datas).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						console.log(typeof datas)
+							
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+							
+						uni.showToast({
+							icon:'none',
+							title:'操作成功'
+						})
+						console.log(datas)
+						setTimeout(()=>{
+							uni.navigateBack({
+								delta:1
+							})
+						},1000)
+					} else {
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '操作失败'
 					})
-				},1000)
+				})
+				
 			},
 			pveimg(e) {
 				service.pveimg(e)
@@ -126,9 +164,9 @@
 									})
 									return
 								} else {
-									that.sj_img=that.sj_img.concat(res.tempFilePaths).slice(0,9)
+									// that.sj_img=that.sj_img.concat(res.tempFilePaths).slice(0,9)
 								}
-								return
+								// return
 								that.upimg1(tempFilePaths, 0)
 
 							}
@@ -153,32 +191,26 @@
 					return
 				}
 				var newdata = that.sj_img
+				service.wx_upload(imgs[i]).then(res => {
 
-				uni.uploadFile({
-					url: service.IPurl + '/upload', //仅为示例，非真实的接口地址
-					filePath: imgs[i],
-					name: 'file',
-					formData: {
-						token: that.loginDatas.token
-					},
-					success(res) {
-						// console.log(res.data)
-						var ndata = JSON.parse(res.data)
-						if (ndata.code == 1) {
-							console.log(imgs[i], i, ndata.data)
-							var newdata = that.sj_img
-							console.log(i)
-							newdata.push(ndata.data)
-							that.sj_img = newdata
-							// i++
-							// that.upimg(imgs, i)
-							var news1 = that.sj_img.length
-
-							var news1 = that.sj_img.length
-							if (news1 < 9 && i < imgs.length - 1) {
-								i++
-								that.upimg1(imgs, i)
-							}
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						console.log(i)
+						that.sj_img.push(datas)
+						
+						var news1 = that.sj_img.length
+						if (news1 < 9 && i < imgs.length - 1) {
+							i++
+							that.upimg1(imgs, i)
+						}
+					} else {
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
 						} else {
 							uni.showToast({
 								icon: "none",
@@ -186,7 +218,15 @@
 							})
 						}
 					}
+				}).catch(e => {
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '操作失败'
+					})
 				})
+				
 			},
 			imgdel(e) {
 				var that = this
@@ -236,17 +276,19 @@
 	}
 
 	.pz_img {
-		width: 150upx;
-		height: 150upx;
+		width: 220upx;
+		height: 220upx;
 		border-radius: 10upx;
 		margin-right: 15upx;
 		margin-bottom: 15upx;
 		position: relative;
 	}
-
+	.pz_img:nth-child(3n){
+		margin-right: 0;
+	}
 	.pz_img image {
-		width: 150upx;
-		height: 150upx;
+		width: 220upx;
+		height: 220upx;
 	}
 
 	.pz_img .img_del {

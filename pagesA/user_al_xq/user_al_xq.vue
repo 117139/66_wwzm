@@ -1,17 +1,15 @@
 <template>
 	<view style="min-height: 100vh; background: #fff;">
 		<view class="al_xq">
-			<view class="al_tit">纯水岸冬湖现代简约风三室一厅</view>
-			<view class="order_bqs">
-				<view class="order_bq">现代</view>
-				<view class="order_bq">公寓</view>
+			<view class="al_tit">{{datas.title}}</view>
+			<view v-if="type==2" class="order_bqs">
+				<view v-if="datas.tag" class="order_bq" v-for="(item1,index1) in getarr(datas.tag)">{{item1}}</view>
 			</view>
 			
 			<view class="xq_img">
-				<image :src="getimg('/static/images/user/banner_01.jpg')" mode="widthFix" lazy-load="true"></image>
-				<image :src="getimg('/static/images/user/banner_01.jpg')" mode="widthFix" lazy-load="true"></image>
-				<image :src="getimg('/static/images/user/banner_01.jpg')" mode="widthFix" lazy-load="true"></image>
+				<image v-for="(item,index) in getimgarr(datas.photo)" :src="getimg(item)" mode="widthFix" lazy-load="true"  @tap="pveimg" :data-src="getimg(item)"></image>
 			</view>
+			<view class="xq_xq" v-html="get_fwb(datas.content)"></view>
 		</view>
 	</view>
 </template>
@@ -26,29 +24,48 @@
 	export default {
 		data() {
 			return {
-				
+				type:'',
+				id:'',
+				datas:''
 			}
 		},
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data']),
 		},
 		onPullDownRefresh() {
-			uni.stopPullDownRefresh()
+			this.getdata()
+		},
+		onLoad(option) {
+			this.type=option.type
+			this.id=option.id
+			this.getdata()
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
 			getdata() {
 				var that =this
 				var jkurl = '/data/refer_record'
-				var datas = {
-					token: that.loginDatas.token||'',
-					id:that.id
+				var datas
+				if(this.type==2){
+					datas = {
+						token: that.loginDatas.userToken || '',
+						id:this.id,
+						type: 'case',
+					}
+					jkurl = '/caseinfo/list'
+				}else{
+					datas = {
+						token: that.loginDatas.userToken || '',
+						id:this.id,
+						type: 'info',
+					}
+					jkurl = '/caseinfo/list'
 				}
-				service.P_post(jkurl, datas).then(res => {
+				service.P_get(jkurl, datas).then(res => {
 					that.btn_kg = 0
 					console.log(res)
 					if (res.code == 1) {
-						var datas = res.count
+						var datas = res.data
 						console.log(typeof datas)
 			
 						if (typeof datas == 'string') {
@@ -83,6 +100,25 @@
 			
 			getimg(img) {
 				return service.getimg(img)
+			},
+			pveimg(e){
+				service.pveimg(e)
+			},
+			getimgarr(img) {
+				// console.log(service.getimgarr(img))
+				return service.getimgarr(img)
+			},
+			getarr(str){
+				if(!str){
+					return
+				}				
+				console.log(str)
+				str=str.split(',')
+				console.log(str)
+				return str
+			},
+			get_fwb(str){
+				return service.get_fwb(str)
 			},
 		}
 	}
@@ -125,5 +161,8 @@
 	}
 	.xq_img{
 		margin-bottom: 48upx;
+	}
+	.xq_xq{
+		margin-top: 20upx;
 	}
 </style>

@@ -1,5 +1,6 @@
 {
   "navigationBarTitleText": "万屋智能",
+  "enablePullDownRefresh": false,
   "navigationStyle": "custom",
   "usingComponents": {
     "business": "/pages/index/components/business",

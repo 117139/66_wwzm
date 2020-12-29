@@ -1,0 +1,121 @@
+
+.bus_my_list.data-v-2ddcda06{
+		position: relative;
+		z-index: 10;
+		margin-top: -40rpx;
+		padding: 0 30rpx;
+}
+.bus_my_li.data-v-2ddcda06{
+		width: 100%;
+		
+		background: #FFFFFF;
+		-webkit-box-shadow: 0px 0px 16rpx 0px rgba(173, 218, 219, 0.22);
+		        box-shadow: 0px 0px 16rpx 0px rgba(173, 218, 219, 0.22);
+		-webkit-border-radius: 10rpx;
+		        border-radius: 10rpx;
+		margin-bottom: 20rpx;
+}
+.bus_my_li_tit.data-v-2ddcda06{
+		width: 100%;
+		padding: 0 30rpx 0;
+		border-bottom: 1px solid #EDEDED;
+		height: 75rpx;
+}
+.bus_my_li_tit image.data-v-2ddcda06{
+		width: 30rpx;
+		height: 33rpx;
+		margin-right: 20rpx;
+}
+.bus_my_li_tit_text.data-v-2ddcda06{
+		line-height: 32rpx;
+		font-size: 32rpx;
+		font-family: PingFangSC;
+		font-weight: 500;
+		color: #000000;
+}
+.li_more.data-v-2ddcda06{
+		
+		font-size: 28rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #999999;
+}
+.li_more text.data-v-2ddcda06{
+		color: #999;
+		font-size: 14rpx;
+		margin-left: 20rpx;
+}
+.my_table.data-v-2ddcda06{
+		width: 100%;
+}
+.my_table_tit.data-v-2ddcda06{
+		border-bottom: 1px solid #EDEDED;
+}
+.my_td.data-v-2ddcda06{
+		width: 25%;
+		-webkit-box-flex: 0;
+		-webkit-flex: none;
+		        flex: none;
+		height: 57rpx;
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: flex;
+		-webkit-box-align: center;
+		-webkit-align-items: center;
+		        align-items: center;
+		-webkit-box-pack: center;
+		-webkit-justify-content: center;
+		        justify-content: center;
+		font-size: 28rpx;
+		font-family: PingFangSC;
+		font-weight: 500;
+		color: #727272;
+		position: relative;
+}
+.my_th+.my_th.data-v-2ddcda06::before{
+		position: absolute;
+		content: '';
+		width: 1px;
+		height: 30rpx;
+		background: #EDEDED;
+		top: 15rpx;
+		left: 0;
+}
+.my_td1.data-v-2ddcda06{
+		height: 88rpx;
+		font-size: 28rpx;
+		font-family: PingFangSC;
+		font-weight: 500;
+		color: #727272;
+}
+.my_td2.data-v-2ddcda06{
+		height: 88rpx;
+		font-size: 30rpx;
+		font-family: PingFangSC;
+		font-weight: 500;
+		color: #11A078;
+}
+.td_user_tx.data-v-2ddcda06{
+		width: 52rpx;
+		height: 52rpx;
+		-webkit-border-radius: 50%;
+		        border-radius: 50%;
+		margin-right: 20rpx;
+}
+.td_user_msg.data-v-2ddcda06{
+		height: 62rpx;
+}
+.td_uname.data-v-2ddcda06{
+		color: #3a3a3a;
+		font-size: 26rpx;
+}
+.td_utb.data-v-2ddcda06{
+		font-size: 14rpx;
+		color: #a8a8a8;
+}
+.td_ximg.data-v-2ddcda06{
+		width: 18rpx;
+		height: 16rpx;
+		margin-right: 20rpx;
+}
+

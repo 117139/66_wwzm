@@ -12,38 +12,39 @@
 			
 			<view class="order_list">
 				<block v-if="type==1">
-					<view class="order_li dis_flex_c" v-for="(item,index) in 10" @tap="jump" :data-url="'/pagesA/user_goods_xq/user_goods_xq?id='+index">
-						<image class="order_li_img" :src="getimg('/static/images/user/xz_03.jpg')" mode="aspectFill"></image>
+					<view class="order_li dis_flex_c" v-for="(item,index) in datas" @tap="jump" :data-url="'/pagesA/user_goods_xq/user_goods_xq?id='+item.id">
+						<image class="order_li_img" :src="getimg(item.cover)" mode="aspectFill"></image>
 						<view class="order_li_msg">
-							<view class="oh2">Allone Pro 多功能智能主机充电</view>
+							<view class="oh2">{{item.title}}</view>
 							<view class="order_buy dis_flex aic ju_b">
-								<view class="order_pri"><text>￥</text>998</view>
+								<view class="order_pri"><text>￥</text>{{item.price}}</view>
 								<image @tap="addcar(item)" class="order_car" src="../../static/images/user/gouwuche.png" mode="aspectFit"></image>
 							</view>
 						</view>
 					</view>
 				</block>
 				<block v-if="type==2">
-					<view class="order_li dis_flex_c" v-for="(item,index) in 10" @tap="jump" :data-url="'/pagesA/user_al_xq/user_al_xq?id='+index">
-						<image class="order_li_img_al" :src="getimg('/static/images/user/xz_03.jpg')" mode="aspectFill"></image>
+					<view class="order_li dis_flex_c" v-for="(item,index) in datas" @tap="jump" :data-url="'/pagesA/user_al_xq/user_al_xq?type=2&id='+item.id">
+						<image class="order_li_img_al" :src="getimg(item.cover)" mode="aspectFill"></image>
 						<view class="order_li_msg">
-							<view class="oh2">10多家媒体到场报道，100余位设计师顺势而...</view>
+							<view class="oh2">{{item.title}}</view>
 							<view class="order_bqs">
-								<view class="order_bq">现代</view>
-								<view class="order_bq">公寓</view>
+								<view class="order_bq" v-for="(item1,index1) in getarr(item.tag)">{{item1}}</view>
+								<!-- <view class="order_bq">公寓</view> -->
 							</view>
 						</view>
 					</view>
 				</block>
 				<block v-if="type==3">
-					<view class="order_li dis_flex_c" v-for="(item,index) in 10">
-						<image class="order_li_img" :src="getimg('/static/images/user/xz_03.jpg')" mode="aspectFill"></image>
+					<view class="order_li dis_flex_c" v-for="(item,index) in datas" @tap="jump" :data-url="'/pagesA/user_al_xq/user_al_xq?type=3&id='+item.id">
+						<image class="order_li_img" :src="getimg(item.cover)" mode="aspectFill"></image>
 						<view class="order_li_msg">
-							<view class="oh2">10多家媒体到场报道，100余位设计师顺势而...</view>
+							<view class="oh2">{{item.title}}</view>
 						</view>
 					</view>
 				</block>
 			</view>
+			<view v-if="data_last" class="data_last">我可是有底线的哟~~~</view>
 		</view>
 	</view>
 </template>
@@ -73,10 +74,11 @@
 					},
 				],
 				type: 1,
+				page:1,
+				size:20,
+				data_last:false,
 				htmlReset: 0,
-				datas: [
-					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-				]
+				datas: []
 			}
 		},
 		computed: {
@@ -85,15 +87,67 @@
 		onLoad(option) {
 			that=this
 			this.type=option.type
+			this.onRetry()
+		},
+		onPullDownRefresh() {
+			this.onRetry()
+		},
+		onReachBottom() {
+			this.getdata()
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform', 'setfj_data']),
 			addcar(item){
-				uni.showToast({
-					icon:'none',
-					title:'加入购物车成功'
+				var jkurl = '/user/collect'
+				var datas = {
+					token: that.loginDatas.token || '',
+					id: item.id,
+				}
+				if (this.btn_kg == 1) {
+					return
+				}
+				this.btn_kg = 1
+				service.P_post(jkurl, datas).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						console.log(typeof datas)
+							
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+							
+						uni.showToast({
+							icon:'none',
+							title:'收藏成功'
+						})
+							
+					} else {
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
 				})
+				
 			},
+			
 			bindcur(e) {
 				var that = this
 				console.log(e.currentTarget.dataset.type)
@@ -114,23 +168,42 @@
 			},
 			getdata(num) {
 				var that = this
-				this.datas = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-				return
+				
 				if (that.data_last) {
 					return
 				}
-				var datas = {
-					token: that.loginDatas.userToken || '',
-					page: that.page,
-					size: that.size,
-					type: this.type,
+				var datas
+				var jkurl = ''
+				if(this.type==1){
+					datas = {
+						token: that.loginDatas.userToken || '',
+						page: that.page,
+						size: that.size,
+					}
+					jkurl = '/goods/list'
+				}else if(this.type==2){
+					datas = {
+						token: that.loginDatas.userToken || '',
+						page: that.page,
+						size: that.size,
+						type: 'case',
+					}
+					jkurl = '/caseinfo/list'
+				}else{
+					datas = {
+						token: that.loginDatas.userToken || '',
+						page: that.page,
+						size: that.size,
+						type: 'info',
+					}
+					jkurl = '/caseinfo/list'
 				}
 				if (this.btn_kg == 1) {
 					return
 				}
 				this.btn_kg = 1
 				//selectSaraylDetailByUserCard
-				var jkurl = '/user/productOrder/list'
+				
 				uni.showLoading({
 					title: '正在获取数据'
 				})
@@ -169,7 +242,7 @@
 						} else {
 							uni.showToast({
 								icon: 'none',
-								title: '操作失败'
+								title: '获取数据失败'
 							})
 						}
 					}
@@ -204,6 +277,15 @@
 			},
 			getimg(e){
 				return service.getimg(e)
+			},
+			getarr(str){
+				if(!str){
+					return
+				}				
+				console.log(str)
+				str=str.split(',')
+				console.log(str)
+				return str
 			}
 		}
 	}

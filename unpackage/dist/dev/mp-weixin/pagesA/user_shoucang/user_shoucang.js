@@ -100,7 +100,7 @@ var render = function() {
   var l0 = _vm.__map(_vm.datas, function(item, idx) {
     var $orig = _vm.__get_orig(item)
 
-    var m0 = _vm.getimg(item.img)
+    var m0 = _vm.getimg(item.cover)
     return {
       $orig: $orig,
       m0: m0
@@ -215,6 +215,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 8));
 var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
@@ -249,6 +250,8 @@ var that = void 0;var _default =
         img: '/static/images/user/goods_02.jpg' }],
 
 
+      page: 1,
+      size: 20,
       all: false };
 
   },
@@ -257,9 +260,80 @@ var that = void 0;var _default =
 
   onLoad: function onLoad() {
     that = this;
+    that.onRetry();
+  },
+  onPullDownRefresh: function onPullDownRefresh() {
+    this.onRetry();
+  },
+  onReachBottom: function onReachBottom() {
+    this.getcar();
   },
   methods: _objectSpread(_objectSpread({},
   (0, _vuex.mapMutations)(['login', 'logindata', 'logout', 'setplatform'])), {}, {
+    onRetry: function onRetry() {
+      this.page = 1;
+      this.datas = [];
+      this.data_last = false;
+
+      this.getcar();
+    },
+    getcar: function getcar() {
+      var that = this;
+      var jkurl = '/user/collect_list';
+      var datas = {
+        token: that.loginDatas.token || '',
+        page: this.page,
+        size: this.size };
+
+      var page_that = this.page;
+      _service.default.P_get(jkurl, datas).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          var datas = res.data;
+          console.log(typeof datas);
+
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+          console.log(res);
+
+          if (page_that == 1) {
+
+            that.datas = datas.goods;
+          } else {
+            if (datas.goods.length == 0) {
+              that.data_last = true;
+              return;
+            }
+            that.data_last = false;
+            that.datas = that.datas.concat(datas.goods);
+          }
+          that.page++;
+
+        } else {
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '操作失败' });
+
+          }
+        }
+      }).catch(function (e) {
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '获取数据失败' });
+
+      });
+    },
+
     selecAll: function selecAll() {
       var kg;
       var that = this;
@@ -491,12 +565,54 @@ var that = void 0;var _default =
         }
 
       }
-      uni.showToast({
-        icon: 'none',
-        title: '操作成功' });
 
       return;
+      var jkurl = '/user/defined';
+      var datas = {
+        token: this.loginDatas.token,
+        id: idG };
+
       console.log(idG);
+      _service.default.P_post(jkurl, datas).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          var datas = res.data;
+          console.log(typeof datas);
+
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+          console.log(res);
+
+          uni.showToast({
+            icon: 'none',
+            title: '操作成功' });
+
+          setTimeout(function () {
+            that.onRetry();
+          }, 500);
+        } else {
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '操作失败' });
+
+          }
+        }
+      }).catch(function (e) {
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '获取数据失败，请检查您的网络连接' });
+
+      });
       if (kc_tip && idG !== '') {
         uni.showToast({
           icon: 'none',

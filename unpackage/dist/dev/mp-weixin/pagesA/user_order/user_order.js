@@ -97,15 +97,24 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var l0 =
+  var l1 =
     _vm.htmlReset == 0
       ? _vm.__map(_vm.datas, function(item, index) {
           var $orig = _vm.__get_orig(item)
 
-          var m0 = _vm.getimg("/static/images/business/tc_img_03.png")
+          var l0 = _vm.__map(item.goods_list, function(item1, index1) {
+            var $orig = _vm.__get_orig(item1)
+
+            var m0 = _vm.getimg(item1.cover)
+            return {
+              $orig: $orig,
+              m0: m0
+            }
+          })
+
           return {
             $orig: $orig,
-            m0: m0
+            l0: l0
           }
         })
       : null
@@ -113,7 +122,7 @@ var render = function() {
     {},
     {
       $root: {
-        l0: l0
+        l1: l1
       }
     }
   )
@@ -198,6 +207,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 8));
 var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
@@ -210,34 +220,26 @@ var that;var _default =
     return {
       data_list: [{
         name: '全部',
-        id: 1 },
+        id: 0 },
 
       {
         name: '待处理',
-        id: 2 },
+        id: 1 },
 
       {
         name: '施工中',
-        id: 3 },
+        id: 2 },
 
       {
         name: '已完成',
-        id: 4 }],
+        id: 3 }],
 
 
-      type: 1,
+      type: 0,
       htmlReset: 0,
-      datas: [
-      {
-        name: '智能套餐A' },
-
-      {
-        name: '智能套餐B' },
-
-      {
-        name: '智能套餐C' }],
-
-
+      datas: [],
+      pages: 1,
+      size: 20,
       taocan_list: [{
         name: 'Mini 主机',
         id: 1 },
@@ -278,6 +280,12 @@ var that;var _default =
   computed: _objectSpread({},
   (0, _vuex.mapState)(['hasLogin', 'forcedLogin', 'userName', 'loginDatas'])),
 
+  onLoad: function onLoad() {
+    this.onRetry();
+  },
+  onReachBottom: function onReachBottom() {
+    this.getdata();
+  },
   methods: _objectSpread(_objectSpread({},
   (0, _vuex.mapMutations)(['login', 'logindata', 'logout', 'setplatform', 'setfj_data'])), {}, {
     bindcur: function bindcur(e) {
@@ -298,25 +306,24 @@ var that;var _default =
 
       this.getdata();
     },
-    getdata: function getdata(num) {
+    getdata: function getdata() {
       var that = this;
-      this.datas = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-      return;
+
       if (that.data_last) {
         return;
       }
       var datas = {
-        token: that.loginDatas.userToken || '',
+        token: that.loginDatas.token || '',
         page: that.page,
         size: that.size,
-        type: this.type };
+        status: this.type == 0 ? '' : this.type };
 
       if (this.btn_kg == 1) {
         return;
       }
       this.btn_kg = 1;
       //selectSaraylDetailByUserCard
-      var jkurl = '/user/productOrder/list';
+      var jkurl = '/user/rate';
       uni.showLoading({
         title: '正在获取数据' });
 

@@ -139,6 +139,7 @@ const jump = function(e) {
 	// console.log(e.currentTarget.dataset.type)
 	var datas=e.currentTarget.dataset
 	console.log(datas.login==true)
+	
 	if(datas.login==true){
 		if(!datas.haslogin){
 			uni.navigateTo({
@@ -545,9 +546,11 @@ const getUrl = (url)=>{
 
 // get方法
 const P_get = (url, param = {}) => {
-	wx.showLoading({
-	  title: '请求中，请耐心等待...',
-	});
+		if(!param.load_mode){
+			wx.showLoading({
+			  title: '请求中，请耐心等待...',
+			});
+		}
     return http({
         url,
         param,
@@ -602,7 +605,24 @@ const getimg=function (img){
 	}
 	return img
 }
-
+const getimgarr=function (imgs,type){
+	if(!imgs) return
+	if(!type){
+		type=','
+	}
+	imgs=imgs.split(type)
+	console.log(imgurl+img)
+	var newimgs=[]
+	for(var i=0;i<imgs.length;i++){
+		var img=imgs[i]
+		if(img.indexOf('://')== -1){
+		  img = imgurl+img
+		}
+		newimgs.push(img)
+	}
+	console.log(newimgs)
+	return newimgs
+}
 const gettime=function (mj){
 	if(!mj) {
 		return {}
@@ -698,6 +718,7 @@ export default {
 	P_delete,
 	gettime,
 	getimg,
+	getimgarr,
 	get_fwb,
 	wx_upload
 }

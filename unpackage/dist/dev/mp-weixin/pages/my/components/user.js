@@ -92,7 +92,17 @@ var render = function() {
   var m8 = _vm.getimg("/static/images/user/my_icon2.png")
   var m9 = _vm.getimg("/static/images/user/my_icon3.png")
   var m10 = _vm.getimg("/static/images/user/my_icon4.png")
-  var m11 = _vm.getimg("/static/images/user/my_mt_03.jpg")
+
+  var l0 = _vm.__map(_vm.datas, function(item, index) {
+    var $orig = _vm.__get_orig(item)
+
+    var m11 = _vm.getimgarr(item.photo)
+    return {
+      $orig: $orig,
+      m11: m11
+    }
+  })
+
   _vm.$mp.data = Object.assign(
     {},
     {
@@ -108,7 +118,7 @@ var render = function() {
         m8: m8,
         m9: m9,
         m10: m10,
-        m11: m11
+        l0: l0
       }
     }
   )
@@ -241,12 +251,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../../service.js */ 8));
-var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
+var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
 
 
-
+var that;var _default =
 {
   data: function data() {
     return {
@@ -258,26 +273,17 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
       time_zz: '你好',
       StatusBar: this.StatusBar,
       CustomBar: this.CustomBar,
-      datas: '',
+      datas: [],
+      page: 1,
+      size: 20,
+      data_last: false,
+      triggered: true, //设置当前下拉刷新状态
 
       PageScroll: '',
       fk_show: false,
       tk_show: true,
       tximg: '/static/logo.png' };
 
-  },
-  onLoad: function onLoad() {},
-  onShow: function onShow() {
-    // service.wxlogin()
-  },
-  onPageScroll: function onPageScroll(e) {
-    console.log(e);
-    this.PageScroll = e.scrollTop;
-    if (e.scrollTop > 10) {
-      uni.showToast({
-        title: e.scrollTop });
-
-    }
   },
   computed: _objectSpread(_objectSpread({},
   (0, _vuex.mapState)(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data'])), {}, {
@@ -312,12 +318,119 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
       return style;
     } }),
 
-
+  mounted: function mounted() {
+    that = this;
+    this.onRetry();
+  },
   methods: _objectSpread(_objectSpread({},
   (0, _vuex.mapMutations)(['login', 'logindata', 'logout', 'setplatform'])), {}, {
+    scroll_fuc: function scroll_fuc(e) {
+      console.log("scroll_fuc", e.detail.scrollTop);
+      this.PageScroll = e.detail.scrollTop;
+    },
+    onPulling: function onPulling(e) {
+      console.log("onpulling", e);
+    },
+    onRefresh: function onRefresh() {
+      if (this.btn_kg == 1) {
+        return;
+      }
+      if (that._freshing) return;
+      that._freshing = true;
+      this.onRetry();
+      setTimeout(function () {
+        that.triggered = false;
+        that._freshing = false;
+      }, 500);
+    },
+    onRestore: function onRestore() {
+      this.triggered = 'restore'; // 需要重置
+      console.log("onRestore");
+    },
+    onAbort: function onAbort() {
+      console.log("onAbort");
+    },
+    onRetry: function onRetry() {
+      this.page = 1;
+      this.datas = [];
+      this.data_last = false;
+      this.getdata();
+    },
+    getdata: function getdata() {
+
+      ///api/info/list
+      var that = this;
+      var data = {
+        token: this.loginDatas.token || '',
+        page: this.page,
+        size: this.size };
+
+      if (this.data_last) {
+        return;
+      }
+      if (this.btn_kg == 1) {
+        return;
+      }
+      this.btn_kg = 1;
+      //selectSaraylDetailByUserCard
+      var jkurl = '/user/my_dynamic';
+      uni.showLoading({
+        title: '正在获取数据' });
+
+      var page_that = this.page;
+      _service.default.P_get(jkurl, data).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          var datas = res.data;
+          console.log(typeof datas);
+
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+
+          if (page_that == 1) {
+
+            that.datas = datas;
+          } else {
+            if (datas.length == 0) {
+              that.data_last = true;
+              return;
+            }
+            that.datas = that.datas.concat(datas);
+          }
+          that.page++;
+
+
+        } else {
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '获取数据失败' });
+
+          }
+        }
+      }).catch(function (e) {
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '获取数据失败' });
+
+      });
+    },
+
     getimg: function getimg(img) {
       console.log(_service.default.getimg(img));
       return _service.default.getimg(img);
+    },
+    getimgarr: function getimgarr(img) {
+      return _service.default.getimgarr(img);
     },
     myUpload: function myUpload(rsp) {
       var that = this;

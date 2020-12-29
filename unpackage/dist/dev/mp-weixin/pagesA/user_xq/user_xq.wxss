@@ -187,7 +187,8 @@
 	color: #F4691A;
 	position: absolute;
 	top: -10rpx;
-	right: -18rpx;
+	/* right: -18upx; */
+	left: 30rpx;
 }
 .pl_num.data-v-22dc9d47{
 	font-size: 24rpx;
