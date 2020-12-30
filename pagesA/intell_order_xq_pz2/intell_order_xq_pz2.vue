@@ -17,7 +17,7 @@
 						<view class="sg_bz">{{datas.before.comments}}</view>
 						<view class="jd_msgbox_img">
 							<view class="pz_img" v-for="(item,index) in getimgarr(datas.before.photo)">
-								<image :src="item" mode="aspectFill" @tap="pveimg" :data-src="item"></image>
+								<image :src="item" mode="aspectFill" @tap="pveimg" :data-src="item" lazy-load="true"></image>
 							</view>
 						</view>
 					</view>
@@ -30,11 +30,11 @@
 				<view class="jd_msgbox jd_msgbox1">
 					<block v-if="datas.under">
 						<block v-for="(item,index) in datas.under">
-							<view class="sg_bz">今天干了点这个</view>
-							<view class="sg_bz_time">2020.06.08 12:00</view>
+							<view class="sg_bz">{{item.comments?item.comments:''}}</view>
+							<view class="sg_bz_time">{{item.created_at}}</view>
 							<view class="jd_msgbox_img">
-								<view class="pz_img" v-for="(item,index) in 6">
-									<image :src="item" mode="aspectFill" @tap="pveimg" :data-src="item"></image>
+								<view class="pz_img" v-for="(item1,inde1x) in getimgarr(item.photo)">
+									<image :src="item1" mode="aspectFill" @tap="pveimg" :data-src="item1" lazy-load="true"></image>
 								</view>
 
 							</view>
@@ -203,7 +203,7 @@
 					type: 'under',
 					order_num: that.order_num,
 					photo: that.sj_img.join(','),
-					comments: that.content
+					comments: that.bz_content
 				}
 				var jkurl = "/engineer/schedule"
 				service.P_post(jkurl, datas).then(res => {
@@ -269,7 +269,7 @@
 					type: ' finish',
 					order_num: that.order_num,
 					photo: that.sj_img.join(','),
-					comments: that.content
+					comments: that.bz_content2
 				}
 				var jkurl = "/engineer/schedule"
 				service.P_post(jkurl, datas).then(res => {
