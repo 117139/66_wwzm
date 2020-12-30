@@ -1,65 +1,97 @@
 <template>
 	<view style="min-height: 100vh;background: #fafafa;">
-		<view class="order_status dis_flex aic ju_b">
-			<view style="font-size: 30upx;color: #F34826;">施工中</view>
-			<view style="font-size: 24upx;color: #222;">166656461313126</view>
+		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+		<view v-if="htmlReset==-1"  class="loading_def">
+				<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
 		</view>
-		<view class="index_li_d1">
-			<!-- <image class="index_tx" :src="getimg('/static/images/tx_m2.jpg')" lazy-load="true" mode="aspectFill"></image> -->
-			<view class="index_yz">施工师傅：<text>孙三三</text></view>
-			<view @tap="call" data-tel="18300000000" class="iconfont iconphone" style="color: #11A078;"></view>
-		</view>
-		<view class="order_li_tit">安防套餐</view>
-		<view class="order_li_msg">
-		
-			<scroll-view class="weixin_dblist" scroll-x="true" bindscroll="scroll" style="width: 100%">
-		
-				<view v-for="(item,index) in taocan_list" class="taocan_li" @tap="jump" :data-url="'/pagesA/user_goods_xq/user_goods_xq?id='+index">
-					<image class="taocan_li_img" :src="getimg('/static/images/business/tc_img_03.png')" mode="aspectFit"></image>
-					<view class="taocan_li_msg oh2">{{item.name}}</view>
-					<view class="taocan_li_pri"><text style="font-size: 18upx;">￥</text>998</view>
-				</view>
-			</scroll-view>
-		</view>
-		
-		<view class="pz2_box">
-			<view class="pz2_box_tit">施工进度</view>
-			<view class="jd_tit">
-				<text class="iconfont iconxingzhuangjiehe"></text>
-				<text>施工前</text>
-			</view>
-			<view class="jd_msgbox">
-				<view class="sg_bz">施工前备注</view>
-				<view class="jd_msgbox_img">
-					<view class="pz_img" v-for="(item,index) in 6">
-						<image src="/static/images/tx_m2.jpg" mode="aspectFill"  @tap="pveimg"
-						data-src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1306508493,2006189766&fm=26&gp=0.jpg" ></image>
-					</view>
-				</view>
-			</view>
-			<view class="jd_tit jd_tit1">
-				<text class="iconfont iconduigou"></text>
-				<text>施工中</text>
-			</view>
+		<block v-if="htmlReset==0">
 			
-			<view class="jd_msgbox jd_msgbox1">
-				<block v-for="(item,index) in 3">
-					<view class="sg_bz">今天干了一天体力活，累死我了。早上7点干到下午5点30分。拆这个棚子。10个人干，一人220块钱。现在干的全身无力，全身起码要痛7，8天。比工地 小工还辛苦啊。感觉有点划不来</view>
-					<view class="sg_bz_time">2020.06.08 12:00</view>
-					<view class="jd_msgbox_img">
-						<view class="pz_img" v-for="(item,index) in 6">
-							<image src="/static/images/tx_m2.jpg" mode="aspectFill"  @tap="pveimg"
-							data-src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1306508493,2006189766&fm=26&gp=0.jpg" ></image>
+				<view class="order_status dis_flex aic ju_b">
+					<view v-if="datas.status==1" style="font-size: 30upx;">待处理</view>
+					<view v-else-if="datas.status==2"  style="font-size: 30upx;color: #F34826;">施工中</view>
+					<view v-else  style="font-size: 30upx;color:#52B0FF;">已结束</view>
+					<view style="font-size: 24upx;color: #222;">{{datas.order_num}}</view>
+				</view>
+				<view class="index_li_d1">
+					<!-- <image class="index_tx" :src="getimg('/static/images/tx_m2.jpg')" lazy-load="true" mode="aspectFill"></image> -->
+					<view class="index_yz">施工师傅：<text>{{datas.engineer_name}}</text></view>
+					<view @tap="call" :data-tel="datas.engineer_phone" class="iconfont iconphone" style="color: #11A078;"></view>
+				</view>
+				<view class="order_li_tit">安防套餐</view>
+				<view class="order_li_msg">
+				
+					<scroll-view class="weixin_dblist" scroll-x="true" bindscroll="scroll" style="width: 100%">
+				
+						<view v-for="(item,index) in datas.goods_list" class="taocan_li" @tap="jump" :data-url="'/pagesA/user_goods_xq/user_goods_xq?id='+item.id">
+							<image class="taocan_li_img" :src="getimg(item.cover)" mode="aspectFit"></image>
+							<view class="taocan_li_msg oh2">{{item.title}}</view>
+							<view class="taocan_li_pri"><text style="font-size: 18upx;">￥</text>{{item.price}}</view>
+						</view>
+					</scroll-view>
+				</view>
+				
+				<view class="pz2_box">
+					<view class="pz2_box_tit">施工进度</view>
+					<block v-if="datas.before">
+						<view class="jd_tit">
+							<text class="iconfont iconxingzhuangjiehe"></text>
+							<text>施工前</text>
+						</view>
+						<view class="jd_msgbox">
+							<view class="sg_bz">{{datas.before.comments}}</view>
+							<view class="jd_msgbox_img">
+								<view class="pz_img" v-for="(item,index) in getimgarr(datas.before.photo)">
+									<image :src="item" mode="aspectFill"  @tap="pveimg" :data-src="item" ></image>
+								</view>
+							</view>
+						</view>
+					</block>
+					
+					<block v-if="datas.under">
+						<view v-if="datas.under.length>0" class="jd_tit jd_tit1">
+							<text class="iconfont iconduigou"></text>
+							<text>施工中</text>
 						</view>
 						
-					</view>
-				</block>
+						<view v-if="datas.under.length>0" class="jd_msgbox jd_msgbox1">
+							<block v-for="(item,index) in datas.under">
+								<view class="sg_bz">{{item.comments}}</view>
+								<view class="sg_bz_time">{{item.created_at}}</view>
+								<view class="jd_msgbox_img">
+									<view class="pz_img" v-for="(item1,index1) in getimgarr(item.photo)">
+										<image :src="item1" mode="aspectFill"  @tap="pveimg" :data-src="item1" ></image>
+									</view>
+									
+								</view>
+							</block>
+							
+						</view>
+					</block>
+					<block v-if="datas.finish">
+						<view  class="jd_tit jd_tit2">
+							<text class="iconfont iconduigou"></text>
+							<text>已结束</text>
+						</view>
+						
+						<view class="jd_msgbox jd_msgbox1">
+							
+								<view v-if="datas.finish.comments" class="sg_bz">{{datas.finish.comments}}</view>
+								<view class="sg_bz_time">{{datas.finish.created_at}}</view>
+								<view class="jd_msgbox_img">
+									<view class="pz_img" v-for="(item1,index1) in getimgarr(datas.finish.photo)">
+										<image :src="item1" mode="aspectFill"  @tap="pveimg" :data-src="item1" ></image>
+									</view>
+									
+								</view>
+							
+						</view>
+					</block>
+					
+					
+					
+				</view>
 				
-			</view>
-			
-			
-		</view>
-		
+		</block>
 	</view>
 </template>
 
@@ -73,105 +105,90 @@
 	export default {
 		data() {
 			return {
+				id:'',
 				bz_content:'',
 				sj_img:[],
 				bz_content2:'',
 				sj_img2:[],
-				taocan_list: [{
-						name: 'Mini 主机',
-						id: 1
-					},
-					{
-						name: '门窗传感器',
-						id: 2
-					},
-					{
-						name: '智能可燃气体报警器多功能更安全快速防',
-						id: 3
-					},
-					{
-						name: '智能门锁 T1C',
-						id: 4
-					},
-					{
-						name: 'Mini 主机',
-						id: 1
-					},
-					{
-						name: '门窗传感器',
-						id: 2
-					},
-					{
-						name: '智能可燃气体报警器多功能更安全快速防',
-						id: 3
-					},
-					{
-						name: '智能门锁 T1C',
-						id: 4
-					},
-				],
+				datas: '',
+				htmlReset: -1,
 			}
 		},
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data']),
 		},
-		onLoad() {
+		onLoad(option) {
 			that=this
+			this.id=option.id
+			this.getdata()
+		},
+		onPullDownRefresh() {
+			this.getdata()
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
-			sub(){
-				if(this.sj_img.length==0){
-					uni.showToast({
-						icon:'none',
-						title:'请上传图片'
-					})
-					return
-				}
-				uni.showToast({
-					icon:'none',
-					title:'上传成功'
-				})
-				var datas={
-					sj_img:that.sj_img.join(','),
-					content:that.content
-				}
-				console.log(datas)
-				setTimeout(()=>{
-					uni.navigateBack({
-						delta:2
-					})
-				},1000)
+			onRetry(){
+				this.getdata()
 			},
-			sub1(){
-				if(this.sj_img2.length==0){
+			getdata() {
+				var that =this
+				var jkurl = '/user/rate'
+				var datas = {
+					token: that.loginDatas.token || '',
+					id: that.id,
+				}
+				
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset=0
+						var datas = res.data
+						console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+			
+						that.datas = datas
+			
+					} else {
+						that.htmlReset=1
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				}).catch(e => {
+						that.htmlReset=1
+					that.btn_kg = 0
+					console.log(e)
 					uni.showToast({
-						icon:'none',
-						title:'请上传图片'
+						icon: 'none',
+						title: '获取数据失败'
 					})
-					return
-				}
-				uni.showToast({
-					icon:'none',
-					title:'上传成功'
 				})
-				var datas={
-					sj_img:that.sj_img2.join(','),
-					content:that.content2
-				}
-				console.log(datas)
-				setTimeout(()=>{
-					uni.navigateBack({
-						delta:2
-					})
-				},1000)
 			},
 			getimg(img) {
 				console.log(service.getimg(img))
 				return service.getimg(img)
 			},
+			getimgarr(img){
+				return service.getimgarr(img)
+			},
 			pveimg(e){
 				service.pveimg(e)
+			},
+			call(e){
+				service.call(e)
 			},
 			upimg(e) {
 				var that = this
@@ -293,8 +310,20 @@
 						}
 					}
 				})
-			}
-					
+			},
+			jump(e) {
+				var that = this
+				if (that.btn_kg == 1) {
+					return
+				} else {
+					that.btn_kg = 1
+					setTimeout(function() {
+						that.btn_kg = 0
+					}, 1000)
+				}
+			
+				service.jump(e)
+			},
 		}
 	}
 </script>
@@ -467,6 +496,9 @@
  .jd_tit1{
  	color: #222222;
  }
+ .jd_tit2{
+	 color: #52B0FF;
+ }
  .jd_msgbox1{
  	border-left: 1px solid #EEEEEE;
  }
@@ -494,12 +526,12 @@
  	height: 60upx;
  	font-size: 28upx;
  }
- .jd_tit2{
+ /* .jd_tit2{
  	color: #666;
  }
  .jd_tit2 .iconfont{
  	color: #BBB;
- }
+ } */
  .jd_msgbox2{
  	border-left: 1px solid rgba(0,0,0,0);
  	margin-bottom: 0;

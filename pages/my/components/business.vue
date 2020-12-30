@@ -26,7 +26,7 @@
 				</view>
 				<view class="flex_1">
 					<view class="user_name">{{loginDatas.nickname}}</view>
-					<view class="user_time">{{loginDatas.gs}}</view>
+					<view class="user_time">{{loginDatas.company}}</view>
 					<image class="user_edit"  @tap="jump" data-url="/pagesA/user_edit/user_edit" :data-login='true' :data-haslogin='hasLogin' 
 					 :src="getimg('/static/images/user/my_edit.png')" mode="aspectFill"></image>
 				</view>
@@ -47,7 +47,7 @@
 			<view class="bus_my_li">
 				<view class="bus_my_li_tit dis_flex aic ju_b">
 					<view class="dis_flex aic bus_my_li_tit_text"><image src="../../../static/images/business/my_icon1.png" mode=""></image>合同完成统计</view>
-					<view class="li_more dis_flex aic">更多<text class="iconfont iconnext-m"></text></view>
+					<view class="li_more dis_flex aic" @tap="jump" data-url="/pagesA/bus_tj_list/bus_tj_list">更多<text class="iconfont iconnext-m"></text></view>
 				</view>
 				
 				<view class="dis_flex my_table my_table_tit">
@@ -95,6 +95,7 @@
 					<view class="my_td my_td1" style="color: #000;"><image class="td_ximg" src="../../../static/images/business/my_ximg_07.jpg" mode=""></image>500</view>
 				</view>
 			</view>
+			<view style="width: 100%;height: 10upx;"></view>
 		</view>
 		
 		
@@ -508,7 +509,7 @@
 		top: 210upx;
 		left: 30upx;
 		width: 690upx;
-		height: 195upx;
+		/* height: 195upx; */
 		/* background: #FFFFFF;
 		box-shadow: 0px 2px 10upx 0px rgba(0, 0, 0, 0.1);
 		border-radius: 10upx; */

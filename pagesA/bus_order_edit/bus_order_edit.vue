@@ -20,11 +20,15 @@
 						<input v-model="yz_tel" placeholder="请输入业主联系电话" />
 					</view>
 				</view>
-				<view class="order_li">
+				<view class="order_li" style="position: relative;">
 					<view class="order_li_tit">业主地址</view>
-					<view class="order_li_msg">
-						<input v-model="yz_address" placeholder="请输入业主地址" />
+					<view @tap="moveToLocation" class="order_li_msg">
+						<!-- <input v-model="yz_address.name" placeholder="请输入业主地址"  disabled="true"/> <-->
+							
+							<text v-if="!yz_address.name" style="line-height: 87upx;font-size: 30upx;color: #666;">请选择地址</text>
+							<text v-else style="line-height: 87upx;font-size: 30upx;">{{yz_address.name}}</text>
 					</view>
+					<button v-if="!ldata" class="" open-type="openSetting" @opensetting='handler'>点击授权</button>
 				</view>
 				<picker class="order_li" @change="bindPickerChange" :value="taocan_index" :range="taocan_list" range-key="name" data-type="1">
 						<view class="order_li_tit">套内详单</view>
@@ -74,10 +78,12 @@
 <script>
 	import Vue from 'vue'
 	import service from '../../service.js';
+	import QQMapWX from '../../libs/qqmap-wx-jssdk.js';
 	import {
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var qqmapsdk
 	var that
 	export default {
 		data() {
@@ -85,6 +91,7 @@
 			            format: true
 			        })
 			return {
+				ldata:false,
 				gc_name:'',
 				yz_name:'',
 				yz_tel:'',
@@ -145,9 +152,93 @@
 		},
 		onLoad(){
 			that=this
+			wx.getSetting({
+			  success: (res) => {
+			    console.log(res.authSetting['scope.userLocation'])
+			    if (res.authSetting['scope.userLocation'] != undefined && res.authSetting['scope.userLocation'] != true) {//非初始化进入该页面,且未授权
+			      that.ldata= false
+			    } else if (res.authSetting['scope.userLocation'] == undefined) {//初始化进入
+			      // that.getLocation(that);
+			      that.ldata= false
+			    }
+			    else { //授权后默认加载
+			      console.log('授权后默认加载')
+			      // that.getLocation(that);
+			     that.ldata=  true
+			    }
+			  }
+			})
+			qqmapsdk = new QQMapWX({
+			  //此key需要用户自己申请
+			  key: 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'
+			});
+			// 调用接口
+			qqmapsdk.reverseGeocoder({
+			  success: function (res) {
+			    console.log(res);
+			  },
+			  fail: function (res) {
+			    //console.log(res);
+			
+			  },
+			  complete: function (res) {
+			    console.log(res);
+			  }
+			});
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform', 'setfj_data']),
+			handler: function (e) {
+			  var that = this;
+			  if (!e.detail.authSetting['scope.userLocation']) {
+			   that.ldata=false
+			  } else {
+			    that.ldata=true
+			//     // 调用接口
+			//     // 实例化API核心类
+			//     qqmapsdk = new QQMapWX({
+			//       //此key需要用户自己申请
+			//       key: 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'
+			//     });
+			//     qqmapsdk.reverseGeocoder({
+			//       success: function (res) {
+			//         console.log(res);
+			       
+			//       },
+			//       fail: function (res) {
+			//         //console.log(res);
+			
+			//       },
+			//       complete: function (res) {
+			//         //console.log(res);
+			//       }
+			//     });
+			    
+			  }
+			},
+			
+			//移动选点
+			moveToLocation: function () {
+			  var that = this;
+			  wx.chooseLocation({
+			    success: function (res) {
+			      console.log(res);
+			      console.log(res.name);
+						var add_data={
+							address: res.address,
+							latitude: res.latitude,
+							longitude: res.longitude,
+							name: res.name,
+						}
+			     that.yz_address=add_data
+			      // that.set_add(res.name)
+			    
+			    },
+			    fail: function (err) {
+			      console.log(err)
+			    }
+			  });
+			},
 			sub(){
 				if(!this.gc_name){
 					uni.showToast({
@@ -199,26 +290,69 @@
 					return
 				}
 				var datas={
-					yz_name:that.yz_name,
-					yz_tel:that.yz_tel,
-					yz_address:that.yz_address,
-					taocan_list:that.taocan_list[that.taocan_index].id||0,
-					fzr_name:that.fzr_name,
-					fzr_tel:that.fzr_tel,
-					date:that.date,
-					hetong_list:that.hetong_list[that.hetong_index].id||0,
-					yz_yaoqiu:that.yz_yaoqiu
+					order_name:that.gc_name,
+					owner_name:that.yz_name,
+					owner_phone:that.yz_tel,
+					owner_address:that.yz_address,
+					goods_id:that.taocan_list[that.taocan_index].id||0,
+					functionary:that.fzr_name,
+					functionary_phone:that.fzr_tel,
+					time:that.date,
+					agreement_id:that.hetong_list[that.hetong_index].id||0,
+					owner_demand:that.yz_yaoqiu
 				}
 				console.log(datas)
-				uni.showToast({
-					icon:'none',
-					title:'提交成功'
-				})
-				setTimeout(()=>{
-					uni.navigateBack({
-						delta:1
+				///order/create
+				service.P_post(jkurl, datas).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						console.log(typeof datas)
+							
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+							
+						uni.showToast({
+							icon:'none',
+							title:'操作成功'
+						})
+						console.log(datas)
+						var pages = getCurrentPages();   //当前页面
+						var prevPage = pages[pages.length - 2];   //上一页面
+						prevPage.setData({
+						  //直接给上一个页面赋值
+						  order_new: true,
+						});
+						setTimeout(()=>{
+							uni.navigateBack({
+								delta:1
+							})
+						},1000)
+					} else {
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '操作失败'
 					})
-				},1000)
+				})
+				
 			},
 			bindPickerChange: function(e) {
 					console.log('picker发送选择改变，携带值为', e.currentTarget.dataset)
@@ -307,5 +441,15 @@
 		color: #00A079;
 		background: #FFFFFF;
 		border-radius: 10px;
+	}
+	
+	.order_li button {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		left: 0;
+		z-index: 10;
+		opacity: 0;
 	}
 </style>

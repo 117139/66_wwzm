@@ -1,45 +1,51 @@
 <template>
 	<view class="content_wrap" style="min-height: 100vh;background: #fafafa;">
-	<view class="index_list">
-			<view class="index_li" v-for="(item,index) in datas" >
-				<view class="li_d1" @tap="jump" :data-url="'/pagesA/user_xq/user_xq?id='+item.id">
-					<view class="li_user ">
-						<image class="flex_0" :src="getimg(item.owner_cover)" mode="aspectFill"></image>
-						<text class="oh1">{{item.owner_nickname}}</text>
-					</view>
-					<view class="li_msg">{{item.title}}</view>
-				</view>
-				<view class="li_img" @tap="jump" :data-url="'/pagesA/user_xq/user_xq?id='+item.id">
-					<image :src="getimgarr(item.photo)[0]" mode="aspectFill"></image>
-				</view>
-				<view class="li_cz">
-					<view class="cz_li">
-						<button type="default" open-type="share" :data-id="item.id"></button>
-						<text class="iconfont iconfenxiang1"></text>
-					</view>
-					<view class="dis_flex aic"  @tap="jump" :data-url="'/pagesA/user_xq/user_xq?id='+item.id">
-						<view class="cz_li">
-							<text class="iconfont iconpinlun"></text>
-						</view>
-						<!-- <view class="cz_li">
-							<text class="iconfont iconshoucang"></text>
-							<text class="cz_num">33</text>
-						</view> -->
-						<view class="cz_li">
-							<text v-if="item.like_status==1" class="iconfont iconzan3" style="color: #F4691A;"></text>
-							<text v-else class="iconfont iconzan2"></text>
-							<text v-if="item.like_count>0" class="cz_num">{{item.like_count}}</text>
-						</view>
-
-					</view>
-				</view>
-			</view>
-			<view v-if="datas.length==0" class="zanwu">暂无数据</view>
-			<view v-if="data_last" class="data_last">我可是有底线的哟~~~</view>
-			<!-- <view  class="data_last">我可是有底线的哟~~~</view> -->
-			<image class="user_add" src="../../static/images/user_add.png" mode="aspectFill"  @tap="jump" data-url="/pagesA/user_img_add/user_img_add"></image>
-			
+		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+		<view v-if="htmlReset==-1"  class="loading_def">
+				<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
 		</view>
+		<block v-if="htmlReset==0">
+			<view class="index_list">
+				<view class="index_li" v-for="(item,index) in datas">
+					<view class="li_d1" @tap="jump" :data-url="'/pagesA/user_xq/user_xq?id='+item.id">
+						<view class="li_user ">
+							<image class="flex_0" :src="getimg(item.owner_cover)" mode="aspectFill"></image>
+							<text class="oh1">{{item.owner_nickname}}</text>
+						</view>
+						<view class="li_msg">{{item.title}}</view>
+					</view>
+					<view class="li_img" @tap="jump" :data-url="'/pagesA/user_xq/user_xq?id='+item.id">
+						<image :src="getimgarr(item.photo)[0]" mode="aspectFill"></image>
+					</view>
+					<view class="li_cz">
+						<view class="cz_li">
+							<button type="default" open-type="share" :data-id="item.id"></button>
+							<text class="iconfont iconfenxiang1"></text>
+						</view>
+						<view class="dis_flex aic" @tap="jump" :data-url="'/pagesA/user_xq/user_xq?id='+item.id">
+							<view class="cz_li">
+								<text class="iconfont iconpinlun"></text>
+							</view>
+							<!-- <view class="cz_li">
+								<text class="iconfont iconshoucang"></text>
+								<text class="cz_num">33</text>
+							</view> -->
+							<view class="cz_li">
+								<text v-if="item.like_status==1" class="iconfont iconzan3" style="color: #F4691A;"></text>
+								<text v-else class="iconfont iconzan2"></text>
+								<text v-if="item.like_count>0" class="cz_num">{{item.like_count}}</text>
+							</view>
+
+						</view>
+					</view>
+				</view>
+				<view v-if="datas.length==0" class="zanwu">暂无数据</view>
+				<view v-if="data_last" class="data_last">我可是有底线的哟~~~</view>
+				<!-- <view  class="data_last">我可是有底线的哟~~~</view> -->
+				<image class="user_add" src="../../static/images/user_add.png" mode="aspectFill" @tap="jump" data-url="/pagesA/user_img_add/user_img_add"></image>
+
+			</view>
+		</block>
 	</view>
 </template>
 
@@ -62,31 +68,32 @@
 
 				banner: [],
 				datas: [],
-				page:1,
-				size:20,
+				page: 1,
+				size: 20,
 				PageScroll: '',
 				fk_show: false,
 				tk_show: true,
-				tximg: '/static/logo.png'
+				tximg: '/static/logo.png',
+				htmlReset:-1
 			};
 		},
 		onLoad() {
-			that=this
+			that = this
 			this.onRetry()
 		},
 		onShow() {
 			let pages = getCurrentPages();
 			let currPage = pages[pages.length - 1];
-			if (currPage.data.img_new) {  
-			      //将携带的参数赋值
-			        
-			    that.onRetry()
-			    // this.addressBack=true 
-					currPage.setData({
-					  //直接给上一个页面赋值
-					  img_new: false,
-					});
-				
+			if (currPage.data.img_new) {
+				//将携带的参数赋值
+
+				that.onRetry()
+				// this.addressBack=true 
+				currPage.setData({
+					//直接给上一个页面赋值
+					img_new: false,
+				});
+
 			}
 		},
 		computed: {
@@ -99,7 +106,7 @@
 			that.getdata()
 		},
 		onShareAppMessage(res) {
-			
+
 			if (res.from === 'button') {
 				console.log(res.target.dataset.type)
 				// this.setData({
@@ -107,11 +114,11 @@
 				// })
 			}
 			return {
-			  title: '万屋智能',
-			  path: '/pagesA/user_xq/user_xq?type=fwcz&id='+res.target.dataset.id,
-			  success: function (res) {
-			    console.log('成功', res)
-			  }
+				title: '万屋智能',
+				path: '/pagesA/user_xq/user_xq?type=fwcz&id=' + res.target.dataset.id,
+				success: function(res) {
+					console.log('成功', res)
+				}
 			}
 		},
 		methods: {
@@ -123,7 +130,7 @@
 				this.getdata()
 			},
 			getdata() {
-			
+
 				///api/info/list
 				var that = this
 				var data = {
@@ -148,15 +155,16 @@
 					that.btn_kg = 0
 					console.log(res)
 					if (res.code == 1) {
+						that.htmlReset=0
 						var datas = res.data
 						console.log(typeof datas)
-			
+
 						if (typeof datas == 'string') {
 							datas = JSON.parse(datas)
 						}
-			
+
 						if (page_that == 1) {
-			
+
 							that.datas = datas
 						} else {
 							if (datas.length == 0) {
@@ -166,9 +174,10 @@
 							that.datas = that.datas.concat(datas)
 						}
 						that.page++
-			
-			
+
+
 					} else {
+						that.htmlReset=1
 						if (res.msg) {
 							uni.showToast({
 								icon: 'none',
@@ -182,6 +191,7 @@
 						}
 					}
 				}).catch(e => {
+					that.htmlReset=1
 					that.btn_kg = 0
 					console.log(e)
 					uni.showToast({
@@ -190,7 +200,7 @@
 					})
 				})
 			},
-			
+
 			getimg(img) {
 				console.log(service.getimg(img))
 				return service.getimg(img)
@@ -253,8 +263,6 @@
 </script>
 
 <style scoped>
-	
-
 	.index_list {
 		width: 100%;
 		padding: 20upx 30upx;
@@ -301,7 +309,7 @@
 		height: 345upx;
 	}
 
-	.li_img image{
+	.li_img image {
 		width: 100%;
 		height: 100%;
 	}
@@ -326,7 +334,8 @@
 		margin-right: 30upx;
 		position: relative;
 	}
-	.cz_li button{
+
+	.cz_li button {
 		position: absolute;
 		top: 0;
 		bottom: 0;
@@ -335,11 +344,12 @@
 		z-index: 10;
 		opacity: 0;
 	}
-	
+
 	.cz_li .iconfont {
 		font-size: 32upx;
 	}
-	.cz_num{
+
+	.cz_num {
 		font-size: 20upx;
 		color: #F4691A;
 		position: absolute;
@@ -347,7 +357,8 @@
 		/* right: -18upx; */
 		left: 30upx;
 	}
-	.user_add{
+
+	.user_add {
 		width: 153upx;
 		height: 153upx;
 		position: fixed;

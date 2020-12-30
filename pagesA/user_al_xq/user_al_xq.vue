@@ -1,16 +1,22 @@
 <template>
 	<view style="min-height: 100vh; background: #fff;">
-		<view class="al_xq">
-			<view class="al_tit">{{datas.title}}</view>
-			<view v-if="type==2" class="order_bqs">
-				<view v-if="datas.tag" class="order_bq" v-for="(item1,index1) in getarr(datas.tag)">{{item1}}</view>
-			</view>
-			
-			<view class="xq_img">
-				<image v-for="(item,index) in getimgarr(datas.photo)" :src="getimg(item)" mode="widthFix" lazy-load="true"  @tap="pveimg" :data-src="getimg(item)"></image>
-			</view>
-			<view class="xq_xq" v-html="get_fwb(datas.content)"></view>
+		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+		<view v-if="htmlReset==-1"  class="loading_def">
+				<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
 		</view>
+		<block v-if="htmlReset==0">
+			<view class="al_xq">
+				<view class="al_tit">{{datas.title}}</view>
+				<view v-if="type==2" class="order_bqs">
+					<view v-if="datas.tag" class="order_bq" v-for="(item1,index1) in getarr(datas.tag)">{{item1}}</view>
+				</view>
+				
+				<view class="xq_img">
+					<image v-for="(item,index) in getimgarr(datas.photo)" :src="getimg(item)" mode="widthFix" lazy-load="true"  @tap="pveimg" :data-src="getimg(item)"></image>
+				</view>
+				<view class="xq_xq" v-html="get_fwb(datas.content)"></view>
+			</view>
+		</block>
 	</view>
 </template>
 
@@ -26,7 +32,8 @@
 			return {
 				type:'',
 				id:'',
-				datas:''
+				datas:'',
+				htmlReset:-1
 			}
 		},
 		computed: {
@@ -42,6 +49,9 @@
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
+			onRetry(){
+				that.getdata()
+			},
 			getdata() {
 				var that =this
 				var jkurl = '/data/refer_record'
@@ -65,6 +75,7 @@
 					that.btn_kg = 0
 					console.log(res)
 					if (res.code == 1) {
+						that.htmlReset=0
 						var datas = res.data
 						console.log(typeof datas)
 			
@@ -76,6 +87,7 @@
 						that.datas = datas
 			
 					} else {
+						that.htmlReset=1
 						if (res.msg) {
 							uni.showToast({
 								icon: 'none',
@@ -89,6 +101,7 @@
 						}
 					}
 				}).catch(e => {
+						that.htmlReset=1
 					that.btn_kg = 0
 					console.log(e)
 					uni.showToast({

@@ -137,16 +137,7 @@
 			// service.wxlogin()
 		},
 		computed: {
-			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data']),
-
-			style0() {
-				var StatusBar = this.StatusBar;
-				var CustomBar = this.CustomBar;
-				var padd_top = CustomBar
-				var style = `padding-top:${padd_top}px;`;
-
-				return style
-			},
+			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas']),
 			style() {
 				var StatusBar = this.StatusBar;
 				var CustomBar = this.CustomBar;
@@ -154,20 +145,6 @@
 
 				return style
 			},
-
-			style1() {
-				var StatusBar = this.StatusBar;
-				var style = `top:${StatusBar}px;`;
-
-				return style
-			},
-			style2() {
-				var StatusBar = this.StatusBar;
-				var CustomBar = this.CustomBar;
-				var style = `padding-top:${CustomBar}px;`;
-
-				return style
-			}
 		},
 
 		
@@ -175,8 +152,8 @@
 			hasLogin(newval,oldval){
 				console.log(newval)
 				if(newval==true){
-					this.btn_kg=0
-					this.onRetry()()
+					that.btn_kg=0
+					that.onRetry()
 				}
 			}
 		},
@@ -191,6 +168,8 @@
 			},
 			onRefresh() {
 				if (this.btn_kg == 1) {
+					that.triggered=false
+					that._freshing =false
 					return
 				}
 				if (that._freshing) return;

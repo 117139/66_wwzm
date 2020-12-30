@@ -1,67 +1,71 @@
 <template>
 	<view style="min-height: 100vh;background: #fafafa;">
-		<view class="goods">
-
-			<view class="goods1" v-for="(item,idx) in datas" :data-tab="idx">
-
-				<view class="xuanze" @tap.stop="select(idx)">
-					<view class="xuanze1 " :class="item.xuan==true? 'xuanze2':''">
-						<text v-if="item.xuan==true" class="iconfont iconduigou" style="color: #F4691A;"></text>
-					</view>
-				</view>
-				<view class="goodsImg" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
-					<image class="goodsImg" :lazy-load='true' :src="getimg(item.cover)" mode="aspectFill"></image>
-				</view>
-				<view class="goodsinr" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
-					<view class="goodsname fz30 c30 oh1">{{item.title}}</view>
-					<view class="goodsname1">
-						<text>{{item.description}}</text>
-					</view>
-					<view class="dis_flex aic ju_b">
-						<view class="goodspri1">
-							<text style="font-size: 24upx;">￥</text><text class="">{{item.price}}</text>
+		
+		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+		<view v-if="htmlReset==-1"  class="loading_def">
+				<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
+		</view>
+		<block v-if="htmlReset==0">
+			<view class="goods">
+			
+				<view class="goods1" v-for="(item,idx) in datas" :data-tab="idx">
+			
+					<view class="xuanze" @tap.stop="select(idx)">
+						<view class="xuanze1 " :class="item.xuan==true? 'xuanze2':''">
+							<text v-if="item.xuan==true" class="iconfont iconduigou" style="color: #F4691A;"></text>
 						</view>
-						<view class="goodspri1">
-
-							<!-- <text class="fz30 c9">库存：{{item.sku_number}}</text> -->
-							<text class="fz30 c9" v-if="item.sku_number < item.number">库存不足</text>
-							<text class="fz30 c9" v-else></text>
-
-							<view class="vstepper steppera">
-								<view v-if="item.num==1" class="vantjian c9" style="color: #aaa;">-</view>
-								<view v-else @tap.stop="onNum" :data-idx="idx" data-ad="-" :data-id="item.id" class="vantjian">-</view>
-								<input class="vanipt c6" disabled :value="item.num"></input>
-								<view @tap.stop="onNum" :data-idx="idx" data-ad="+" :data-id="item.id" class="vantjia">+</view>
+					</view>
+					<view class="goodsImg" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
+						<image class="goodsImg" :lazy-load='true' :src="getimg(item.cover)" mode="aspectFill"></image>
+					</view>
+					<view class="goodsinr" @tap="jump" :data-url="'/pages/details/details?id='+item.id">
+						<view class="goodsname fz30 c30 oh1">{{item.title}}</view>
+						<view class="goodsname1">
+							<text>{{item.description}}</text>
+						</view>
+						<view class="dis_flex aic ju_b">
+							<view class="goodspri1">
+								<text style="font-size: 24upx;">￥</text><text class="">{{item.price}}</text>
+							</view>
+							<view class="goodspri1">
+			
+								<!-- <text class="fz30 c9">库存：{{item.sku_number}}</text> -->
+								<text class="fz30 c9" v-if="item.sku_number < item.number">库存不足</text>
+								<text class="fz30 c9" v-else></text>
+			
+								<view class="vstepper steppera">
+									<view v-if="item.quantity==1" class="vantjian c9" style="color: #aaa;">-</view>
+									<view v-else @tap.stop="onNum" :data-idx="idx" data-ad="-" :data-id="item.id" class="vantjian">-</view>
+									<input class="vanipt c6" disabled :value="item.quantity"></input>
+									<view @tap.stop="onNum" :data-idx="idx" data-ad="+" :data-id="item.id" class="vantjia">+</view>
+								</view>
 							</view>
 						</view>
 					</view>
 				</view>
+				<view v-if="datas.length==0" class="zanwu">暂无数据</view>
+				<view v-if="data_last" class="data_last">我可是有底线的哟~~~</view>
 			</view>
-			<view v-if="datas.length==0" class="zanwu">暂无数据</view>
-			<view v-if="data_last" class="data_last">我可是有底线的哟~~~</view>
-		</view>
-
-
-
-
-		<view class="pl_bbox">
-			<view class="xq_cz dis_flex aic ju_b">
-				<view class="selecAll" @tap="selecAll">
-					<view class="xuanze1 all " :class="all==true? 'xuanze2':''">
-						<!-- <icon v-if="all==true" type="success" size="16" color="#F7B43B" /> -->
-						<text v-if="all==true" class="iconfont iconduigou" style="color: #F4691A;"></text>
+			<view class="pl_bbox">
+				<view class="xq_cz dis_flex aic ju_b">
+					<view class="selecAll" @tap="selecAll">
+						<view class="xuanze1 all " :class="all==true? 'xuanze2':''">
+							<!-- <icon v-if="all==true" type="success" size="16" color="#F7B43B" /> -->
+							<text v-if="all==true" class="iconfont iconduigou" style="color: #F4691A;"></text>
+						</view>
+						全选
 					</view>
-					全选
+					<view class="heji flex_1">
+						<!-- <view><text class="fz26">合计:</text>￥{{sum}}</view>
+						<view class="fz22 c9">不含运费</view> -->
+					</view>
+					<view class="hj_pri">合计：<text style="font-size: 24upx;">￥</text><text>99.22</text></view>
+					<view class="jiesuan jiesuan1" @tap="cardel">删除</view>
+					<view class="jiesuan" @tap="openOrder">保存方案</view>
 				</view>
-				<view class="heji flex_1">
-					<!-- <view><text class="fz26">合计:</text>￥{{sum}}</view>
-					<view class="fz22 c9">不含运费</view> -->
-				</view>
-				<view class="hj_pri">合计：<text style="font-size: 24upx;">￥</text><text>99.22</text></view>
-				<view class="jiesuan jiesuan1" @tap="cardel">删除</view>
-				<view class="jiesuan" @tap="openOrder">保存方案</view>
 			</view>
-		</view>
+		</block>
+		
 	</view>
 </template>
 
@@ -75,34 +79,12 @@
 	export default {
 		data() {
 			return {
-				datas: [{
-						id:1,
-						name: '智能水浸探测器',
-						jj: '白色多功能智能主机',
-						pri: '998',
-						num: '1',
-						img: '/static/images/user/goods_02.jpg',
-					},
-					{
-						id:2,
-						name: '智能水浸探测器',
-						jj: '白色多功能智能主机',
-						pri: '998',
-						num: '1',
-						img: '/static/images/user/goods_02.jpg',
-					},
-					{
-						id:3,
-						name: '智能水浸探测器',
-						jj: '白色多功能智能主机',
-						pri: '998',
-						num: '1',
-						img: '/static/images/user/goods_02.jpg',
-					},
-				],
+				datas: [],
 				page:1,
 				size:20,
-				all:false
+				all:false,
+				htmlReset:-1,
+				data_last:false
 			}
 		},
 		computed: {
@@ -140,6 +122,7 @@
 					that.btn_kg = 0
 					console.log(res)
 					if (res.code == 1) {
+						that.htmlReset=0
 						var datas = res.data
 						console.log(typeof datas)
 			
@@ -162,6 +145,7 @@
 						that.page++
 			
 					} else {
+						that.htmlReset=1
 						if (res.msg) {
 							uni.showToast({
 								icon: 'none',
@@ -175,6 +159,7 @@
 						}
 					}
 				}).catch(e => {
+					that.htmlReset=1
 					that.btn_kg = 0
 					console.log(e)
 					uni.showToast({

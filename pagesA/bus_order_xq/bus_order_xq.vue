@@ -1,88 +1,94 @@
 <template>
 	<view style="min-height: 100vh;background-color: #fff;">
 		<view style="width: 100%;height: 20upx;background: #fafafa;"></view>
-		<view class="order_box">
-			<view class="order_main">
-				<view  v-if="type==1" class="order_status">待结单</view>
-				<view  v-if="type!=1" class="order_status" style="color: #4793FA;">施工中</view>
-				<view class="order_li">
-					<view class="order_li_tit">业主名称</view>
-					<view class="order_li_msg">
-						刘也
-					</view>
-				</view>
-				<view class="order_li">
-					<view class="order_li_tit">业主联系电话</view>
-					<view class="order_li_msg">
-						18300000000
-					</view>
-				</view>
-				<view class="order_li" @tap="map_dp()">
-					<view class="order_li_tit">业主地址</view>
-					<view class="order_li_msg" >
-						<view class="flex_1">新天地世纪百货写字楼16-26号</view>
-						<view class="flex_0 iconfont icondizhizhuanhuan" style="opacity: 1;color: #222;"></view>
-					</view>
-				</view>
-				<view class="order_li">
-						<view class="order_li_tit">套内详单</view>
-						<view class="order_li_msg">
-							
-							<scroll-view class="weixin_dblist" scroll-x="true" bindscroll="scroll" style="width: 100%">
-								
-									<view v-for="(item,index) in taocan_list" class="taocan_li">
-										<image class="taocan_li_img" :src="getimg('/static/images/business/tc_img_03.png')" mode="aspectFit"></image>
-										<view class="taocan_li_msg oh2">{{item.name}}</view>
-										<view class="taocan_li_pri"><text style="font-size: 18upx;">￥</text>998</view>
-									</view>
-							</scroll-view>
-						</view>
-				</view>
-				<view class="order_li">
-					<view class="order_li_tit">负责人</view>
-					<view class="order_li_msg">
-						刘明
-					</view>
-				</view>
-				<view class="order_li">
-					<view class="order_li_tit">负责人联系方式</view>
-					<view class="order_li_msg">
-						15963520110
-					</view>
-				</view>
-				<view class="order_li">
-						<view class="order_li_tit">时间</view>
-						<view class="order_li_msg">
-							2020/10/10
-						</view>
-				</view>
-				<view class="order_li">
-						<view class="order_li_tit">合同</view>
-						<view class="order_li_msg">
-							中国房屋安装合同
-						</view>
-				</view>
-				<view v-if="type!=1" class="order_li">
-					<view class="order_li_tit">施工团队</view>
-					<view class="order_li_msg">
-						刘三珠施工团队
-					</view>
-				</view>
-				<view v-if="type!=1" class="order_li">
-					<view class="order_li_tit">施工团队联系方式</view>
-					<view class="order_li_msg">
-						1564283332
-					</view>
-				</view>
-				<view v-if="type!=1" class="order_li">
-					<view class="order_li_tit">客户要求</view>
-					<view class="order_li_msg">
-						比较着急，三天之内必须完成
-					</view>
-				</view>
-				<view class="order_bottom"></view>
-			</view>
+		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+		<view v-if="htmlReset==-1"  class="loading_def">
+				<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
 		</view>
+		<block v-if="htmlReset==0">
+			<view class="order_box">
+				<view class="order_main">
+					<view  v-if="type==1" class="order_status">待结单</view>
+					<view  v-if="type!=1" class="order_status" style="color: #4793FA;">施工中</view>
+					<view class="order_li">
+						<view class="order_li_tit">业主名称</view>
+						<view class="order_li_msg">
+							刘也
+						</view>
+					</view>
+					<view class="order_li">
+						<view class="order_li_tit">业主联系电话</view>
+						<view class="order_li_msg">
+							18300000000
+						</view>
+					</view>
+					<view class="order_li" @tap="map_dp()">
+						<view class="order_li_tit">业主地址</view>
+						<view class="order_li_msg" >
+							<view class="flex_1">新天地世纪百货写字楼16-26号</view>
+							<view class="flex_0 iconfont icondizhizhuanhuan" style="opacity: 1;color: #222;"></view>
+						</view>
+					</view>
+					<view class="order_li">
+							<view class="order_li_tit">套内详单</view>
+							<view class="order_li_msg">
+								
+								<scroll-view class="weixin_dblist" scroll-x="true" bindscroll="scroll" style="width: 100%">
+									
+										<view v-for="(item,index) in taocan_list" class="taocan_li">
+											<image class="taocan_li_img" :src="getimg('/static/images/business/tc_img_03.png')" mode="aspectFit"></image>
+											<view class="taocan_li_msg oh2">{{item.name}}</view>
+											<view class="taocan_li_pri"><text style="font-size: 18upx;">￥</text>998</view>
+										</view>
+								</scroll-view>
+							</view>
+					</view>
+					<view class="order_li">
+						<view class="order_li_tit">负责人</view>
+						<view class="order_li_msg">
+							刘明
+						</view>
+					</view>
+					<view class="order_li">
+						<view class="order_li_tit">负责人联系方式</view>
+						<view class="order_li_msg">
+							15963520110
+						</view>
+					</view>
+					<view class="order_li">
+							<view class="order_li_tit">时间</view>
+							<view class="order_li_msg">
+								2020/10/10
+							</view>
+					</view>
+					<view class="order_li">
+							<view class="order_li_tit">合同</view>
+							<view class="order_li_msg">
+								中国房屋安装合同
+							</view>
+					</view>
+					<view v-if="type!=1" class="order_li">
+						<view class="order_li_tit">施工团队</view>
+						<view class="order_li_msg">
+							刘三珠施工团队
+						</view>
+					</view>
+					<view v-if="type!=1" class="order_li">
+						<view class="order_li_tit">施工团队联系方式</view>
+						<view class="order_li_msg">
+							1564283332
+						</view>
+					</view>
+					<view v-if="type!=1" class="order_li">
+						<view class="order_li_tit">客户要求</view>
+						<view class="order_li_msg">
+							比较着急，三天之内必须完成
+						</view>
+					</view>
+					<view class="order_bottom"></view>
+				</view>
+			</view>
+		</block>
 	</view>
 </template>
 
@@ -102,84 +108,87 @@
 			})
 			return {
 				type:'',
-				taocan_list:[
-					{
-						name:'Mini 主机',
-						id:1
-					},
-					{
-						name:'门窗传感器',
-						id:2
-					},
-					{
-						name:'智能可燃气体报警器多功能更安全快速防',
-						id:3
-					},
-					{
-						name:'智能门锁 T1C',
-						id:4
-					},
-					{
-						name:'Mini 主机',
-						id:1
-					},
-					{
-						name:'门窗传感器',
-						id:2
-					},
-					{
-						name:'智能可燃气体报警器多功能更安全快速防',
-						id:3
-					},
-					{
-						name:'智能门锁 T1C',
-						id:4
-					},
-				],
-				taocan_index:0,
-				fzr_name:'',
-				fzr_tel:'',
-				date:currentDate,
-				hetong_list:[
-					{
-						name:'合同1',
-						id:1
-					},
-					{
-						name:'合同2',
-						id:2
-					},
-					{
-						name:'合同3',
-						id:3
-					},
-					{
-						name:'合同4',
-						id:4
-					},
-				],
-				hetong_index:0,
-				yz_yaoqiu:''
+				id:'',
+				datas:'',
+				htmlReset:-1
 				
 			}
 		},
 		computed: {
-			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas']),
-			startDate() {
-					return this.getDate('start');
-			},
-			endDate() {
-					return this.getDate('end');
-			}
+			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data']),
 		},
-		onLoad(option){
+		onLoad(option) {
 			that=this
-			this.type=option.type||0
+			this.id=option.id
+			this.getdata()
+		},
+		onPullDownRefresh() {
+			this.getdata()
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform', 'setfj_data']),
-			getimg(e){
-				return service.getimg(e)
+			onRetry(){
+				this.getdata()
+			},
+			getdata() {
+				var that =this
+				var jkurl = '/order/list'
+				var datas = {
+					token: that.loginDatas.token || '',
+					id: that.id,
+				}
+				
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset=0
+						var datas = res.data
+						console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+			
+						that.datas = datas
+			
+					} else {
+						that.htmlReset=1
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				}).catch(e => {
+						that.htmlReset=1
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败'
+					})
+				})
+			},
+			getimg(img) {
+				console.log(service.getimg(img))
+				return service.getimg(img)
+			},
+			getimgarr(img){
+				return service.getimgarr(img)
+			},
+			pveimg(e){
+				service.pveimg(e)
+			},
+			call(e){
+				service.call(e)
 			},
 			map_dp(data) {
 				let that = this
@@ -197,87 +206,7 @@
 				});
 			},
 			
-			sub(){
-				
-				if(!this.yz_name){
-					uni.showToast({
-						icon:'none',
-						title:'请填写业主姓名'
-					})
-					return
-				}
-				if(!this.yz_tel){
-					uni.showToast({
-						icon:'none',
-						title:'请填写业主联系方式'
-					})
-					return
-				}
-				if(!this.yz_address){
-					uni.showToast({
-						icon:'none',
-						title:'请填写业主地址'
-					})
-					return
-				}
-				if(!this.fzr_name){
-					uni.showToast({
-						icon:'none',
-						title:'请填写负责人姓名'
-					})
-					return
-				}
-				if(!this.fzr_tel){
-					uni.showToast({
-						icon:'none',
-						title:'请填写负责人联系方式'
-					})
-					return
-				}
-				if(!this.yz_yaoqiu){
-					uni.showToast({
-						icon:'none',
-						title:'请填写业主要求'
-					})
-					return
-				}
-				var datas={
-					yz_name:that.yz_name,
-					yz_tel:that.yz_tel,
-					yz_address:that.yz_address,
-					taocan_list:that.taocan_list[that.taocan_index].id||0,
-					fzr_name:that.fzr_name,
-					fzr_tel:that.fzr_tel,
-					date:that.date,
-					hetong_list:that.hetong_list[that.hetong_index].id||0,
-					yz_yaoqiu:that.yz_yaoqiu
-				}
-				console.log(datas)
-				uni.showToast({
-					icon:'none',
-					title:'提交成功'
-				})
-				setTimeout(()=>{
-					uni.navigateBack({
-						delta:1
-					})
-				},1000)
-			},
-			bindPickerChange: function(e) {
-					console.log('picker发送选择改变，携带值为', e.currentTarget.dataset)
-					console.log('picker发送选择改变，携带值为', e.target.value)
-					var datas=e.currentTarget.dataset
-					if(datas.type==1){ //套餐
-						this.taocan_index = e.target.value
-					}
-					if(datas.type==2){ //时间
-						this.date = e.target.value
-					}
-					if(datas.type==3){ //合同
-						this.hetong_index = e.target.value
-					}
-					
-			},
+			
 			getDate(type) {
 					const date = new Date();
 					let year = date.getFullYear();

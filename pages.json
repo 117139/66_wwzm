@@ -42,17 +42,15 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
 		}
-	    ,{
-            "path" : "pages/login/login",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"subPackages": [{
 		"root": "pagesA",
 		"pages": [{
@@ -257,16 +255,14 @@
 				"enablePullDownRefresh": false
 			}
 
-		}    ,{
-                    "path" : "bus_tj_list/bus_tj_list",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-            ]
+		}, {
+			"path": "bus_tj_list/bus_tj_list",
+			"style": {
+				"navigationBarTitleText": "合同完成统计",
+				"enablePullDownRefresh": true
+			}
+
+		}]
 	}],
 
 	"preloadRule": {

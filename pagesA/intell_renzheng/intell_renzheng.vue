@@ -14,17 +14,17 @@
 		</view>
 		<view class="rz_li dis_flex aic ju_b" style="margin-top: 20upx;"  @tap="upimg" data-type="1">
 			<view class="flex_1">身份证正面</view>
-			<image :src="img1?img1:'/static/images/intell/renzheng_03.jpg'" mode="aspectFill"></image>
+			<image :src="img1? getimg(img1):'/static/images/intell/renzheng_03.jpg'" mode="aspectFill"></image>
 			<text class="iconfont iconnext-m"></text>
 		</view>
 		<view class="rz_li dis_flex aic ju_b" @tap="upimg" data-type="2">
 			<view class="flex_1">身份证反面</view>
-			<image :src="img2?img2:'/static/images/intell/renzheng_07.jpg'" mode="aspectFill"></image>
+			<image :src="img2?getimg(img2):'/static/images/intell/renzheng_07.jpg'" mode="aspectFill"></image>
 			<text class="iconfont iconnext-m"></text>
 		</view>
 		<view class="rz_li dis_flex aic ju_b" @tap="upimg" data-type="3">
 			<view class="flex_1">手持证件照</view>
-			<image :src="img3?img3:'/static/images/intell/renzheng_09.jpg'" mode="aspectFill"></image>
+			<image :src="img3?getimg(img3):'/static/images/intell/renzheng_09.jpg'" mode="aspectFill"></image>
 			<text class="iconfont iconnext-m"></text>
 		</view>
 		<view class="sub_btn" @tap="sub">提交</view>
@@ -48,6 +48,9 @@
 				img2:'',
 				img3:'',
 			}
+		},
+		computed: {
+			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data']),
 		},
 		onLoad() {
 			that=this
@@ -75,7 +78,13 @@
 					})
 					return
 				}
-				
+				if (that.phone == '' || !(/^1\d{10}$/.test(that.phone))) {
+					wx.showToast({
+						icon: 'none',
+						title: '手机号有误'
+					})
+					return
+				}
 				if(!this.img1){
 					uni.showToast({
 						icon:'none',
@@ -98,23 +107,67 @@
 					return
 				}
 				var datas={
-					name:that.name,
-					id_cord:that.id_cord,
+					token:that.loginDatas.token,
+					truename:that.name,
+					id_number:that.id_cord,
 					phone:that.phone,
-					img1:that.img1,
-					img2:that.img2,
-					img3:that.img3,
+					id_front:that.img1,
+					id_the_back:that.img2,
+					id_in_hand:that.img3,
 				}
-				uni.showToast({
-					icon:'none',
-					title:'提交成功'
-				})
-				console.log(datas)
-				setTimeout(()=>{
-					uni.navigateBack({
-						delta:1
+				if (this.btn_kg == 1) {
+					return
+				}
+				this.btn_kg = 1
+				var jkurl="/user/truename"
+				service.P_post(jkurl, datas).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset=0
+						var datas = res.data
+						console.log(typeof datas)
+							
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						uni.showToast({
+							icon:'none',
+							title:'提交成功'
+						})
+						service.wxlogin()
+						console.log(datas)
+						setTimeout(()=>{
+							uni.navigateBack({
+								delta:1
+							})
+						},1000)
+							
+					} else {
+						that.htmlReset=1
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				}).catch(e => {
+						that.htmlReset=1
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '操作失败'
 					})
-				},1000)
+				})
+				
 			},
 			upimg(e) {
 				var that = this
@@ -138,7 +191,7 @@
 										console.log(res)
 										const tempFilePaths = res.tempFilePaths
 								
-										if(datas.type==1){
+										/*if(datas.type==1){
 											that.img1=tempFilePaths[0]
 										}
 										if(datas.type==2){
@@ -147,7 +200,7 @@
 										if(datas.type==3){
 											that.img3=tempFilePaths[0]
 										}
-										return
+										return*/
 										
 										that.upimg1(tempFilePaths,0, datas.type)
 								
@@ -162,30 +215,34 @@
 			},
 			upimg1(imgs, i,type) {
 				var that = this
+				service.wx_upload(imgs[i]).then(res => {
 				
-				uni.uploadFile({
-					url: service.IPurl+'user/upload_img', //仅为示例，非真实的接口地址
-					filePath: imgs[i],
-					name: 'img',
-					formData: {
-						token: that.loginDatas.token
-					},
-					success(res) {
-						// console.log(res.data)
-						var ndata = JSON.parse(res.data)
-						if (ndata.code == 1) {
-							console.log(imgs[i], i, ndata.img_url)
-							// var newdata = that.sj_img
-							console.log(i)
-							if(type==1){
-								that.img1=ndata.img_url
-							}
-							if(type==2){
-								that.img2=ndata.img_url
-							}
-							if(type==3){
-								that.img3=ndata.img_url
-							}
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						console.log(i)
+						if(type==1){
+							that.img1=datas
+						}
+						if(type==2){
+							that.img2=datas
+						}
+						if(type==3){
+							that.img3=datas
+						}
+						
+						// var news1 = that.sj_img.length
+						// if (news1 < 9 && i < imgs.length - 1) {
+						// 	i++
+						// 	that.upimg1(imgs, i)
+						// }
+					} else {
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
 						} else {
 							uni.showToast({
 								icon: "none",
@@ -193,7 +250,15 @@
 							})
 						}
 					}
+				}).catch(e => {
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '操作失败'
+					})
 				})
+			
 			},
 			getimg(img) {
 				return service.getimg(img)

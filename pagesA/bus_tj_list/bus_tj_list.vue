@@ -2,11 +2,7 @@
 	<view>
 		<view class="bus_my_list">
 			<view class="bus_my_li">
-				<view class="bus_my_li_tit dis_flex aic ju_b">
-					<view class="dis_flex aic bus_my_li_tit_text"><image src="../../../static/images/business/my_icon1.png" mode=""></image>合同完成统计</view>
-					<view class="li_more dis_flex aic">更多<text class="iconfont iconnext-m"></text></view>
-				</view>
-				
+			
 				<view class="dis_flex my_table my_table_tit">
 					<view class="my_td my_th">合同</view>
 					<view class="my_td my_th">套数</view>
@@ -33,7 +29,7 @@
 					<view class="my_td my_td2">50万</view>
 				</view>
 			</view>
-			<view class="bus_my_li">
+			<!--<view class="bus_my_li">
 				<view class="bus_my_li_tit dis_flex aic ju_c">
 					<view class="dis_flex aic bus_my_li_tit_text"><image src="../../../static/images/business/my_icon2.png" mode=""></image>工程完成统计</view>
 					
@@ -51,7 +47,7 @@
 					<view class="my_td my_td1" style="color: #000;"><image class="td_ximg" src="../../../static/images/business/my_ximg_05.jpg" mode=""></image>500</view>
 					<view class="my_td my_td1" style="color: #000;"><image class="td_ximg" src="../../../static/images/business/my_ximg_07.jpg" mode=""></image>500</view>
 				</view>
-			</view>
+			</view>-->
 		</view>
 		
 		
@@ -84,8 +80,8 @@
 .bus_my_list{
 		position: relative;
 		z-index: 10;
-		margin-top: -40upx;
-		padding: 0 30upx;
+		/* margin-top: -40upx; */
+		padding: 20upx 30upx;
 	}
 	.bus_my_li{
 		width: 100%;

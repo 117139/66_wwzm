@@ -1,18 +1,26 @@
 <template>
 	<view style="min-height: 100vh;background: #fafafa;">
-		<view class="xx_list">
-			<view class="xx_li" v-for="(item,index) in datas">
-				<view class="xx_li_time">09-04 12:53</view>
-				<view class="xx_box dis_flex aic ju_b" @tap='jump' :data-url="'/pagesA/user_order_xq/user_order_xq?id='+index">
-					<view>
-						<view class="xx_type" v-if="item.type==1">订单状态更新</view>
-						<view class="xx_type" v-if="item.type==2">取消订单成功</view>
-						<view class="xx_msg">{{item.msg}}</view>
-					</view>
-					<view class="iconfont iconnext-m"></view>
-				</view>
-			</view>
+		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+		<view v-if="htmlReset==-1"  class="loading_def">
+				<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
 		</view>
+		<block v-if="htmlReset==0">
+			<view class="xx_list">
+				<view class="xx_li" v-for="(item,index) in datas">
+					<view class="xx_li_time">09-04 12:53</view>
+					<view class="xx_box dis_flex aic ju_b" @tap='jump' :data-url="'/pagesA/user_order_xq/user_order_xq?id='+index">
+						<view>
+							<view class="xx_type" v-if="item.type==1">订单状态更新</view>
+							<view class="xx_type" v-if="item.type==2">取消订单成功</view>
+							<view class="xx_msg">{{item.msg}}</view>
+						</view>
+						<view class="iconfont iconnext-m"></view>
+					</view>
+				</view>
+				<view v-if="datas.length==0" class="zanwu">暂无数据</view>
+				<view v-if="data_last" class="data_last">我可是有底线的哟~~~</view>
+			</view>
+		</block>
 	</view>
 </template>
 
@@ -38,7 +46,9 @@
 					{type:2,msg:'09-04 12:52订单取消成功'},
 					{type:1,msg:'您的订单已完成'},
 					{type:2,msg:'09-04 12:52订单取消成功'},
-				]
+				],
+				data_last:false,
+				htmlReset:-1
 			}
 		},
 		computed: {
@@ -51,6 +61,7 @@
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
 			onRetry(){
 				uni.stopPullDownRefresh()
+				that.htmlReset=0
 			},
 			getdata(){
 				

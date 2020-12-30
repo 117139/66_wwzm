@@ -1,6 +1,9 @@
 <template>
 	<view>
 		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+		<view v-if="htmlReset==-1"  class="loading_def">
+				<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
+		</view>
 		<view v-if="htmlReset==0" style="min-height: 100vh;background: #FAFAFA;">
 
 			<view class='dis_flex ju_a  tab_box'>
@@ -75,43 +78,11 @@
 					},
 				],
 				type: 0,
-				htmlReset: 0,
+				htmlReset: -1,
 				datas:[],
 				pages:1,
 				size:20,
-				taocan_list: [{
-						name: 'Mini 主机',
-						id: 1
-					},
-					{
-						name: '门窗传感器',
-						id: 2
-					},
-					{
-						name: '智能可燃气体报警器多功能更安全快速防',
-						id: 3
-					},
-					{
-						name: '智能门锁 T1C',
-						id: 4
-					},
-					{
-						name: 'Mini 主机',
-						id: 1
-					},
-					{
-						name: '门窗传感器',
-						id: 2
-					},
-					{
-						name: '智能可燃气体报警器多功能更安全快速防',
-						id: 3
-					},
-					{
-						name: '智能门锁 T1C',
-						id: 4
-					},
-				],
+				taocan_list: [],
 				data_last: false,
 				
 			}
@@ -171,6 +142,7 @@
 					that.btn_kg = 0
 					console.log(res)
 					if (res.code == 1) {
+						that.htmlReset=0
 						var datas = res.data
 						console.log(typeof datas)
 
@@ -193,6 +165,7 @@
 						that.page++
 
 					} else {
+						that.htmlReset=1
 						if (res.msg) {
 							uni.showToast({
 								icon: 'none',
@@ -206,6 +179,7 @@
 						}
 					}
 				}).catch(e => {
+						that.htmlReset=1
 					that.btn_kg = 0
 					console.log(e)
 					uni.showToast({

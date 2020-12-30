@@ -1,72 +1,77 @@
 <template>
 	<view class="content_wrap" style="min-height: 100vh;background: #FAFAFA;">
-		
-		<view class="index_list">
-			<view class="index_li">
-				<view class="index_li_d1">
-					<image class="index_tx" src="/static/images/tx_m2.jpg" lazy-load="true" mode="aspectFill"></image>
-					<view class="index_yz">业主：<text>孙三三</text></view>
-					<view @tap="call" data-tel="18300000000" class="iconfont iconphone"></view>
-				</view>
-				<view class="index_li_d2" @tap="map_dp()">
-					<view class="index_add">
-						<view class="index_add1">
-							<view class="iconfont icondizhizhuanhuan"></view>
-						</view>
-						<view class="flex_1 index_add2">
-							重庆市渝中区菜园坝
-						</view>
-						<view class="index_add3">
-							距您<text style="color: #3778FE;">150</text>米
-							<text class="iconfont iconnext-m"></text>
-						</view>
+		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+		<view v-if="htmlReset==-1" class="loading_def">
+			<image class="loading_def_img" src="/static/images/loading.gif" mode=""></image>
+		</view>
+		<block v-if="htmlReset==0">
+			<view class="index_list">
+				<view class="index_li">
+					<view class="index_li_d1">
+						<image class="index_tx" src="/static/images/tx_m2.jpg" lazy-load="true" mode="aspectFill"></image>
+						<view class="index_yz">业主：<text>{{datas.owner_name}}</text></view>
+						<view @tap="call" :data-tel="datas.owner_name" class="iconfont iconphone"></view>
 					</view>
-					<view class="index_address">菜园坝290号重庆中银大厦6-11-4</view>
-				</view>
-				<view class="index_li_d3">
-					<view class="index_li_d3_tit">安防套餐(详单)</view>
-					<view class="tc_list">
-						<view class="tc_li" v-for="(item,index) in datas">
-							<image class="tc_li_img" :src="getimg(item.img)" mode="aspectFit"></image>
-							<view class="tc_msg flex_1">
-								<view class="dis_flex tc_d1 ju_b">
-									<view class="tc_d1_l">智能门锁 T1C</view>
-									<view class="tc_d1_r">￥998.12</view>
-								</view>
-								<view class="dis_flex tc_d1 ju_b tc_d2">
-									<view class="tc_d1_l">极致安全，气质不凡</view>
-									<view class="tc_d1_r">x1</view>
-								</view>
-								<view class="dis_flex flex-wrap">
-									<view class="tc_bq">门锁安防</view>
+					<view class="index_li_d2" @tap="map_dp()">
+						<view class="index_add">
+							<view class="index_add1">
+								<view class="iconfont icondizhizhuanhuan"></view>
+							</view>
+							<view class="flex_1 index_add2">
+								{{datas.order_name}}
+							</view>
+							<view class="index_add3">
+								距您<text style="color: #3778FE;">150</text>米
+								<text class="iconfont iconnext-m"></text>
+							</view>
+						</view>
+						<view class="index_address">{{datas.owner_address}}</view>
+					</view>
+					<view class="index_li_d3">
+						<view class="index_li_d3_tit">安防套餐(详单)</view>
+						<view class="tc_list">
+							<view class="tc_li" v-for="(item,index) in datas.goods_list">
+								<image class="tc_li_img" :src="getimg(item.cover)" mode="aspectFit"></image>
+								<view class="tc_msg flex_1">
+									<view class="dis_flex tc_d1 ju_b">
+										<view class="tc_d1_l">{{item.title}}</view>
+										<view class="tc_d1_r">￥{{item.price}}</view>
+									</view>
+									<view class="dis_flex tc_d1 ju_b tc_d2">
+										<view class="tc_d1_l">{{item.description}}</view>
+										<view class="tc_d1_r">x{{item.quantity}}</view>
+									</view>
+									<view class="dis_flex flex-wrap">
+										<view class="tc_bq">{{item.goods_type}}</view>
+									</view>
 								</view>
 							</view>
 						</view>
 					</view>
+					<view  class="index_li_d4">
+						<view class="dis_flex aic ju_b index_li_d4_li">
+							<view style="color: #999;">订单号</view>
+							<view>{{datas.order_num}}</view>
+						</view>
+						<view class="dis_flex aic ju_b index_li_d4_li">
+							<view style="color: #999;">下单时间</view>
+							<view>{{datas.created_at}}</view>
+						</view>
+					</view>
+					<view class="index_li_d1" style="border-bottom: 0;">
+						<view class="index_yz dis_flex ju_b">要求：
+							<view class="" style="max-width: 90%"><text class="oh1">{{datas.owner_demand}}</text></view>
+						</view>
+					</view>
 				</view>
-				<view  class="index_li_d4">
-					<view class="dis_flex aic ju_b index_li_d4_li">
-						<view style="color: #999;">订单号</view>
-						<view>56546545646541231</view>
-					</view>
-					<view class="dis_flex aic ju_b index_li_d4_li">
-						<view style="color: #999;">下单时间</view>
-						<view>2020-10-12</view>
-					</view>
-				</view>
-				<view class="index_li_d1" style="border-bottom: 0;">
-					<view class="index_yz dis_flex ju_b">要求：
-						<view class="" style="max-width: 90%"><text class="oh1">情况紧急，需要在三天内完成</text></view>
-					</view>
+				<view v-if="datas.status==1" @tap="jump" :data-url="'/pagesA/intell_order_xq_pz1/intell_order_xq_pz1?order_num='+datas.order_num" class="pz_btn"><text class="iconfont iconshigong"></text>施工前照片</view>
+				<view v-if="datas.status==2" @tap="jump" :data-url="'/pagesA/intell_order_xq_pz2/intell_order_xq_pz2?order_num='+datas.order_num" class="pz_btn">
+					<text class="iconfont iconshigong"></text>施工结束照片
+				</view><view v-if="datas.status==3" @tap="jump" :data-url="'/pagesA/intell_order_xq_pz3/intell_order_xq_pz3?order_num='+datas.order_num" class="pz_btn">
+					<text class="iconfont iconshigong"></text>完工签字验收
 				</view>
 			</view>
-			<view v-if="type==0" @tap="jump" data-url="/pagesA/intell_order_xq_pz1/intell_order_xq_pz1" class="pz_btn"><text class="iconfont iconshigong"></text>施工前照片</view>
-			<view v-if="type==1" @tap="jump" data-url="/pagesA/intell_order_xq_pz2/intell_order_xq_pz2" class="pz_btn">
-				<text class="iconfont iconshigong"></text>施工结束照片
-			</view><view v-if="type==2" @tap="jump" data-url="/pagesA/intell_order_xq_pz3/intell_order_xq_pz3" class="pz_btn">
-				<text class="iconfont iconshigong"></text>完工签字验收
-			</view>
-		</view>
+		</block>
 	</view>
 </template>
 
@@ -82,26 +87,8 @@
 		data() {
 			return {
 				type:0,
-				datas:[
-					{
-						img:'/static/images/business/tc_img_03.png'
-					},
-					{
-						img:'/static/images/business/tc_img_03.png'
-					},
-					{
-						img:'/static/images/business/tc_img_03.png'
-					},
-					{
-						img:'/static/images/business/tc_img_03.png'
-					},
-					{
-						img:'/static/images/business/tc_img_03.png'
-					},
-					{
-						img:'/static/images/business/tc_img_03.png'
-					},
-				],
+				htmlReset:-1,
+				datas:[],
 				data_last:false,
 				page:1,
 				size:20
@@ -109,18 +96,23 @@
 		},
 		onLoad(option) {
 			that=this
-			that.type=option.type||0
+			that.id=option.id
+			that.onRetry()
 		},
+		
 		onShow() {
-			// service.wxlogin()
-		},
-		onPageScroll(e) {
-			console.log(e)
-			this.PageScroll = e.scrollTop
-			if(e.scrollTop>10){
-				uni.showToast({
-					title:e.scrollTop
-				})
+			let pages = getCurrentPages();
+			let currPage = pages[pages.length - 1];
+			if (currPage.data.order_new) {
+				//将携带的参数赋值
+		
+				that.onRetry()
+				// this.addressBack=true 
+				currPage.setData({
+					//直接给上一个页面赋值
+					order_new: false,
+				});
+		
 			}
 		},
 		computed: {
@@ -161,6 +153,9 @@
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
+			onRetry(){
+				that.getdata()
+			},
 			map_dp(data) {
 				let that = this
 				let plugin = requirePlugin('routePlan');
@@ -176,36 +171,24 @@
 					url: 'plugin://routePlan/index?key=' + key + '&referer=' + referer + '&endPoint=' + endPoint + '&navigation=1'
 				});
 			},
-			onRetry() {
-				this.page = 1
-				this.datas=[]
-				this.data_last=false
-				this.getdata()
-			},
+			
 			getdata() {
 				var that = this
 				
 				if(that.data_last){
 					return
 				}
-				var fwb_id
-				if(that.fw_cur==-1){
-					fwb_id=-1
-				}else{
-					fwb_id=that.productCateData[that.fw_cur].id
-				}
+				
 				var datas = {
-					id:fwb_id,
-					token: that.loginDatas.userToken,
-					page: that.page,
-					size: that.size
+					id:that.id,
+					token: that.loginDatas.token,
 				}
 				if(this.btn_kg==1){
 					return
 				}
 				this.btn_kg=1
 				//selectSaraylDetailByUserCard
-				var jkurl = '/serveList'
+				var jkurl = '/engineer/list'
 				uni.showLoading({
 					title: '正在获取数据',
 					mask:true
@@ -215,6 +198,7 @@
 					that.btn_kg=0
 					console.log(res)
 					if (res.code == 1) {
+						that.htmlReset=0
 						var datas = res.data
 						console.log(typeof datas)
 					
@@ -222,20 +206,21 @@
 							datas = JSON.parse(datas)
 						}
 						console.log(res)
-						
-						if(page_that==1){
+						that.datas =datas
+						// if(page_that==1){
 							
-							that.datas = datas
-						}else{
-							if(datas.length==0){
-								that.data_last=true
-								return
-							}
-							that.datas =that.datas.concat(datas) 
-						}
-						that.page++
+						// 	that.datas = datas
+						// }else{
+						// 	if(datas.length==0){
+						// 		that.data_last=true
+						// 		return
+						// 	}
+						// 	that.datas =that.datas.concat(datas) 
+						// }
+						// that.page++
 					
 					} else {
+						that.htmlReset=1
 						if (res.msg) {
 							uni.showToast({
 								icon: 'none',
@@ -249,6 +234,7 @@
 						}
 					}
 				}).catch(e => {
+					that.htmlReset=1
 					that.btn_kg=0
 					console.log(e)
 					uni.showToast({

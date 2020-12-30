@@ -1,6 +1,9 @@
 <template>
 	<view>
 		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+		<view v-if="htmlReset==-1"  class="loading_def">
+				<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
+		</view>
 		<view v-if="htmlReset==0" style="min-height: 100vh;background: #FAFAFA;">
 	
 			<view class='dis_flex ju_a  tab_box'>
@@ -77,7 +80,7 @@
 				page:1,
 				size:20,
 				data_last:false,
-				htmlReset: 0,
+				htmlReset: -1,
 				datas: []
 			}
 		},

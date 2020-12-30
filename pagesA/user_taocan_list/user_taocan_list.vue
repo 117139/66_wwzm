@@ -1,20 +1,28 @@
 <template>
 	<view style="min-height: 100vh;background: #fafafa;">
 		<view style="width: 100%;height: 20upx;"></view>
-		<view v-for="(item,index) in datas">
-			<view class="order_li_tit">{{item.title}}</view>
-			<view class="order_li_msg">
-
-				<scroll-view class="weixin_dblist" scroll-x="true" bindscroll="scroll" style="width: 100%">
-
-					<view v-for="(item1,index1) in item.children" class="taocan_li" @tap="jump" :data-url="'/pagesA/user_goods_xq/user_goods_xq?id='+item1.id">
-						<image class="taocan_li_img" :src="getimg(item1.cover)" mode="aspectFit"></image>
-						<view class="taocan_li_msg oh2">{{item1.title}}</view>
-						<view class="taocan_li_pri"><text style="font-size: 18upx;">￥</text>{{item1.price}}</view>
-					</view>
-				</scroll-view>
-			</view>
+		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+		<view v-if="htmlReset==-1"  class="loading_def">
+				<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
 		</view>
+		<block v-if="htmlReset==0">
+			<view v-for="(item,index) in datas">
+				<view class="order_li_tit">{{item.title}}</view>
+				<view class="order_li_msg">
+
+					<scroll-view class="weixin_dblist" scroll-x="true" bindscroll="scroll" style="width: 100%">
+
+						<view v-for="(item1,index1) in item.children" class="taocan_li" @tap="jump" :data-url="'/pagesA/user_goods_xq/user_goods_xq?id='+item1.id">
+							<image class="taocan_li_img" :src="getimg(item1.cover)" mode="aspectFit"></image>
+							<view class="taocan_li_msg oh2">{{item1.title}}</view>
+							<view class="taocan_li_pri"><text style="font-size: 18upx;">￥</text>{{item1.price}}</view>
+						</view>
+					</scroll-view>
+				</view>
+			</view>
+			<view v-if="datas.length==0" class="zanwu">暂无数据</view>
+			<view v-if="data_last" class="data_last">我可是有底线的哟~~~</view>
+		</block>
 	</view>
 </template>
 
@@ -42,39 +50,7 @@
 				page:1,
 				size:20,
 				data_last:false,
-				taocan_list: [{
-						name: 'Mini 主机',
-						id: 1
-					},
-					{
-						name: '门窗传感器',
-						id: 2
-					},
-					{
-						name: '智能可燃气体报警器多功能更安全快速防',
-						id: 3
-					},
-					{
-						name: '智能门锁 T1C',
-						id: 4
-					},
-					{
-						name: 'Mini 主机',
-						id: 1
-					},
-					{
-						name: '门窗传感器',
-						id: 2
-					},
-					{
-						name: '智能可燃气体报警器多功能更安全快速防',
-						id: 3
-					},
-					{
-						name: '智能门锁 T1C',
-						id: 4
-					},
-				],
+				htmlReset: -1,
 			}
 		},
 		computed: {
@@ -124,6 +100,7 @@
 					that.btn_kg = 0
 					console.log(res)
 					if (res.code == 1) {
+						that.htmlReset=0
 						var datas = res.data
 						console.log(typeof datas)
 			
@@ -145,6 +122,7 @@
 			
 			
 					} else {
+					that.htmlReset=1
 						if (res.msg) {
 							uni.showToast({
 								icon: 'none',
@@ -158,6 +136,7 @@
 						}
 					}
 				}).catch(e => {
+					that.htmlReset=1
 					that.btn_kg = 0
 					console.log(e)
 					uni.showToast({

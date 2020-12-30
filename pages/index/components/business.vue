@@ -10,11 +10,11 @@
 			<image class="my_box_bg" :src="getimg('/static/images/business/my_bg_01.jpg')" mode="aspectFill"></image>
 			<view class="user_box dis_flex aic">
 				<view class="user_tx">
-					<image class="user_tx" :src="getimg(loginDatas.avatarurl)"></image>
+					<image class="user_tx" :src="getimg(loginDatas.cover)" @tap="jump" data-url="/pagesA/user_edit/user_edit"></image>
 				</view>
 				<view class="flex_1">
 					<view class="user_name">{{loginDatas.nickname}}</view>
-					<view class="user_time">智慧家物联网科技有限公司</view>
+					<view class="user_time">{{loginDatas.company}}</view>
 				</view>
 				<!-- <view class="iconfont icon-bianji user_edit" @tap="jump" data-url="/pages/my_msg/my_msg"></view> -->
 			</view>
@@ -252,7 +252,7 @@
 
 	.my_box {
 		width: 100%;
-		height: 417upx;
+		height: 498upx;
 		position: relative;
 	}
 
@@ -260,13 +260,13 @@
 		position: absolute;
 		top: 0;
 		width: 100%;
-		height: 417upx;
+		height: 498upx;
 		z-index: 0;
 	}
 
 	.user_box {
 		position: absolute;
-		top: 200upx;
+		top: 210upx;
 		left: 30upx;
 		width: 690upx;
 		/* height: 195upx; */
@@ -278,8 +278,8 @@
 	}
 
 	.user_tx {
-		width: 110upx;
-		height: 110upx;
+		width: 138upx;
+		height: 138upx;
 		background: #BFBFBF;
 		border-radius: 50%;
 
@@ -309,7 +309,7 @@
 	}
 
 	.user_name {
-		font-size: 32upx;
+		font-size: 40upx;
 		font-family: PingFang SC;
 		font-weight: 500;
 		color: #FFFFFF;

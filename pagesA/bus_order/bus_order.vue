@@ -1,6 +1,9 @@
 <template>
 	<view>
 		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+		<view v-if="htmlReset==-1"  class="loading_def">
+				<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
+		</view>
 		<view v-if="htmlReset==0" style="min-height: 100vh;background: #FAFAFA;">
 
 			<view class='dis_flex ju_a  tab_box'>
@@ -10,20 +13,20 @@
 
 			</view>
 			<view class="order_list">
-				<view class="order_li " v-for="(item,index) in datas" @tap="jump" :data-url="'/pagesA/bus_order_xq/bus_order_xq?type='+type">
-					<view class="order_li_d1 oh1">木泓设计家装精致工艺0增加</view>
-					<view class="order_li_d2 oh1">时间：2020/10/07</view>
-					<view class="order_li_d2 oh1">地址：新天地世纪百货写字楼16-26号</view>
-					<view class="order_li_d2 oh1">负责人：刘明</view>
-					<view class="order_li_d2 oh1">合同：浙江后海房产装修合同</view>
-					<view v-if="type!=1" class="order_li_d2 oh1">施工团队：刘明</view>
-					<view v-if="type!=1" class="order_li_d2 oh1">施工联系方式：1786526552</view>
+				<view class="order_li " v-for="(item,index) in datas" @tap="jump" :data-url="'/pagesA/bus_order_xq/bus_order_xq?id='+item.id">
+					<view class="order_li_d1 oh1">{{item.order_name}}</view>
+					<view class="order_li_d2 oh1">时间：{{item.time}}</view>
+					<view class="order_li_d2 oh1">地址：{{item.owner_address}}</view>
+					<view class="order_li_d2 oh1">负责人：{{item.functionary}}</view>
+					<view class="order_li_d2 oh1">合同：{{item.agreement_id}}</view>
+					<view v-if="item.status!=1" class="order_li_d2 oh1">施工团队：{{item.engineer_name}}</view>
+					<view v-if="item.status!=1" class="order_li_d2 oh1">施工联系方式：{{item.engineer_phone}}</view>
 					<view class="dis_flex order_li_d3">
 						<view class="flex_1"></view>
-						<view v-if="type==1" class="order_li_btn">待接单</view>
-						<view v-if="type>1" class="order_li_btn" @tap.stop="jump" data-url="">施工流程</view>
-						<view v-if="type==2" class="order_li_btn">进行中</view>
-						<view v-if="type==3" class="order_li_btn"  @tap.stop="jump" data-url="">售后</view>
+						<view v-if="item.status==1" class="order_li_btn">待接单</view>
+						<view v-if="item.status>1" class="order_li_btn" >施工流程</view>
+						<view v-if="item.status==2" class="order_li_btn">进行中</view>
+						<view v-if="item.status==3" class="order_li_btn"  @tap.stop="jump" data-url="">售后</view>
 						
 					</view>
 				</view>
@@ -45,6 +48,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that =this
 	export default {
 		data() {
 			return {
@@ -62,15 +66,34 @@
 					},
 				],
 				type: 1,
-				htmlReset: 0,
-				datas: [
-					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-				],
+				htmlReset: -1,
+				datas: [],
+				page:1,
+				size:20,
 				data_last:false
 			}
 		},
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas']),
+		},
+		onLoad() {
+			that=this
+			that.onRetry()
+		},
+		onShow() {
+			let pages = getCurrentPages();
+			let currPage = pages[pages.length - 1];
+			if (currPage.data.order_new) {
+				//将携带的参数赋值
+
+				that.onRetry()
+				// this.addressBack=true 
+				currPage.setData({
+					//直接给上一个页面赋值
+					order_new: false,
+				});
+
+			}
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform', 'setfj_data']),
@@ -94,23 +117,22 @@
 			},
 			getdata(num) {
 				var that = this
-				this.datas = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-				return
+			
 				if (that.data_last) {
 					return
 				}
 				var datas = {
-					token: that.loginDatas.userToken || '',
+					token: that.loginDatas.token || '',
 					page: that.page,
 					size: that.size,
-					type: this.type,
+					status: this.type,
 				}
 				if (this.btn_kg == 1) {
 					return
 				}
 				this.btn_kg = 1
 				//selectSaraylDetailByUserCard
-				var jkurl = '/user/productOrder/list'
+				var jkurl = '/order/list'
 				uni.showLoading({
 					title: '正在获取数据'
 				})
@@ -119,6 +141,7 @@
 					that.btn_kg = 0
 					console.log(res)
 					if (res.code == 1) {
+						that.htmlReset=0
 						var datas = res.data
 						console.log(typeof datas)
 
@@ -141,6 +164,7 @@
 						that.page++
 
 					} else {
+						that.htmlReset=1
 						if (res.msg) {
 							uni.showToast({
 								icon: 'none',
@@ -154,6 +178,7 @@
 						}
 					}
 				}).catch(e => {
+						that.htmlReset=1
 					that.btn_kg = 0
 					console.log(e)
 					uni.showToast({
