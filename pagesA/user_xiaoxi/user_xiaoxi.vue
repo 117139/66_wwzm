@@ -7,12 +7,14 @@
 		<block v-if="htmlReset==0">
 			<view class="xx_list">
 				<view class="xx_li" v-for="(item,index) in datas">
-					<view class="xx_li_time">09-04 12:53</view>
-					<view class="xx_box dis_flex aic ju_b" @tap='jump' :data-url="'/pagesA/user_order_xq/user_order_xq?id='+index">
+					<view class="xx_li_time">{{item.created_at}}</view>
+					<view class="xx_box dis_flex aic ju_b" @tap='jump' :data-url="'/pagesA/user_order_xq/user_order_xq?id='+item.id">
 						<view>
-							<view class="xx_type" v-if="item.type==1">订单状态更新</view>
-							<view class="xx_type" v-if="item.type==2">取消订单成功</view>
-							<view class="xx_msg">{{item.msg}}</view>
+							<view class="xx_type" >{{item.comments}}</view>
+							<view class="xx_msg" v-if="item.order_status==2">您的订单状态已更新</view>
+							<view class="xx_msg" v-else-if="item.order_status==3">您的订单已完成</view>
+							<view class="xx_msg" v-else-if="item.order_status==4">您的订单订单取消成功</view>
+							<view class="xx_msg" v-else>{{item.comments}}</view>
 						</view>
 						<view class="iconfont iconnext-m"></view>
 					</view>
@@ -30,6 +32,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that 
 	export default {
 		data() {
 			return {
@@ -47,6 +50,8 @@
 					{type:1,msg:'您的订单已完成'},
 					{type:2,msg:'09-04 12:52订单取消成功'},
 				],
+				page:1,
+				size:20,
 				data_last:false,
 				htmlReset:-1
 			}
@@ -57,30 +62,109 @@
 		onPullDownRefresh() {
 			this.onRetry()
 		},
+		onReachBottom() {
+			this.getdata()
+		},
+		onLoad() {
+			that=this
+			that.onRetry()
+		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
-			onRetry(){
-				uni.stopPullDownRefresh()
-				that.htmlReset=0
+			onRetry() {
+				this.page = 1
+				this.datas = []
+				this.data_last = false
+					
+				this.getdata()
 			},
-			getdata(){
+			getdata() {
+				var that = this
 				
+				if (that.data_last) {
+					return
+				}
+				var datas = {
+					token: that.loginDatas.token || '',
+					page: that.page,
+					size: that.size
+				}
+				if (this.btn_kg == 1) {
+					return
+				}
+				this.btn_kg = 1
+				//selectSaraylDetailByUserCard
+				var jkurl = '/user/news'
+				uni.showLoading({
+					title: '正在获取数据'
+				})
+				var page_that = that.page
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset=0
+						var datas = res.data
+						console.log(typeof datas)
+					
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+					
+						if (page_that == 1) {
+					
+							that.datas = datas
+						} else {
+							if (datas.length == 0) {
+								that.data_last = true
+								return
+							}
+							that.data_last = false
+							that.datas = that.datas.concat(datas)
+						}
+						that.page++
+					
+					} else {
+						that.htmlReset=1
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset=1
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+					
 			},
-			
 			jump(e) {
 				var that = this
-			
-				if (that.btnkg == 1) {
+				if (that.btn_kg == 1) {
 					return
 				} else {
-					that.btnkg = 1
+					that.btn_kg = 1
 					setTimeout(function() {
-						that.btnkg = 0
+						that.btn_kg = 0
 					}, 1000)
 				}
-			
+					
 				service.jump(e)
 			},
+			
+			
 		}
 	}
 </script>

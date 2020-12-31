@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "",
-  "enablePullDownRefresh": false,
+  "navigationBarTitleText": "合同完成统计",
+  "enablePullDownRefresh": true,
   "usingComponents": {}
 }

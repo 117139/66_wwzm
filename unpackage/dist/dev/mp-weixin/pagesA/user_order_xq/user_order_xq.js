@@ -97,12 +97,46 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var m0 = _vm.getimg("/static/images/business/tc_img_03.png")
+  var l0 =
+    _vm.htmlReset == 0
+      ? _vm.__map(_vm.datas.goods_list, function(item, index) {
+          var $orig = _vm.__get_orig(item)
+
+          var m0 = _vm.getimg(item.cover)
+          return {
+            $orig: $orig,
+            m0: m0
+          }
+        })
+      : null
+  var l1 =
+    _vm.htmlReset == 0 && _vm.datas.before
+      ? _vm.getimgarr(_vm.datas.before.photo)
+      : null
+  var l3 =
+    _vm.htmlReset == 0 && _vm.datas.under && _vm.datas.under.length > 0
+      ? _vm.__map(_vm.datas.under, function(item, index) {
+          var $orig = _vm.__get_orig(item)
+
+          var l2 = _vm.getimgarr(item.photo)
+          return {
+            $orig: $orig,
+            l2: l2
+          }
+        })
+      : null
+  var l4 =
+    _vm.htmlReset == 0 && _vm.datas.finish
+      ? _vm.getimgarr(_vm.datas.finish.photo)
+      : null
   _vm.$mp.data = Object.assign(
     {},
     {
       $root: {
-        m0: m0
+        l0: l0,
+        l1: l1,
+        l3: l3,
+        l4: l4
       }
     }
   )
@@ -205,6 +239,39 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 8));
 var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
@@ -214,105 +281,90 @@ var that;var _default =
 {
   data: function data() {
     return {
+      id: '',
       bz_content: '',
       sj_img: [],
       bz_content2: '',
       sj_img2: [],
-      taocan_list: [{
-        name: 'Mini 主机',
-        id: 1 },
-
-      {
-        name: '门窗传感器',
-        id: 2 },
-
-      {
-        name: '智能可燃气体报警器多功能更安全快速防',
-        id: 3 },
-
-      {
-        name: '智能门锁 T1C',
-        id: 4 },
-
-      {
-        name: 'Mini 主机',
-        id: 1 },
-
-      {
-        name: '门窗传感器',
-        id: 2 },
-
-      {
-        name: '智能可燃气体报警器多功能更安全快速防',
-        id: 3 },
-
-      {
-        name: '智能门锁 T1C',
-        id: 4 }] };
-
-
+      datas: '',
+      htmlReset: -1 };
 
   },
   computed: _objectSpread({},
   (0, _vuex.mapState)(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data'])),
 
-  onLoad: function onLoad() {
+  onLoad: function onLoad(option) {
     that = this;
+    this.id = option.id;
+    this.getdata();
+  },
+  onPullDownRefresh: function onPullDownRefresh() {
+    this.getdata();
   },
   methods: _objectSpread(_objectSpread({},
   (0, _vuex.mapMutations)(['login', 'logindata', 'logout', 'setplatform'])), {}, {
-    sub: function sub() {
-      if (this.sj_img.length == 0) {
-        uni.showToast({
-          icon: 'none',
-          title: '请上传图片' });
-
-        return;
-      }
-      uni.showToast({
-        icon: 'none',
-        title: '上传成功' });
-
-      var datas = {
-        sj_img: that.sj_img.join(','),
-        content: that.content };
-
-      console.log(datas);
-      setTimeout(function () {
-        uni.navigateBack({
-          delta: 2 });
-
-      }, 1000);
+    onRetry: function onRetry() {
+      this.getdata();
     },
-    sub1: function sub1() {
-      if (this.sj_img2.length == 0) {
+    getdata: function getdata() {
+      var that = this;
+      var jkurl = '/user/rate';
+      var datas = {
+        token: that.loginDatas.token || '',
+        id: that.id };
+
+
+      _service.default.P_get(jkurl, datas).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          that.htmlReset = 0;
+          var datas = res.data;
+          console.log(typeof datas);
+
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+          console.log(res);
+
+          that.datas = datas;
+
+        } else {
+          that.htmlReset = 1;
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '操作失败' });
+
+          }
+        }
+      }).catch(function (e) {
+        that.htmlReset = 1;
+        that.btn_kg = 0;
+        console.log(e);
         uni.showToast({
           icon: 'none',
-          title: '请上传图片' });
+          title: '获取数据失败' });
 
-        return;
-      }
-      uni.showToast({
-        icon: 'none',
-        title: '上传成功' });
-
-      var datas = {
-        sj_img: that.sj_img2.join(','),
-        content: that.content2 };
-
-      console.log(datas);
-      setTimeout(function () {
-        uni.navigateBack({
-          delta: 2 });
-
-      }, 1000);
+      });
     },
     getimg: function getimg(img) {
       console.log(_service.default.getimg(img));
       return _service.default.getimg(img);
     },
+    getimgarr: function getimgarr(img) {
+      return _service.default.getimgarr(img);
+    },
     pveimg: function pveimg(e) {
       _service.default.pveimg(e);
+    },
+    call: function call(e) {
+      _service.default.call(e);
     },
     upimg: function upimg(e) {
       var that = this;
@@ -434,6 +486,19 @@ var that;var _default =
           }
         } });
 
+    },
+    jump: function jump(e) {
+      var that = this;
+      if (that.btn_kg == 1) {
+        return;
+      } else {
+        that.btn_kg = 1;
+        setTimeout(function () {
+          that.btn_kg = 0;
+        }, 1000);
+      }
+
+      _service.default.jump(e);
     } }) };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

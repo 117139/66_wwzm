@@ -1,6 +1,6 @@
 {
   "navigationBarTitleText": "工程",
-  "enablePullDownRefresh": false,
+  "enablePullDownRefresh": true,
   "navigationBarBackgroundColor": "#FFFFFF",
   "usingComponents": {}
 }

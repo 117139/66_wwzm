@@ -2,8 +2,8 @@
 .bus_my_list.data-v-2ddcda06{
 		position: relative;
 		z-index: 10;
-		margin-top: -40rpx;
-		padding: 0 30rpx;
+		/* margin-top: -40upx; */
+		padding: 20rpx 30rpx;
 }
 .bus_my_li.data-v-2ddcda06{
 		width: 100%;

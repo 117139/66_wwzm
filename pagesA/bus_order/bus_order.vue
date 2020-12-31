@@ -24,9 +24,9 @@
 					<view class="dis_flex order_li_d3">
 						<view class="flex_1"></view>
 						<view v-if="item.status==1" class="order_li_btn">待接单</view>
-						<view v-if="item.status>1" class="order_li_btn" >施工流程</view>
+						<view v-if="item.status>1" class="order_li_btn" @tap.stop="jump" :data-url="'/pagesA/bus_sglc/bus_sglc?order_num='+item.order_num">施工流程</view>
 						<view v-if="item.status==2" class="order_li_btn">进行中</view>
-						<view v-if="item.status==3" class="order_li_btn"  @tap.stop="jump" data-url="">售后</view>
+						<!-- <view v-if="item.status==3" class="order_li_btn"  @tap.stop="jump" :data-url="'/pagesA/bus_sglc/order_sglc?order_num='+item.order_num">售后</view> -->
 						
 					</view>
 				</view>
@@ -94,6 +94,12 @@
 				});
 
 			}
+		},
+		onPullDownRefresh() {
+			this.onRetry()
+		},
+		onReachBottom() {
+			this.getdata()
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform', 'setfj_data']),

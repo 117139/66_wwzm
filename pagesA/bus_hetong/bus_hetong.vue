@@ -1,6 +1,9 @@
 <template>
 	<view>
 		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+		<view v-if="htmlReset==-1"  class="loading_def">
+				<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
+		</view>
 		<view v-if="htmlReset==0" style="min-height: 100vh;background: #FAFAFA;">
 			
 			<view class='dis_flex ju_a  tab_box'>
@@ -11,10 +14,10 @@
 			</view>
 			<view class="order_list">
 				<view class="order_li dis_flex" v-for="(item,index) in datas">
-					<image class="order_li_img" :src="getimg('/static/images/business/hetong_03.jpg')" mode="aspectFill"></image>
+					<image class="order_li_img" :src="getimg(item.cover)" mode="aspectFill"></image>
 					<view class="order_li_msg flex_1 dis_flex_c ju_c">
-						<view class="order_li_d1">套数: 15 套</view>
-						<view class="order_li_d2">2020/10/10 | 价值50万</view>
+						<view class="order_li_d1">套数: {{item.quantity}} 套</view>
+						<view class="order_li_d2">{{gettime(item.created_at)}} | 价值<text>{{getpri(item.cost)}}</text></view>
 						<view v-if="type==1" class="order_li_d3">已完成: <text>{{index}}</text> 套</view>
 					</view>
 				</view>
@@ -32,6 +35,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that 
 	export default {
 		data() {
 			return {
@@ -46,19 +50,52 @@
 					},
 				],
 				type:1,
-				htmlReset:0,
-				datas:[
-					1,1,1,1,1,1,1,1,1,1,1,1,1
-				]
+				htmlReset: -1,
+				datas: [],
+				page:1,
+				size:20,
+				data_last:false
 			}
 		},
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas']),
 		},
+		onLoad() {
+			that=this
+			that.onRetry()
+		},
+		onPullDownRefresh() {
+			this.onRetry()
+		},
+		onReachBottom() {
+			this.getdata()
+		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform','setfj_data']),
 			getimg(e){
 			 return	service.getimg(e)
+			},
+			gettime(time){
+				if(!time){
+					return
+				}
+				time=time.split(' ')
+				time=time[0]
+				time=time.split('-').join('/')
+				return time
+			},
+			getpri(mon){
+				if(!mon){
+					return
+				}
+				mon=mon*1
+				if(mon>=10000){
+					mon=mon/1000
+					mon=mon.toFixed(2)
+					mon=mon-1+1
+					return mon+'万'
+				}
+				return mon
 			},
 			bindcur(e){
 				var that =this
@@ -71,32 +108,31 @@
 				// that.getOrderList()
 				this.onRetry()
 			},
-			onRetry(){
+			onRetry() {
 				this.page = 1
-				this.datas=[]
-				this.data_last=false
-				
+				this.datas = []
+				this.data_last = false
+			
 				this.getdata()
 			},
 			getdata(num) {
 				var that = this
-				this.datas=[1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-				return
+			
 				if (that.data_last) {
 					return
 				}
 				var datas = {
-					token: that.loginDatas.userToken || '',
+					token: that.loginDatas.token || '',
 					page: that.page,
 					size: that.size,
-					type:this.type,
+					status: this.type,
 				}
 				if (this.btn_kg == 1) {
 					return
 				}
 				this.btn_kg = 1
 				//selectSaraylDetailByUserCard
-				var jkurl = '/user/productOrder/list'
+				var jkurl = '/order/contract'
 				uni.showLoading({
 					title: '正在获取数据'
 				})
@@ -105,16 +141,17 @@
 					that.btn_kg = 0
 					console.log(res)
 					if (res.code == 1) {
+						that.htmlReset=0
 						var datas = res.data
 						console.log(typeof datas)
-				
+			
 						if (typeof datas == 'string') {
 							datas = JSON.parse(datas)
 						}
 						console.log(res)
-					
+			
 						if (page_that == 1) {
-				
+			
 							that.datas = datas
 						} else {
 							if (datas.length == 0) {
@@ -125,8 +162,9 @@
 							that.datas = that.datas.concat(datas)
 						}
 						that.page++
-				
+			
 					} else {
+						that.htmlReset=1
 						if (res.msg) {
 							uni.showToast({
 								icon: 'none',
@@ -140,6 +178,7 @@
 						}
 					}
 				}).catch(e => {
+						that.htmlReset=1
 					that.btn_kg = 0
 					console.log(e)
 					uni.showToast({
@@ -147,8 +186,9 @@
 						title: '获取数据失败，请检查您的网络连接'
 					})
 				})
-				
+			
 			},
+			
 			jump(e) {
 				var that = this
 				// if(!that.hasLogin){

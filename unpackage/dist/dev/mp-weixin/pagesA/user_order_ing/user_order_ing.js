@@ -130,39 +130,169 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 8));
+var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+
+
+
+var that;var _default =
 {
   data: function data() {
-    return {};
-
+    return {
+      datas: [],
+      pages: 1,
+      size: 20,
+      data_last: false,
+      htmlReset: -1 };
 
   },
-  onPullDownRefresh: function onPullDownRefresh() {
-    uni.stopPullDownRefresh();
+  computed: _objectSpread({},
+  (0, _vuex.mapState)(['hasLogin', 'forcedLogin', 'userName', 'loginDatas'])),
+
+  onLoad: function onLoad() {
+    this.onRetry();
   },
-  methods: {} };exports.default = _default;
+  onReachBottom: function onReachBottom() {
+    this.getdata();
+  },
+  methods: _objectSpread(_objectSpread({},
+  (0, _vuex.mapMutations)(['login', 'logindata', 'logout', 'setplatform', 'setfj_data'])), {}, {
+
+    onRetry: function onRetry() {
+      this.page = 1;
+      this.datas = [];
+      this.data_last = false;
+
+      this.getdata();
+    },
+    getdata: function getdata() {
+      var that = this;
+
+      if (that.data_last) {
+        return;
+      }
+      var datas = {
+        token: that.loginDatas.token || '',
+        page: that.page,
+        size: that.size,
+        status: '' };
+
+      if (this.btn_kg == 1) {
+        return;
+      }
+      this.btn_kg = 1;
+      //selectSaraylDetailByUserCard
+      var jkurl = '/user/rate';
+      uni.showLoading({
+        title: '正在获取数据' });
+
+      var page_that = that.page;
+      _service.default.P_get(jkurl, datas).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          that.htmlReset = 0;
+          var datas = res.data;
+          console.log(typeof datas);
+
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+          console.log(res);
+
+          if (page_that == 1) {
+
+            that.datas = datas;
+          } else {
+            if (datas.length == 0) {
+              that.data_last = true;
+              return;
+            }
+            that.data_last = false;
+            that.datas = that.datas.concat(datas);
+          }
+          that.page++;
+
+        } else {
+          that.htmlReset = 1;
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '操作失败' });
+
+          }
+        }
+      }).catch(function (e) {
+        that.htmlReset = 1;
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '获取数据失败，请检查您的网络连接' });
+
+      });
+
+    },
+    jump: function jump(e) {
+      var that = this;
+      if (that.btn_kg == 1) {
+        return;
+      } else {
+        that.btn_kg = 1;
+        setTimeout(function () {
+          that.btn_kg = 0;
+        }, 1000);
+      }
+
+      _service.default.jump(e);
+    },
+    call: function call(e) {
+      _service.default.call(e);
+    } }) };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

@@ -171,12 +171,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 8));
-var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
+var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
 
 
+var that = void 0;var _default =
 {
   data: function data() {
     return {
@@ -194,16 +198,41 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
 
 
       type: 1,
-      htmlReset: 0,
-      datas: [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-
+      htmlReset: -1,
+      datas: [],
+      page: 1,
+      size: 20,
       data_last: false };
 
   },
   computed: _objectSpread({},
   (0, _vuex.mapState)(['hasLogin', 'forcedLogin', 'userName', 'loginDatas'])),
 
+  onLoad: function onLoad() {
+    that = this;
+    that.onRetry();
+  },
+  onShow: function onShow() {
+    var pages = getCurrentPages();
+    var currPage = pages[pages.length - 1];
+    if (currPage.data.order_new) {
+      //将携带的参数赋值
+
+      that.onRetry();
+      // this.addressBack=true 
+      currPage.setData({
+        //直接给上一个页面赋值
+        order_new: false });
+
+
+    }
+  },
+  onPullDownRefresh: function onPullDownRefresh() {
+    this.onRetry();
+  },
+  onReachBottom: function onReachBottom() {
+    this.getdata();
+  },
   methods: _objectSpread(_objectSpread({},
   (0, _vuex.mapMutations)(['login', 'logindata', 'logout', 'setplatform', 'setfj_data'])), {}, {
     bindcur: function bindcur(e) {
@@ -226,23 +255,22 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
     },
     getdata: function getdata(num) {
       var that = this;
-      this.datas = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-      return;
+
       if (that.data_last) {
         return;
       }
       var datas = {
-        token: that.loginDatas.userToken || '',
+        token: that.loginDatas.token || '',
         page: that.page,
         size: that.size,
-        type: this.type };
+        status: this.type };
 
       if (this.btn_kg == 1) {
         return;
       }
       this.btn_kg = 1;
       //selectSaraylDetailByUserCard
-      var jkurl = '/user/productOrder/list';
+      var jkurl = '/order/list';
       uni.showLoading({
         title: '正在获取数据' });
 
@@ -251,6 +279,7 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
         that.btn_kg = 0;
         console.log(res);
         if (res.code == 1) {
+          that.htmlReset = 0;
           var datas = res.data;
           console.log(typeof datas);
 
@@ -273,6 +302,7 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
           that.page++;
 
         } else {
+          that.htmlReset = 1;
           if (res.msg) {
             uni.showToast({
               icon: 'none',
@@ -286,6 +316,7 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
           }
         }
       }).catch(function (e) {
+        that.htmlReset = 1;
         that.btn_kg = 0;
         console.log(e);
         uni.showToast({

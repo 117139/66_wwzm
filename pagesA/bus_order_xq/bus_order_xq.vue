@@ -8,24 +8,21 @@
 		<block v-if="htmlReset==0">
 			<view class="order_box">
 				<view class="order_main">
-					<view  v-if="type==1" class="order_status">待结单</view>
-					<view  v-if="type!=1" class="order_status" style="color: #4793FA;">施工中</view>
+					<view  v-if="datas.status==1" class="order_status">待结单</view>
+					<view  v-if="datas.status==2" class="order_status" style="color: #4793FA;">施工中</view>
+					<view  v-if="datas.status==3" class="order_status" style="color: #4793FA;">已完成</view>
 					<view class="order_li">
 						<view class="order_li_tit">业主名称</view>
-						<view class="order_li_msg">
-							刘也
-						</view>
+						<view class="order_li_msg">{{datas.owner_name}}</view>
 					</view>
 					<view class="order_li">
 						<view class="order_li_tit">业主联系电话</view>
-						<view class="order_li_msg">
-							18300000000
-						</view>
+						<view class="order_li_msg">{{datas.owner_phone}}</view>
 					</view>
-					<view class="order_li" @tap="map_dp()">
+					<view class="order_li" @tap="map_dp(datas)">
 						<view class="order_li_tit">业主地址</view>
 						<view class="order_li_msg" >
-							<view class="flex_1">新天地世纪百货写字楼16-26号</view>
+							<view class="flex_1">{{datas.owner_address}}</view>
 							<view class="flex_0 iconfont icondizhizhuanhuan" style="opacity: 1;color: #222;"></view>
 						</view>
 					</view>
@@ -35,55 +32,41 @@
 								
 								<scroll-view class="weixin_dblist" scroll-x="true" bindscroll="scroll" style="width: 100%">
 									
-										<view v-for="(item,index) in taocan_list" class="taocan_li">
-											<image class="taocan_li_img" :src="getimg('/static/images/business/tc_img_03.png')" mode="aspectFit"></image>
-											<view class="taocan_li_msg oh2">{{item.name}}</view>
-											<view class="taocan_li_pri"><text style="font-size: 18upx;">￥</text>998</view>
+										<view v-for="(item,index) in datas.goods_id" class="taocan_li">
+											<image class="taocan_li_img" :src="getimg(item.cover)" mode="aspectFit"></image>
+											<view class="taocan_li_msg oh2">{{item.title}}</view>
+											<view class="taocan_li_pri"><text style="font-size: 18upx;">￥</text>{{item.price}}</view>
 										</view>
 								</scroll-view>
 							</view>
 					</view>
 					<view class="order_li">
 						<view class="order_li_tit">负责人</view>
-						<view class="order_li_msg">
-							刘明
-						</view>
+						<view class="order_li_msg">{{datas.functionary}}</view>
 					</view>
 					<view class="order_li">
 						<view class="order_li_tit">负责人联系方式</view>
-						<view class="order_li_msg">
-							15963520110
-						</view>
+						<view class="order_li_msg">{{datas.functionary_phone}}</view>
 					</view>
 					<view class="order_li">
 							<view class="order_li_tit">时间</view>
-							<view class="order_li_msg">
-								2020/10/10
-							</view>
+							<view class="order_li_msg">{{datas.time}}</view>
 					</view>
 					<view class="order_li">
 							<view class="order_li_tit">合同</view>
-							<view class="order_li_msg">
-								中国房屋安装合同
-							</view>
+							<view class="order_li_msg">{{datas.agreement_id}}</view>
 					</view>
-					<view v-if="type!=1" class="order_li">
+					<view v-if="datas.status!=1" class="order_li">
 						<view class="order_li_tit">施工团队</view>
-						<view class="order_li_msg">
-							刘三珠施工团队
-						</view>
+						<view class="order_li_msg">{{datas.engineer_name}}</view>
 					</view>
-					<view v-if="type!=1" class="order_li">
+					<view v-if="datas.status!=1" class="order_li">
 						<view class="order_li_tit">施工团队联系方式</view>
-						<view class="order_li_msg">
-							1564283332
-						</view>
+						<view class="order_li_msg">{{datas.engineer_phone}}</view>
 					</view>
-					<view v-if="type!=1" class="order_li">
+					<view  class="order_li">
 						<view class="order_li_tit">客户要求</view>
-						<view class="order_li_msg">
-							比较着急，三天之内必须完成
-						</view>
+						<view class="order_li_msg">{{datas.owner_demand}}</view>
 					</view>
 					<view class="order_bottom"></view>
 				</view>
@@ -196,9 +179,9 @@
 				let key = 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'; //使用在腾讯位置服务申请的key
 				let referer = '万屋智能'; //调用插件的app的名称
 				let endPoint = JSON.stringify({ //终点
-					'name': 'dd',
-					'latitude':  parseFloat('38.912884929705875')||'',
-					'longitude':parseFloat('115.37814606640623')||'',
+					'name': data.owner_address,
+					'latitude': parseFloat(data.lat) || '',
+					'longitude': parseFloat(data.long) || '',
 				});
 				console.log(endPoint)
 				uni.navigateTo({

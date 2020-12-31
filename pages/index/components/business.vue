@@ -47,7 +47,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
-
+	var that 
 	export default {
 		data() {
 			return {
@@ -66,19 +66,6 @@
 				tk_show: true,
 				tximg: '/static/logo.png'
 			};
-		},
-		onLoad() {},
-		onShow() {
-			// service.wxlogin()
-		},
-		onPageScroll(e) {
-			console.log(e)
-			this.PageScroll = e.scrollTop
-			if(e.scrollTop>10){
-				uni.showToast({
-					title:e.scrollTop
-				})
-			}
 		},
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data']),
@@ -113,9 +100,10 @@
 				return style
 			}
 		},
-
+		
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
+			
 			getimg(img) {
 				console.log(service.getimg(img))
 				return service.getimg(img)

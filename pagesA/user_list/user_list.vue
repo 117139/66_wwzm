@@ -215,6 +215,7 @@
 					that.btn_kg = 0
 					console.log(res)
 					if (res.code == 1) {
+						that.htmlReset=0
 						var datas = res.data
 						console.log(typeof datas)
 
@@ -237,6 +238,7 @@
 						that.page++
 
 					} else {
+						that.htmlReset=1
 						if (res.msg) {
 							uni.showToast({
 								icon: 'none',
@@ -250,6 +252,7 @@
 						}
 					}
 				}).catch(e => {
+						that.htmlReset=1
 					that.btn_kg = 0
 					console.log(e)
 					uni.showToast({

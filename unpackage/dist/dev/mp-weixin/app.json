@@ -38,7 +38,8 @@
         "user_shoucang/user_shoucang",
         "user_taocan_list/user_taocan_list",
         "user_order/user_order",
-        "bus_tj_list/bus_tj_list"
+        "bus_tj_list/bus_tj_list",
+        "bus_sglc/bus_sglc"
       ]
     }
   ],

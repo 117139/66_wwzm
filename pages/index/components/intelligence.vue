@@ -19,7 +19,7 @@
 							<view class="index_yz">业主：<text>{{item.owner_name}}</text></view>
 							<view @tap="call" :data-tel="item.owner_phone" class="iconfont iconphone"></view>
 						</view>
-						<view class="index_li_d2" @tap="map_dp()">
+						<view class="index_li_d2" @tap="map_dp(item)">
 							<view class="index_add">
 								<view class="index_add1">
 									<view class="iconfont icondizhizhuanhuan"></view>
@@ -27,10 +27,16 @@
 								<view class="flex_1 index_add2">
 									{{item.order_name}}
 								</view>
-								<view class="index_add3">
-									距您<text style="color: #3778FE;">150</text>米
-									<text class="iconfont iconnext-m"></text>
-								</view>
+								<block v-if="item.distance">
+									<view class="index_add3" v-if="item.distance>1000">
+										距您<text  style="color: #3778FE;">{{(item.distance/1000).toFixed(2)}}</text>千米
+										<text class="iconfont iconnext-m"></text>
+									</view>
+									<view class="index_add3" v-else>
+										距您<text  style="color: #3778FE;">{{item.distance}}</text>米
+										<text class="iconfont iconnext-m"></text>
+									</view>
+								</block>
 							</view>
 							<view class="index_address">{{item.owner_address}}</view>
 						</view>
@@ -74,7 +80,9 @@
 				page: 1,
 				size: 20,
 				triggered: true, //设置当前下拉刷新状态
-				htmlReset:-1
+				htmlReset:-1,
+				longitude:'',
+				latitude:'',
 			};
 		},
 
@@ -91,13 +99,7 @@
 
 		mounted() {
 			that = this
-			uni.getLocation({
-			    type: 'gcj02',
-			    success: function (res) {
-			        console.log('当前位置的经度：' + res.longitude);
-			        console.log('当前位置的纬度：' + res.latitude);
-			    }
-			});
+			
 			this._freshing = false;
 			this.onRetry()
 		},
@@ -152,75 +154,86 @@
 				if (that.data_last) {
 					return
 				}
+				uni.getLocation({
+				    type: 'gcj02',
+				    success: function (res) {
+				        console.log('当前位置的经度：' + res.longitude);
+								that.longitude=res.longitude
+								that.latitude=res.latitude
+				        console.log('当前位置的纬度：' + res.latitude);
+								var datas = {
+								
+									token: that.loginDatas.token,
+									long:that.longitude,
+									lat:that.latitude,
+									page: that.page,
+									size: that.size,
+									status:''
+								}
+								if (that.btn_kg == 1) {
+									return
+								}
+								that.btn_kg = 1
+								//selectSaraylDetailByUserCard
+								var jkurl = '/engineer/list'
+								uni.showLoading({
+									title: '正在获取数据',
+									mask: true
+								})
+								var page_that = that.page
+								service.P_get(jkurl, datas).then(res => {
+									that.btn_kg = 0
+									console.log(res)
+									if (res.code == 1) {
+										that.htmlReset = 0
+										var datas = res.data
+										console.log(typeof datas)
+								
+										if (typeof datas == 'string') {
+											datas = JSON.parse(datas)
+										}
+										console.log(res)
+								
+										if (page_that == 1) {
+								
+											that.datas = datas
+										} else {
+											if (datas.length == 0) {
+												that.data_last = true
+												return
+											}
+											that.datas = that.datas.concat(datas)
+										}
+										that.page++
+								
+									} else {
+										that.htmlReset = 1
+										if (res.msg) {
+											uni.showToast({
+												icon: 'none',
+												title: res.msg
+											})
+										} else {
+											uni.showToast({
+												icon: 'none',
+												title: '获取数据失败'
+											})
+										}
+									}
+								}).catch(e => {
+									that.htmlReset = 1
+									that.btn_kg = 0
+									console.log(e)
+									uni.showToast({
+										icon: 'none',
+										title: '获取数据失败，请检查您的网络连接'
+									})
+								})
+								
+				    }
+				});
 
-
-				var datas = {
-
-					token: that.loginDatas.token,
-					page: that.page,
-					size: that.size,
-					status:''
-				}
-				if (this.btn_kg == 1) {
-					return
-				}
-				this.btn_kg = 1
-				//selectSaraylDetailByUserCard
-				var jkurl = '/engineer/list'
-				uni.showLoading({
-					title: '正在获取数据',
-					mask: true
-				})
-				var page_that = that.page
-				service.P_get(jkurl, datas).then(res => {
-					that.btn_kg = 0
-					console.log(res)
-					if (res.code == 1) {
-						that.htmlReset = 0
-						var datas = res.data
-						console.log(typeof datas)
-
-						if (typeof datas == 'string') {
-							datas = JSON.parse(datas)
-						}
-						console.log(res)
-
-						if (page_that == 1) {
-
-							that.datas = datas
-						} else {
-							if (datas.length == 0) {
-								that.data_last = true
-								return
-							}
-							that.datas = that.datas.concat(datas)
-						}
-						that.page++
-
-					} else {
-						that.htmlReset = 1
-						if (res.msg) {
-							uni.showToast({
-								icon: 'none',
-								title: res.msg
-							})
-						} else {
-							uni.showToast({
-								icon: 'none',
-								title: '操作失败'
-							})
-						}
-					}
-				}).catch(e => {
-					that.htmlReset = 1
-					that.btn_kg = 0
-					console.log(e)
-					uni.showToast({
-						icon: 'none',
-						title: '获取数据失败，请检查您的网络连接'
-					})
-				})
-
+				
 			},
 
 			getimg(img) {
@@ -235,11 +248,11 @@
 				let that = this
 				let plugin = requirePlugin('routePlan');
 				let key = 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'; //使用在腾讯位置服务申请的key
-				let referer = '达鑫达'; //调用插件的app的名称
+				let referer = '万屋智能'; //调用插件的app的名称
 				let endPoint = JSON.stringify({ //终点
-					'name': 'dd',
-					'latitude': parseFloat('38.912884929705875') || '',
-					'longitude': parseFloat('115.37814606640623') || '',
+					'name': data.owner_address,
+					'latitude': parseFloat(data.lat) || '',
+					'longitude': parseFloat(data.long) || '',
 				});
 				console.log(endPoint)
 				uni.navigateTo({

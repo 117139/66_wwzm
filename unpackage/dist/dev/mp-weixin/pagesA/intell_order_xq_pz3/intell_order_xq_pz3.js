@@ -97,6 +97,39 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var l0 = _vm.__map(_vm.sj_img, function(item, index) {
+    var $orig = _vm.__get_orig(item)
+
+    var m0 = _vm.sj_img.length > 0 ? _vm.getimg(item) : null
+    var m1 = _vm.sj_img.length > 0 ? _vm.getimg(item) : null
+    return {
+      $orig: $orig,
+      m0: m0,
+      m1: m1
+    }
+  })
+
+  var l1 = _vm.__map(_vm.sj_img2, function(item, index) {
+    var $orig = _vm.__get_orig(item)
+
+    var m2 = _vm.sj_img2.length > 0 ? _vm.getimg(item) : null
+    var m3 = _vm.sj_img2.length > 0 ? _vm.getimg(item) : null
+    return {
+      $orig: $orig,
+      m2: m2,
+      m3: m3
+    }
+  })
+
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        l0: l0,
+        l1: l1
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -163,6 +196,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 8));
 var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
@@ -174,14 +209,15 @@ var that;var _default =
     return {
       sj_img: [],
       sj_img2: [],
-      content: '' };
+      order_num: '' };
 
   },
   computed: _objectSpread({},
   (0, _vuex.mapState)(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data'])),
 
-  onLoad: function onLoad() {
+  onLoad: function onLoad(option) {
     that = this;
+    this.order_num = option.order_num;
   },
   methods: _objectSpread(_objectSpread({},
   (0, _vuex.mapMutations)(['login', 'logindata', 'logout', 'setplatform'])), {}, {
@@ -201,20 +237,69 @@ var that;var _default =
 
         return;
       }
-      uni.showToast({
-        icon: 'none',
-        title: '上传成功' });
-
+      if (this.btn_kg == 1) {
+        return;
+      }
+      this.btn_kg = 1;
       var datas = {
-        sj_img: that.sj_img.join(','),
-        content: that.content };
+        token: that.loginDatas.token,
+        order_num: that.order_num,
+        owner_sign_photo: that.sj_img.join(','),
+        engineer_sign_photo: that.sj_img2.join(',') };
 
-      console.log(datas);
-      setTimeout(function () {
-        uni.navigateBack({
-          delta: 2 });
+      var jkurl = "/engineer/done";
+      _service.default.P_post(jkurl, datas).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          var datas = res.data;
+          console.log(typeof datas);
 
-      }, 1000);
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+          console.log(res);
+          uni.showToast({
+            icon: 'none',
+            title: '操作成功' });
+
+          console.log(datas);
+          var pages = getCurrentPages(); //当前页面
+          var prevPage = pages[pages.length - 2]; //上一页面
+          prevPage.setData({
+            //直接给上一个页面赋值
+            order_new: true });
+
+          setTimeout(function () {
+            uni.navigateBack({
+              delta: 1 });
+
+          }, 1000);
+
+        } else {
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '操作失败' });
+
+          }
+        }
+      }).catch(function (e) {
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '操作失败' });
+
+      });
+    },
+    getimg: function getimg(img) {
+      return _service.default.getimg(img);
     },
     pveimg: function pveimg(e) {
       _service.default.pveimg(e);
@@ -246,13 +331,13 @@ var that;var _default =
               var tempFilePaths = res.tempFilePaths;
 
 
-              if (datas.type == 2) {
-                that.sj_img2 = that.sj_img2.concat(res.tempFilePaths).slice(0, 9);
-              } else {
-                that.sj_img = that.sj_img.concat(res.tempFilePaths).slice(0, 9);
-              }
+              // if(datas.type==2){
+              // 	that.sj_img2=that.sj_img2.concat(res.tempFilePaths).slice(0,9)
+              // }else{
+              // 	that.sj_img=that.sj_img.concat(res.tempFilePaths).slice(0,9)
+              // }
 
-              return;
+              // return
               that.upimg1(tempFilePaths, 0, datas.type);
 
             } });
@@ -267,56 +352,51 @@ var that;var _default =
     },
     upimg1: function upimg1(imgs, i, type) {
       var that = this;
-      // const imglen = that.sj_img.length
-      // var newlen = Number(imglen) + Number(i)
-      // if (imglen == 9) {
-      // 	wx.showToast({
-      // 		icon: 'none',
-      // 		title: '最多可上传九张'
-      // 	})
-      // 	return
-      // }
-      // var newdata = that.sj_img
+      _service.default.wx_upload(imgs[i]).then(function (res) {
 
-      uni.uploadFile({
-        url: _service.default.IPurl + '/upload', //仅为示例，非真实的接口地址
-        filePath: imgs[i],
-        name: 'file',
-        formData: {
-          token: that.loginDatas.token },
-
-        success: function success(res) {
-          // console.log(res.data)
-          var ndata = JSON.parse(res.data);
-          if (ndata.code == 1) {
-            console.log(imgs[i], i, ndata.data);
-            var newdata;
-            if (datas.type == 2) {
-              that.sj_img2 = that.sj_img2.push(ndata.data);
-              newdata = that.sj_img2;
-            } else {
-              that.sj_img = that.sj_img.push(ndata.data);
-              newdata = that.sj_img;
-            }
-            console.log(i);
-
-            // i++
-            // that.upimg(imgs, i)
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          var datas = res.data;
+          console.log(i);
+          var newdata;
+          if (type == 2) {
+            that.sj_img2.push(datas);
+            newdata = that.sj_img2.length;
+          } else {
+            that.sj_img.push(datas);
+            newdata = that.sj_img.length;
+          }
 
 
-            var news1 = newdata.length;
-            if (news1 < 9 && i < imgs.length - 1) {
-              i++;
-              that.upimg1(imgs, i, type);
-            }
+          console.log(newdata < 9);
+          console.log(i < imgs.length - 1);
+          console.log(newdata < 9 && i < imgs.length - 1);
+          if (newdata < 9 && i < imgs.length - 1) {
+            i++;
+            that.upimg1(imgs, i, type);
+          }
+        } else {
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
           } else {
             uni.showToast({
               icon: "none",
               title: "上传失败" });
 
           }
-        } });
+        }
+      }).catch(function (e) {
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '操作失败' });
 
+      });
     },
     imgdel: function imgdel(e) {
       var that = this;
@@ -329,9 +409,9 @@ var that;var _default =
           if (res.confirm) {
             console.log('用户点击确定', e.currentTarget.dataset.type);
             if (datas.type == 2) {
-              that.sj_img2.splice(e.datas.idx, 1);
+              that.sj_img2.splice(datas.idx, 1);
             } else {
-              that.sj_img.splice(e.datas.idx, 1);
+              that.sj_img.splice(datas.idx, 1);
             }
 
           } else if (res.cancel) {

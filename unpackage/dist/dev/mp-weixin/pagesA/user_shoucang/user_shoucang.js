@@ -97,16 +97,18 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var l0 = _vm.__map(_vm.datas, function(item, idx) {
-    var $orig = _vm.__get_orig(item)
+  var l0 =
+    _vm.htmlReset == 0
+      ? _vm.__map(_vm.datas, function(item, idx) {
+          var $orig = _vm.__get_orig(item)
 
-    var m0 = _vm.getimg(item.cover)
-    return {
-      $orig: $orig,
-      m0: m0
-    }
-  })
-
+          var m0 = _vm.getimg(item.cover)
+          return {
+            $orig: $orig,
+            m0: m0
+          }
+        })
+      : null
   _vm.$mp.data = Object.assign(
     {},
     {
@@ -216,6 +218,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 8));
 var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
@@ -225,34 +231,13 @@ var that = void 0;var _default =
 {
   data: function data() {
     return {
-      datas: [{
-        id: 1,
-        name: '智能水浸探测器',
-        jj: '白色多功能智能主机',
-        pri: '998',
-        num: '1',
-        img: '/static/images/user/goods_02.jpg' },
-
-      {
-        id: 2,
-        name: '智能水浸探测器',
-        jj: '白色多功能智能主机',
-        pri: '998',
-        num: '1',
-        img: '/static/images/user/goods_02.jpg' },
-
-      {
-        id: 3,
-        name: '智能水浸探测器',
-        jj: '白色多功能智能主机',
-        pri: '998',
-        num: '1',
-        img: '/static/images/user/goods_02.jpg' }],
-
-
+      datas: [],
       page: 1,
       size: 20,
-      all: false };
+      all: false,
+      sum: '0.00',
+      htmlReset: -1,
+      data_last: false };
 
   },
   computed: _objectSpread({},
@@ -290,6 +275,7 @@ var that = void 0;var _default =
         that.btn_kg = 0;
         console.log(res);
         if (res.code == 1) {
+          that.htmlReset = 0;
           var datas = res.data;
           console.log(typeof datas);
 
@@ -310,8 +296,9 @@ var that = void 0;var _default =
             that.datas = that.datas.concat(datas.goods);
           }
           that.page++;
-
+          that.countpri();
         } else {
+          that.htmlReset = 1;
           if (res.msg) {
             uni.showToast({
               icon: 'none',
@@ -325,6 +312,7 @@ var that = void 0;var _default =
           }
         }
       }).catch(function (e) {
+        that.htmlReset = 1;
         that.btn_kg = 0;
         console.log(e);
         uni.showToast({
@@ -353,6 +341,7 @@ var that = void 0;var _default =
         }
       }
 
+      that.countpri();
     },
 
     select: function select(idx) {
@@ -396,7 +385,7 @@ var that = void 0;var _default =
         // })
       }
       // //计算总价
-      // that.countpri()
+      that.countpri();
     },
     //加减
     onNum: function onNum(e) {
@@ -405,7 +394,6 @@ var that = void 0;var _default =
       var ad = e.currentTarget.dataset.ad;
       var id = e.currentTarget.dataset.id;
       var thisidx = e.currentTarget.dataset.idx;
-      var thisidx1 = e.currentTarget.dataset.idx1;
 
       if (that.datas[thisidx].num < 2 && ad == '-') {
         console.log('禁止');
@@ -413,18 +401,21 @@ var that = void 0;var _default =
 
       }
 
-      if (ad == '-') {
-        that.datas[thisidx].num--;
-      } else {
-        that.datas[thisidx].num++;
+      // if (ad == '-') {
+      // 	that.datas[thisidx].num--
+      // } else {
+      // 	that.datas[thisidx].num++
+      // }
+      // return
+      if (this.btn_kg == 1) {
+        return;
       }
-      return;
-      var jkurl = '/cart/incOrDec';
+      this.btn_kg = 1;
+      var jkurl = '/user/goods_num';
       var datas = {
-        token: that.loginMsg.userToken,
-        g_id: that.datas[thisidx].g_id,
-        v_id: that.datas[thisidx].v_id,
-        type: ad == '-' ? 'dec' : 'inc',
+        token: that.loginDatas.token,
+        id: that.datas[thisidx].id,
+        type: ad == '-' ? 'decrement' : 'increment ',
         sum: 1 };
 
       _service.default.P_post(jkurl, datas).then(function (res) {
@@ -439,11 +430,23 @@ var that = void 0;var _default =
           }
 
           if (ad == '-') {
-            that.datas[thisidx].num--;
+            that.datas[thisidx].quantity--;
           } else {
-            that.datas[thisidx].num++;
+            that.datas[thisidx].quantity++;
           }
+          that.countpri();
+        } else {
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
 
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '操作失败' });
+
+          }
         }
       }).catch(function (e) {
         that.btn_kg = 0;
@@ -455,7 +458,20 @@ var that = void 0;var _default =
       });
 
     },
+    /*计算价格*/
+    countpri: function countpri() {
+      var heji = 0;
+      var var2 = this.datas;
+      for (var i in var2) {
+        if (var2[i].xuan == true) {
+          heji += var2[i].quantity * (var2[i].price * 100);
 
+        }
+      }
+
+      heji = (heji / 100).toFixed(2);
+      this.sum = heji;
+    },
     getimg: function getimg(img) {
       return _service.default.getimg(img);
     },
@@ -483,15 +499,11 @@ var that = void 0;var _default =
       if (c_ids.length == 0) {
         uni.showToast({
           icon: 'none',
-          title: '请选择商品' });
+          title: '请选择您的收藏' });
 
         return;
       }
-      uni.showToast({
-        icon: 'none',
-        title: '操作成功' });
 
-      return;
       uni.showModal({
         title: '提示',
         content: '是否删除这些商品？',
@@ -504,35 +516,50 @@ var that = void 0;var _default =
               that.btnkg = 1;
             }
             c_ids = c_ids.join(',');
-            var jkurl = '/cart/del';
+            var jkurl = '/user/defined';
             var datas = {
-              token: that.loginMsg.userToken,
-              c_ids: c_ids };
+              token: that.loginDatas.token,
+              id: c_ids,
+              type: 'del' };
 
-            // 单个请求
             _service.default.P_post(jkurl, datas).then(function (res) {
-              that.btnkg = 0;
+              that.btn_kg = 0;
               console.log(res);
               if (res.code == 1) {
                 var datas = res.data;
-                // console.log(typeof datas)
+                console.log(typeof datas);
 
                 if (typeof datas == 'string') {
                   datas = JSON.parse(datas);
                 }
+                console.log(res);
 
-                that.getcar();
                 uni.showToast({
                   icon: 'none',
                   title: '操作成功' });
 
+                setTimeout(function () {
+                  that.onRetry();
+                }, 500);
+              } else {
+                if (res.msg) {
+                  uni.showToast({
+                    icon: 'none',
+                    title: res.msg });
+
+                } else {
+                  uni.showToast({
+                    icon: 'none',
+                    title: '操作失败' });
+
+                }
               }
             }).catch(function (e) {
-              that.btnkg = 0;
+              that.btn_kg = 0;
               console.log(e);
               uni.showToast({
                 icon: 'none',
-                title: '操作失败' });
+                title: '获取数据失败，请检查您的网络连接' });
 
             });
           } else if (res.cancel) {
@@ -565,12 +592,18 @@ var that = void 0;var _default =
         }
 
       }
+      if (idG.length == 0) {
+        uni.showToast({
+          icon: 'none',
+          title: '请选择收藏' });
 
-      return;
+        return;
+      }
       var jkurl = '/user/defined';
       var datas = {
         token: this.loginDatas.token,
-        id: idG };
+        id: idG,
+        type: 'create' };
 
       console.log(idG);
       _service.default.P_post(jkurl, datas).then(function (res) {
@@ -613,34 +646,7 @@ var that = void 0;var _default =
           title: '获取数据失败，请检查您的网络连接' });
 
       });
-      if (kc_tip && idG !== '') {
-        uni.showToast({
-          icon: 'none',
-          title: '部分商品库存不足已被取消选择' });
 
-        setTimeout(function () {
-          wx.navigateTo({
-            url: '/pages/Order/Order?type=2&g_data=' + idG });
-
-        }, 1500);
-      } else if (idG !== '') {
-        wx.navigateTo({
-          url: '/pages/Order/Order?type=2&g_data=' + idG });
-
-      } else {
-        if (kc_tip) {
-          uni.showToast({
-            icon: 'none',
-            title: '请选择库存充足的商品' });
-
-        } else {
-          uni.showToast({
-            icon: 'none',
-            title: '请选择商品' });
-
-        }
-
-      }
     },
 
     jump: function jump(e) {

@@ -30,10 +30,10 @@
 					</view>
 					<button v-if="!ldata" class="" open-type="openSetting" @opensetting='handler'>点击授权</button>
 				</view>
-				<picker class="order_li" @change="bindPickerChange" :value="taocan_index" :range="taocan_list" range-key="name" data-type="1">
+				<picker class="order_li" @change="bindPickerChange" :value="taocan_index" :range="taocan_list" range-key="title" data-type="1">
 						<view class="order_li_tit">套内详单</view>
 						<view class="order_li_msg">
-							<input v-model="taocan_list[taocan_index].name" placeholder="请选择套餐" disabled="true" />
+							<input v-model="taocan_list[taocan_index].title" placeholder="请选择套餐" disabled="true" />
 						</view>
 				</picker>
 				<view class="order_li">
@@ -54,10 +54,10 @@
 							<input v-model="date" placeholder="请选择时间" disabled="true" />
 						</view>
 				</picker>
-				<picker class="order_li" @change="bindPickerChange" :value="hetong_index" :range="hetong_list" range-key="name" data-type="3">
+				<picker class="order_li" @change="bindPickerChange" :value="hetong_index" :range="hetong_list" range-key="title" data-type="3">
 						<view class="order_li_tit">合同</view>
 						<view class="order_li_msg">
-							<input v-model="hetong_list[hetong_index].name" placeholder="请选择合同" disabled="true" />
+							<input v-model="hetong_list[hetong_index].title" placeholder="请选择合同" disabled="true" />
 						</view>
 				</picker>
 				<view class="order_li">
@@ -96,46 +96,12 @@
 				yz_name:'',
 				yz_tel:'',
 				yz_address:'',
-				taocan_list:[
-					{
-						name:'套餐1',
-						id:1
-					},
-					{
-						name:'套餐2',
-						id:2
-					},
-					{
-						name:'套餐3',
-						id:3
-					},
-					{
-						name:'套餐4',
-						id:4
-					},
-				],
+				taocan_list:[],
 				taocan_index:0,
 				fzr_name:'',
 				fzr_tel:'',
 				date:currentDate,
-				hetong_list:[
-					{
-						name:'合同1',
-						id:1
-					},
-					{
-						name:'合同2',
-						id:2
-					},
-					{
-						name:'合同3',
-						id:3
-					},
-					{
-						name:'合同4',
-						id:4
-					},
-				],
+				hetong_list:[],
 				hetong_index:0,
 				yz_yaoqiu:''
 				
@@ -152,6 +118,8 @@
 		},
 		onLoad(){
 			that=this
+			that.gettaocan()
+			that.gethetong()
 			wx.getSetting({
 			  success: (res) => {
 			    console.log(res.authSetting['scope.userLocation'])
@@ -261,6 +229,13 @@
 					})
 					return
 				}
+				if (this.yz_tel == '' || !(/^1\d{10}$/.test(this.yz_tel))) {
+					wx.showToast({
+						icon: 'none',
+						title: '手机号有误'
+					})
+					return
+				}
 				if(!this.yz_address){
 					uni.showToast({
 						icon:'none',
@@ -282,6 +257,13 @@
 					})
 					return
 				}
+				if (this.fzr_tel == '' || !(/^1\d{10}$/.test(this.fzr_tel))) {
+					wx.showToast({
+						icon: 'none',
+						title: '手机号有误'
+					})
+					return
+				}
 				if(!this.yz_yaoqiu){
 					uni.showToast({
 						icon:'none',
@@ -290,10 +272,13 @@
 					return
 				}
 				var datas={
+					token:that.loginDatas.token,
 					order_name:that.gc_name,
 					owner_name:that.yz_name,
 					owner_phone:that.yz_tel,
-					owner_address:that.yz_address,
+					owner_address:that.yz_address.address,
+					long:that.yz_address.longitude,
+					lat:that.yz_address.latitude,
 					goods_id:that.taocan_list[that.taocan_index].id||0,
 					functionary:that.fzr_name,
 					functionary_phone:that.fzr_tel,
@@ -303,6 +288,7 @@
 				}
 				console.log(datas)
 				///order/create
+				var jkurl='/order/create'
 				service.P_post(jkurl, datas).then(res => {
 					that.btn_kg = 0
 					console.log(res)
@@ -353,6 +339,118 @@
 					})
 				})
 				
+			},
+			gettaocan(num) {
+				var that = this
+			
+				var datas = {
+					token: that.loginDatas.token || '',
+					// page: that.page,
+					// size: that.size,
+					// status: this.type,
+				}
+			
+				//selectSaraylDetailByUserCard
+				var jkurl = '/homepage/menu'
+				uni.showLoading({
+					title: '正在获取数据'
+				})
+				var page_that = that.page
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset=0
+						var datas = res.data
+						console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+			
+						that.taocan_list = datas
+			
+					} else {
+						that.htmlReset=1
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取套餐数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+						that.htmlReset=1
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取套餐数据失败，请检查您的网络连接'
+					})
+				})
+			
+			},
+			gethetong(){
+				var that = this
+			
+				var datas = {
+					token: that.loginDatas.token || '',
+					// page: that.page,
+					// size: that.size,
+					// status: this.type,
+				}
+			
+				//selectSaraylDetailByUserCard
+				var jkurl = '/order/contract'
+				uni.showLoading({
+					title: '正在获取数据'
+				})
+				var page_that = that.page
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset=0
+						var datas = res.data
+						console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+			
+						that.hetong_list = datas
+			
+					} else {
+						that.htmlReset=1
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取合同数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+						that.htmlReset=1
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取合同数据失败，请检查您的网络连接'
+					})
+				})
+			
 			},
 			bindPickerChange: function(e) {
 					console.log('picker发送选择改变，携带值为', e.currentTarget.dataset)

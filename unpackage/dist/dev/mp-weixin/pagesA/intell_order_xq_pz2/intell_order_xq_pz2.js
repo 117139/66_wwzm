@@ -97,6 +97,61 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var l0 =
+    _vm.htmlReset == 0 && _vm.datas.before
+      ? _vm.getimgarr(_vm.datas.before.photo)
+      : null
+  var l2 =
+    _vm.htmlReset == 0 && _vm.datas.under
+      ? _vm.__map(_vm.datas.under, function(item, index) {
+          var $orig = _vm.__get_orig(item)
+
+          var l1 = _vm.getimgarr(item.photo)
+          return {
+            $orig: $orig,
+            l1: l1
+          }
+        })
+      : null
+  var l3 =
+    _vm.htmlReset == 0
+      ? _vm.__map(_vm.sj_img, function(item, index) {
+          var $orig = _vm.__get_orig(item)
+
+          var m0 = _vm.getimg(item)
+          var m1 = _vm.getimg(item)
+          return {
+            $orig: $orig,
+            m0: m0,
+            m1: m1
+          }
+        })
+      : null
+  var l4 =
+    _vm.htmlReset == 0
+      ? _vm.__map(_vm.sj_img2, function(item, index) {
+          var $orig = _vm.__get_orig(item)
+
+          var m2 = _vm.getimg(item)
+          var m3 = _vm.getimg(item)
+          return {
+            $orig: $orig,
+            m2: m2,
+            m3: m3
+          }
+        })
+      : null
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        l0: l0,
+        l2: l2,
+        l3: l3,
+        l4: l4
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -207,6 +262,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 8));
 var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
@@ -216,6 +282,9 @@ var that;var _default =
 {
   data: function data() {
     return {
+      datas: '',
+      htmlReset: -1,
+      order_num: '',
       bz_content: '',
       sj_img: [],
       bz_content2: '',
@@ -225,11 +294,89 @@ var that;var _default =
   computed: _objectSpread({},
   (0, _vuex.mapState)(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data'])),
 
-  onLoad: function onLoad() {
+  onLoad: function onLoad(option) {
     that = this;
+    this.order_num = option.order_num;
+    this.getdata();
   },
   methods: _objectSpread(_objectSpread({},
   (0, _vuex.mapMutations)(['login', 'logindata', 'logout', 'setplatform'])), {}, {
+    onRetry: function onRetry() {
+      this.getdata();
+    },
+    getdata: function getdata() {
+      var that = this;
+
+      if (that.data_last) {
+        return;
+      }
+
+      var datas = {
+        order_num: that.order_num,
+        token: that.loginDatas.token };
+
+      if (this.btn_kg == 1) {
+        return;
+      }
+      this.btn_kg = 1;
+      //selectSaraylDetailByUserCard
+      var jkurl = '/engineer/show';
+      uni.showLoading({
+        title: '正在获取数据',
+        mask: true });
+
+      var page_that = that.page;
+      _service.default.P_get(jkurl, datas).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          that.htmlReset = 0;
+          var datas = res.data;
+          console.log(typeof datas);
+
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+          console.log(res);
+          that.datas = datas;
+          // if(page_that==1){
+
+          // 	that.datas = datas
+          // }else{
+          // 	if(datas.length==0){
+          // 		that.data_last=true
+          // 		return
+          // 	}
+          // 	that.datas =that.datas.concat(datas) 
+          // }
+          // that.page++
+
+        } else {
+          that.htmlReset = 1;
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '操作失败' });
+
+          }
+        }
+      }).catch(function (e) {
+        that.htmlReset = 1;
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '获取数据失败，请检查您的网络连接' });
+
+      });
+
+    },
+
     sub: function sub() {
       if (this.sj_img.length == 0) {
         uni.showToast({
@@ -238,20 +385,67 @@ var that;var _default =
 
         return;
       }
-      uni.showToast({
-        icon: 'none',
-        title: '上传成功' });
-
+      if (this.btn_kg == 1) {
+        return;
+      }
+      this.btn_kg = 1;
       var datas = {
-        sj_img: that.sj_img.join(','),
-        content: that.content };
+        token: that.loginDatas.token,
+        type: 'under',
+        order_num: that.order_num,
+        photo: that.sj_img.join(','),
+        comments: that.bz_content };
 
-      console.log(datas);
-      setTimeout(function () {
-        uni.navigateBack({
-          delta: 2 });
+      var jkurl = "/engineer/schedule";
+      _service.default.P_post(jkurl, datas).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          var datas = res.data;
+          console.log(typeof datas);
 
-      }, 1000);
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+          console.log(res);
+          uni.showToast({
+            icon: 'none',
+            title: '操作成功' });
+
+          console.log(datas);
+          var pages = getCurrentPages(); //当前页面
+          var prevPage = pages[pages.length - 2]; //上一页面
+          prevPage.setData({
+            //直接给上一个页面赋值
+            order_new: true });
+
+          setTimeout(function () {
+            uni.navigateBack({
+              delta: 1 });
+
+          }, 1000);
+
+        } else {
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '操作失败' });
+
+          }
+        }
+      }).catch(function (e) {
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '操作失败' });
+
+      });
     },
     sub1: function sub1() {
       if (this.sj_img2.length == 0) {
@@ -261,24 +455,75 @@ var that;var _default =
 
         return;
       }
-      uni.showToast({
-        icon: 'none',
-        title: '上传成功' });
-
+      if (this.btn_kg == 1) {
+        return;
+      }
+      this.btn_kg = 1;
       var datas = {
-        sj_img: that.sj_img2.join(','),
-        content: that.content2 };
+        token: that.loginDatas.token,
+        type: ' finish',
+        order_num: that.order_num,
+        photo: that.sj_img2.join(','),
+        comments: that.bz_content2 };
 
-      console.log(datas);
-      setTimeout(function () {
-        uni.navigateBack({
-          delta: 2 });
+      var jkurl = "/engineer/schedule";
+      _service.default.P_post(jkurl, datas).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          that.htmlReset = 0;
+          var datas = res.data;
+          console.log(typeof datas);
 
-      }, 1000);
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+          console.log(res);
+          uni.showToast({
+            icon: 'none',
+            title: '操作成功' });
+
+          console.log(datas);
+          var pages = getCurrentPages(); //当前页面
+          var prevPage = pages[pages.length - 2]; //上一页面
+          prevPage.setData({
+            //直接给上一个页面赋值
+            order_new: true });
+
+          setTimeout(function () {
+            uni.navigateBack({
+              delta: 1 });
+
+          }, 1000);
+
+        } else {
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '操作失败' });
+
+          }
+        }
+      }).catch(function (e) {
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '操作失败' });
+
+      });
     },
     getimg: function getimg(img) {
       console.log(_service.default.getimg(img));
       return _service.default.getimg(img);
+    },
+    getimgarr: function getimgarr(img) {
+      return _service.default.getimgarr(img);
     },
     pveimg: function pveimg(e) {
       _service.default.pveimg(e);
@@ -310,13 +555,13 @@ var that;var _default =
               var tempFilePaths = res.tempFilePaths;
 
 
-              if (datas.type == 2) {
-                that.sj_img2 = that.sj_img2.concat(res.tempFilePaths).slice(0, 9);
-              } else {
-                that.sj_img = that.sj_img.concat(res.tempFilePaths).slice(0, 9);
-              }
+              // if(datas.type==2){
+              // 	that.sj_img2=that.sj_img2.concat(res.tempFilePaths).slice(0,9)
+              // }else{
+              // 	that.sj_img=that.sj_img.concat(res.tempFilePaths).slice(0,9)
+              // }
 
-              return;
+              // return
               that.upimg1(tempFilePaths, 0, datas.type);
 
             } });
@@ -331,56 +576,51 @@ var that;var _default =
     },
     upimg1: function upimg1(imgs, i, type) {
       var that = this;
-      // const imglen = that.sj_img.length
-      // var newlen = Number(imglen) + Number(i)
-      // if (imglen == 9) {
-      // 	wx.showToast({
-      // 		icon: 'none',
-      // 		title: '最多可上传九张'
-      // 	})
-      // 	return
-      // }
-      // var newdata = that.sj_img
+      _service.default.wx_upload(imgs[i]).then(function (res) {
 
-      uni.uploadFile({
-        url: _service.default.IPurl + '/upload', //仅为示例，非真实的接口地址
-        filePath: imgs[i],
-        name: 'file',
-        formData: {
-          token: that.loginDatas.token },
-
-        success: function success(res) {
-          // console.log(res.data)
-          var ndata = JSON.parse(res.data);
-          if (ndata.code == 1) {
-            console.log(imgs[i], i, ndata.data);
-            var newdata;
-            if (datas.type == 2) {
-              that.sj_img2 = that.sj_img2.push(ndata.data);
-              newdata = that.sj_img2;
-            } else {
-              that.sj_img = that.sj_img.push(ndata.data);
-              newdata = that.sj_img;
-            }
-            console.log(i);
-
-            // i++
-            // that.upimg(imgs, i)
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          var datas = res.data;
+          console.log(i);
+          var newdata;
+          if (type == 2) {
+            that.sj_img2.push(datas);
+            newdata = that.sj_img2.length;
+          } else {
+            that.sj_img.push(datas);
+            newdata = that.sj_img.length;
+          }
 
 
-            var news1 = newdata.length;
-            if (news1 < 9 && i < imgs.length - 1) {
-              i++;
-              that.upimg1(imgs, i, type);
-            }
+          console.log(newdata < 9);
+          console.log(i < imgs.length - 1);
+          console.log(newdata < 9 && i < imgs.length - 1);
+          if (newdata < 9 && i < imgs.length - 1) {
+            i++;
+            that.upimg1(imgs, i, type);
+          }
+        } else {
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
           } else {
             uni.showToast({
               icon: "none",
               title: "上传失败" });
 
           }
-        } });
+        }
+      }).catch(function (e) {
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '操作失败' });
 
+      });
     },
     imgdel: function imgdel(e) {
       var that = this;
@@ -393,9 +633,9 @@ var that;var _default =
           if (res.confirm) {
             console.log('用户点击确定', e.currentTarget.dataset.type);
             if (datas.type == 2) {
-              that.sj_img2.splice(e.datas.idx, 1);
+              that.sj_img2.splice(datas.idx, 1);
             } else {
-              that.sj_img.splice(e.datas.idx, 1);
+              that.sj_img.splice(datas.idx, 1);
             }
 
           } else if (res.cancel) {

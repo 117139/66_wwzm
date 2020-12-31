@@ -188,6 +188,9 @@
 .jd_tit1.data-v-5c19cd29{
  	color: #222222;
 }
+.jd_tit2.data-v-5c19cd29{
+	 color: #52B0FF;
+}
 .jd_msgbox1.data-v-5c19cd29{
  	border-left: 1px solid #EEEEEE;
 }
@@ -214,12 +217,12 @@
  	height: 60rpx;
  	font-size: 28rpx;
 }
-.jd_tit2.data-v-5c19cd29{
+	/* .jd_tit2{
  	color: #666;
-}
-.jd_tit2 .iconfont.data-v-5c19cd29{
+ }
+ .jd_tit2 .iconfont{
  	color: #BBB;
-}
+ } */
 .jd_msgbox2.data-v-5c19cd29{
  	border-left: 1px solid rgba(0,0,0,0);
  	margin-bottom: 0;

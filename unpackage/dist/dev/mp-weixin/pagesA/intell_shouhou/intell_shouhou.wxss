@@ -10,7 +10,7 @@
 	        border-radius: 10px 10px 0px 0px;
 	margin-bottom: 20rpx;
 }
-.sh_li_tit.data-v-257dedaa{
+.sh_li_tit.data-v-257dedaa {
 	border-bottom: 1px solid #eee;
 	height: 75rpx;
 	display: -webkit-box;
@@ -24,33 +24,33 @@
 	        justify-content: space-between;
 	padding: 0 30rpx;
 }
-.sh_li_tl.data-v-257dedaa{
-	
+.sh_li_tl.data-v-257dedaa {
+
 	font-size: 22rpx;
 	font-family: PingFang SC;
 	font-weight: 500;
 	color: #666666;
 }
-.sh_li_tr.data-v-257dedaa{
-	
+.sh_li_tr.data-v-257dedaa {
+
 	font-size: 28rpx;
 	font-family: PingFang SC;
 	font-weight: 500;
 	color: #FE4537;
 }
-.sh_li_msg.data-v-257dedaa{
+.sh_li_msg.data-v-257dedaa {
 	width: 100%;
 	padding: 20rpx 30rpx;
 }
-.sh_li_msg_d1.data-v-257dedaa{
-	
+.sh_li_msg_d1.data-v-257dedaa {
+
 	font-size: 24rpx;
 	font-family: PingFang;
 	font-weight: bold;
 	color: #000000;
 	margin-bottom: 15rpx;
 }
-.sh_li_msg_d2.data-v-257dedaa{
+.sh_li_msg_d2.data-v-257dedaa {
 	font-size: 22rpx;
 	font-family: PingFang SC;
 	font-weight: 500;
@@ -58,7 +58,7 @@
 	line-height: 30rpx;
 	margin-top: 8rpx;
 }
-.sh_btn.data-v-257dedaa{
+.sh_btn.data-v-257dedaa {
 	width: 160rpx;
 	height: 56rpx;
 	background: #fff;
@@ -80,12 +80,12 @@
 	color: #3778FE;
 	margin-left: 15rpx;
 }
-.sh_btn1.data-v-257dedaa{
+.sh_btn1.data-v-257dedaa {
 	color: #fff;
 	background: #3778FE;
 }
-.sh_czli.data-v-257dedaa{
+.sh_czli.data-v-257dedaa {
 	width: 100%;
-	padding:0 30rpx 30rpx;
+	padding: 0 30rpx 30rpx;
 }
 

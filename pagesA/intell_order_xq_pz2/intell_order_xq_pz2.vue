@@ -198,6 +198,10 @@
 					})
 					return
 				}
+				if(this.btn_kg==1){
+					return
+				}
+				this.btn_kg=1
 				var datas = {
 					token: that.loginDatas.token,
 					type: 'under',
@@ -264,11 +268,15 @@
 					})
 					return
 				}
+				if(this.btn_kg==1){
+					return
+				}
+				this.btn_kg=1
 				var datas = {
 					token: that.loginDatas.token,
 					type: ' finish',
 					order_num: that.order_num,
-					photo: that.sj_img.join(','),
+					photo: that.sj_img2.join(','),
 					comments: that.bz_content2
 				}
 				var jkurl = "/engineer/schedule"
@@ -438,9 +446,9 @@
 						if (res.confirm) {
 							console.log('用户点击确定', e.currentTarget.dataset.type)
 							if (datas.type == 2) {
-								that.sj_img2.splice(e.datas.idx, 1)
+								that.sj_img2.splice(datas.idx, 1)
 							} else {
-								that.sj_img.splice(e.datas.idx, 1)
+								that.sj_img.splice(datas.idx, 1)
 							}
 
 						} else if (res.cancel) {

@@ -1,47 +1,57 @@
 <template>
 	<view class="content_wrap" style="min-height: 100vh;background: #FAFAFA;">
-		
+		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+		<view v-if="htmlReset==-1"  class="loading_def">
+				<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
+		</view>
+		<block v-if="htmlReset==0">
 		<view class="index_list">
 			<view class="index_li" v-for="(item,index) in datas">
 				<view class="index_li_d1">
-					<image class="index_tx" :src="getimg('/static/images/tx_m2.jpg')" lazy-load="true" mode="aspectFill"></image>
-					<view class="index_yz">业主：<text>孙三三</text></view>
-					<view @tap="call" data-tel="18300000000" class="iconfont iconphone"></view>
+					<image class="index_tx" :src="getimg(item.owner_cover)" lazy-load="true" mode="aspectFill"></image>
+					<view class="index_yz">业主：<text>{{item.owner_name}}</text></view>
+					<view @tap="call" :data-tel="item.owner_phone" class="iconfont iconphone"></view>
 				</view>
-				<view class="index_li_d2" @tap="map_dp()">
+				<view class="index_li_d2" @tap="map_dp(item)">
 					<view class="index_add">
 						<view class="index_add1">
 							<view class="iconfont icondizhizhuanhuan"></view>
 						</view>
 						<view class="flex_1 index_add2">
-							重庆市渝中区菜园坝
+							{{item.order_name}}
 						</view>
-						<view class="index_add3">
-							距您<text style="color: #3778FE;">150</text>米
-							<text class="iconfont iconnext-m"></text>
-						</view>
+						<block v-if="item.distance">
+							<view class="index_add3" v-if="item.distance>1000">
+								距您<text  style="color: #3778FE;">{{(item.distance/1000).toFixed(2)}}</text>千米
+								<text class="iconfont iconnext-m"></text>
+							</view>
+							<view class="index_add3" v-else>
+								距您<text  style="color: #3778FE;">{{item.distance}}</text>米
+								<text class="iconfont iconnext-m"></text>
+							</view>
+						</block>
 					</view>
-					<view class="index_address">菜园坝290号重庆中银大厦6-11-4</view>
+					<view class="index_address">{{item.owner_address}}</view>
 				</view>
 				<view class="index_li_d3">
-					<view class="index_li_d3_tit">安防套餐</view>
+					<view class="index_li_d3_tit">{{item.goods_list_name}}</view>
 					<scroll-view class="weixin_dblist" scroll-x="true" bindscroll="scroll" style="width: 100%">
-						<image v-for="(item,index) in datas" @tap="pveimg" lazy-load="true" 
-						 :data-src="getimg(item.img)" class="taocan_li" 
-						 :src="getimg(item.img)" mode="aspectFit"></image>
+						<image v-for="(item1,index1) in item.goods_list" @tap="pveimg" lazy-load="true" :src="getimg(item1.cover)" :data-src="getimg(item1.cover)"
+						 class="taocan_li" mode="aspectFit"></image>
 							
 					</scroll-view>
 				</view>
 				<view class="index_li_d1" style="border-bottom: 0;">
 					<view class="index_yz dis_flex">要求：
-						<view class="flex_1"><text class="oh1">情况紧急，需要在三天内完成需要在三天内完成需要在三天内完成需要在三天内完成需要在三天内完成</text></view>
+						<view class="flex_1"><text class="oh1">{{item.owner_demand}}</text></view>
 					</view>
-					<view class="go_btn" @tap="jump" :data-url="'/pagesA/intell_order_xq/intell_order_xq?type='+1">进入</view>
+					<view class="go_btn" @tap="jump" :data-url="'/pagesA/intell_order_xq/intell_order_xq?id='+item.id">进入</view>
 				</view>
 			</view>
 			<view v-if="datas.length==0" class="zanwu">暂无数据</view>
 			<view v-if="data_last" class="data_last">我可是有底线的哟~~~</view>
 		</view>
+		</block>
 	</view>
 </template>
 
@@ -52,36 +62,23 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
-
+	var that 
 	export default {
 		data() {
 			return {
-				datas:[
-					{
-						img:'/static/images/business/tc_img_03.png'
-					},
-					{
-						img:'/static/images/business/tc_img_03.png'
-					},
-					{
-						img:'/static/images/business/tc_img_03.png'
-					},
-					{
-						img:'/static/images/business/tc_img_03.png'
-					},
-					{
-						img:'/static/images/business/tc_img_03.png'
-					},
-					{
-						img:'/static/images/business/tc_img_03.png'
-					},
-				],
+				datas:[],
 				data_last:false,
+				htmlReset:-1,
 				page:1,
-				size:20
+				size:20,
+				longitude:'',
+				latitude:''
 			};
 		},
-		onLoad() {},
+		onLoad() {
+			that=this
+			that.onRetry()
+		},
 		onShow() {
 			// service.wxlogin()
 		},
@@ -100,106 +97,121 @@
 		onPullDownRefresh() {
 			this.onRetry()
 		},
+		onReachBottom() {
+			this.getdata()
+		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
+			onRetry() {
+				this.page = 1
+				this.datas = []
+				this.data_last = false
+				this.getdata()
+			},
+			getdata() {
+				var that = this
+				if(!that.hasLogin){
+					this.htmlReset=0
+					return
+				}
+				if (that.data_last) {
+					return
+				}
+				uni.getLocation({
+				    type: 'gcj02',
+				    success: function (res) {
+				        console.log('当前位置的经度：' + res.longitude);
+								that.longitude=res.longitude
+								that.latitude=res.latitude
+				        console.log('当前位置的纬度：' + res.latitude);
+								var datas = {
+									status:2,
+									token: that.loginDatas.token,
+									long:that.longitude,
+									lat:that.latitude,
+									page: that.page,
+									size: that.size
+								}
+								if (that.btn_kg == 1) {
+									return
+								}
+								that.btn_kg = 1
+								//selectSaraylDetailByUserCard
+								var jkurl = '/engineer/list'
+								uni.showLoading({
+									title: '正在获取数据',
+									mask: true
+								})
+								var page_that = that.page
+								service.P_get(jkurl, datas).then(res => {
+									that.btn_kg = 0
+									console.log(res)
+									if (res.code == 1) {
+										that.htmlReset = 0
+										var datas = res.data
+										console.log(typeof datas)
+								
+										if (typeof datas == 'string') {
+											datas = JSON.parse(datas)
+										}
+										console.log(res)
+								
+										if (page_that == 1) {
+								
+											that.datas = datas
+										} else {
+											if (datas.length == 0) {
+												that.data_last = true
+												return
+											}
+											that.datas = that.datas.concat(datas)
+										}
+										that.page++
+								
+									} else {
+										that.htmlReset = 1
+										if (res.msg) {
+											uni.showToast({
+												icon: 'none',
+												title: res.msg
+											})
+										} else {
+											uni.showToast({
+												icon: 'none',
+												title: '获取数据失败'
+											})
+										}
+									}
+								}).catch(e => {
+									that.htmlReset = 1
+									that.btn_kg = 0
+									console.log(e)
+									uni.showToast({
+										icon: 'none',
+										title: '获取数据失败，请检查您的网络连接'
+									})
+								})
+								
+				    }
+				});
+			
+				
+			},
 			map_dp(data) {
 				let that = this
 				let plugin = requirePlugin('routePlan');
-				let key = '56LBZ-EYRK6-TODSV-EY4P2-RC367-HAFGD'; //使用在腾讯位置服务申请的key
-				let referer = '达鑫达'; //调用插件的app的名称
+				let key = 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'; //使用在腾讯位置服务申请的key
+				let referer = '万屋智能'; //调用插件的app的名称
 				let endPoint = JSON.stringify({ //终点
-					'name': 'dd',
-					'latitude':  parseFloat('38.912884929705875')||'',
-					'longitude':parseFloat('115.37814606640623')||'',
+					'name': data.owner_address,
+					'latitude': parseFloat(data.lat) || '',
+					'longitude': parseFloat(data.long) || '',
 				});
 				console.log(endPoint)
 				uni.navigateTo({
 					url: 'plugin://routePlan/index?key=' + key + '&referer=' + referer + '&endPoint=' + endPoint + '&navigation=1'
 				});
 			},
-			onRetry() {
-				this.page = 1
-				this.datas=[]
-				this.data_last=false
-				this.getdata()
-			},
-			getdata() {
-				var that = this
-				
-				if(that.data_last){
-					return
-				}
-				var fwb_id
-				if(that.fw_cur==-1){
-					fwb_id=-1
-				}else{
-					fwb_id=that.productCateData[that.fw_cur].id
-				}
-				var datas = {
-					id:fwb_id,
-					token: that.loginDatas.userToken,
-					page: that.page,
-					size: that.size
-				}
-				if(this.btn_kg==1){
-					return
-				}
-				this.btn_kg=1
-				//selectSaraylDetailByUserCard
-				var jkurl = '/serveList'
-				uni.showLoading({
-					title: '正在获取数据',
-					mask:true
-				})
-				var page_that=that.page
-				service.P_get(jkurl, datas).then(res => {
-					that.btn_kg=0
-					console.log(res)
-					if (res.code == 1) {
-						var datas = res.data
-						console.log(typeof datas)
-					
-						if (typeof datas == 'string') {
-							datas = JSON.parse(datas)
-						}
-						console.log(res)
-						
-						if(page_that==1){
-							
-							that.datas = datas
-						}else{
-							if(datas.length==0){
-								that.data_last=true
-								return
-							}
-							that.datas =that.datas.concat(datas) 
-						}
-						that.page++
-					
-					} else {
-						if (res.msg) {
-							uni.showToast({
-								icon: 'none',
-								title: res.msg
-							})
-						} else {
-							uni.showToast({
-								icon: 'none',
-								title: '操作失败'
-							})
-						}
-					}
-				}).catch(e => {
-					that.btn_kg=0
-					console.log(e)
-					uni.showToast({
-						icon: 'none',
-						title: '获取数据失败，请检查您的网络连接'
-					})
-				})
-				
-			},
-			
 			getimg(img) {
 				// console.log(service.getimg(img))
 				return service.getimg(img)

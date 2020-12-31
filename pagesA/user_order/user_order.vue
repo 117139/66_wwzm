@@ -16,9 +16,10 @@
 			<view style="width: 100%;height: 90upx;"></view>
 			<view v-for="(item,index) in datas">
 				<view class="order_d1">
-					<view class="order_tel" @tap="call" :data-tel="item.engineer_phone">
+					<view v-if="item.engineer_phone" class="order_tel" @tap="call" :data-tel="item.engineer_phone">
 						<text  class="iconfont iconphone"></text>{{item.engineer_phone}}
 					</view>
+					<view v-else></view>
 					<view v-if="item.status==1" class="order_type">
 						待处理
 					</view>

@@ -54,6 +54,12 @@
 		},
 		onLoad() {
 			that=this
+			that.name=that.loginDatas.truename
+			that.phone=that.loginDatas.phone
+			that.id_cord=that.loginDatas.id_number
+			that.img1=that.loginDatas.id_front
+			that.img2=that.loginDatas.id_the_back
+			that.img3=that.loginDatas.id_in_hand
 		},
 		methods: {
 			sub(){

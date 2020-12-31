@@ -43,7 +43,7 @@
 	width: 100%;
 	height: 345rpx;
 }
-.li_img image.data-v-1fbe3e35{
+.li_img image.data-v-1fbe3e35 {
 	width: 100%;
 	height: 100%;
 }
@@ -78,7 +78,7 @@
 	margin-right: 30rpx;
 	position: relative;
 }
-.cz_li button.data-v-1fbe3e35{
+.cz_li button.data-v-1fbe3e35 {
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -90,7 +90,7 @@
 .cz_li .iconfont.data-v-1fbe3e35 {
 	font-size: 32rpx;
 }
-.cz_num.data-v-1fbe3e35{
+.cz_num.data-v-1fbe3e35 {
 	font-size: 20rpx;
 	color: #F4691A;
 	position: absolute;
@@ -98,7 +98,7 @@
 	/* right: -18upx; */
 	left: 30rpx;
 }
-.user_add.data-v-1fbe3e35{
+.user_add.data-v-1fbe3e35 {
 	width: 153rpx;
 	height: 153rpx;
 	position: fixed;

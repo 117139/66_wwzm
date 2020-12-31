@@ -97,21 +97,23 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var l0 = _vm.type == 2 ? _vm.getarr(_vm.datas.tag) : null
+  var l0 =
+    _vm.htmlReset == 0 && _vm.type == 2 ? _vm.getarr(_vm.datas.tag) : null
+  var l1 =
+    _vm.htmlReset == 0
+      ? _vm.__map(_vm.getimgarr(_vm.datas.photo), function(item, index) {
+          var $orig = _vm.__get_orig(item)
 
-  var l1 = _vm.__map(_vm.getimgarr(_vm.datas.photo), function(item, index) {
-    var $orig = _vm.__get_orig(item)
-
-    var m0 = _vm.getimg(item)
-    var m1 = _vm.getimg(item)
-    return {
-      $orig: $orig,
-      m0: m0,
-      m1: m1
-    }
-  })
-
-  var m2 = _vm.get_fwb(_vm.datas.content)
+          var m0 = _vm.getimg(item)
+          var m1 = _vm.getimg(item)
+          return {
+            $orig: $orig,
+            m0: m0,
+            m1: m1
+          }
+        })
+      : null
+  var m2 = _vm.htmlReset == 0 ? _vm.get_fwb(_vm.datas.content) : null
   _vm.$mp.data = Object.assign(
     {},
     {
@@ -172,6 +174,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 8));
 var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
@@ -183,7 +191,8 @@ var that = void 0;var _default =
     return {
       type: '',
       id: '',
-      datas: '' };
+      datas: '',
+      htmlReset: -1 };
 
   },
   computed: _objectSpread({},
@@ -199,6 +208,9 @@ var that = void 0;var _default =
   },
   methods: _objectSpread(_objectSpread({},
   (0, _vuex.mapMutations)(['login', 'logindata', 'logout', 'setplatform'])), {}, {
+    onRetry: function onRetry() {
+      that.getdata();
+    },
     getdata: function getdata() {
       var that = this;
       var jkurl = '/data/refer_record';
@@ -222,6 +234,7 @@ var that = void 0;var _default =
         that.btn_kg = 0;
         console.log(res);
         if (res.code == 1) {
+          that.htmlReset = 0;
           var datas = res.data;
           console.log(typeof datas);
 
@@ -233,6 +246,7 @@ var that = void 0;var _default =
           that.datas = datas;
 
         } else {
+          that.htmlReset = 1;
           if (res.msg) {
             uni.showToast({
               icon: 'none',
@@ -246,6 +260,7 @@ var that = void 0;var _default =
           }
         }
       }).catch(function (e) {
+        that.htmlReset = 1;
         that.btn_kg = 0;
         console.log(e);
         uni.showToast({

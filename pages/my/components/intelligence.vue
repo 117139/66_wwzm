@@ -63,7 +63,9 @@
 						<image :src="getimg('/static/images/intell/my_icon4.png')" mode="aspectFit"></image>
 					</view>
 					<view class="user_li_r">
-						<view>我的认证</view>
+						<view>我的认证
+							<!-- <text v-if="loginDatas.truename">(已认证)</text> -->
+						</view>
 						<view class="iconfont iconnext-m"></view>
 					</view>
 				</view>

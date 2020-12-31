@@ -12,7 +12,7 @@
 						<view class="index_yz">业主：<text>{{datas.owner_name}}</text></view>
 						<view @tap="call" :data-tel="datas.owner_name" class="iconfont iconphone"></view>
 					</view>
-					<view class="index_li_d2" @tap="map_dp()">
+					<view class="index_li_d2" @tap="map_dp(datas)">
 						<view class="index_add">
 							<view class="index_add1">
 								<view class="iconfont icondizhizhuanhuan"></view>
@@ -20,10 +20,16 @@
 							<view class="flex_1 index_add2">
 								{{datas.order_name}}
 							</view>
-							<view class="index_add3">
-								距您<text style="color: #3778FE;">150</text>米
-								<text class="iconfont iconnext-m"></text>
-							</view>
+							<block v-if="datas.distance">
+								<view class="index_add3" v-if="datas.distance>1000">
+									距您<text style="color: #3778FE;">{{(datas.distance/1000).toFixed(2)}}</text>千米
+									<text class="iconfont iconnext-m"></text>
+								</view>
+								<view class="index_add3" v-else>
+									距您<text style="color: #3778FE;">{{datas.distance}}</text>米
+									<text class="iconfont iconnext-m"></text>
+								</view>
+							</block>
 						</view>
 						<view class="index_address">{{datas.owner_address}}</view>
 					</view>
@@ -48,7 +54,7 @@
 							</view>
 						</view>
 					</view>
-					<view  class="index_li_d4">
+					<view class="index_li_d4">
 						<view class="dis_flex aic ju_b index_li_d4_li">
 							<view style="color: #999;">订单号</view>
 							<view>{{datas.order_num}}</view>
@@ -64,10 +70,14 @@
 						</view>
 					</view>
 				</view>
-				<view v-if="datas.status==1" @tap="jump" :data-url="'/pagesA/intell_order_xq_pz1/intell_order_xq_pz1?order_num='+datas.order_num" class="pz_btn"><text class="iconfont iconshigong"></text>施工前照片</view>
-				<view v-if="datas.status==2" @tap="jump" :data-url="'/pagesA/intell_order_xq_pz2/intell_order_xq_pz2?order_num='+datas.order_num" class="pz_btn">
+				<view v-if="datas.status==1" @tap="jump" :data-url="'/pagesA/intell_order_xq_pz1/intell_order_xq_pz1?order_num='+datas.order_num"
+				 class="pz_btn"><text class="iconfont iconshigong"></text>施工前照片</view>
+				<view v-if="datas.status==2" @tap="jump" :data-url="'/pagesA/intell_order_xq_pz2/intell_order_xq_pz2?order_num='+datas.order_num"
+				 class="pz_btn">
 					<text class="iconfont iconshigong"></text>施工结束照片
-				</view><view v-if="datas.status==3" @tap="jump" :data-url="'/pagesA/intell_order_xq_pz3/intell_order_xq_pz3?order_num='+datas.order_num" class="pz_btn">
+				</view>
+				<view v-if="datas.status==3&&datas.owner_sign_photo.length==''" @tap="jump" :data-url="'/pagesA/intell_order_xq_pz3/intell_order_xq_pz3?order_num='+datas.order_num"
+				 class="pz_btn">
 					<text class="iconfont iconshigong"></text>完工签字验收
 				</view>
 			</view>
@@ -86,33 +96,35 @@
 	export default {
 		data() {
 			return {
-				type:0,
-				htmlReset:-1,
-				datas:[],
-				data_last:false,
-				page:1,
-				size:20
+				type: 0,
+				htmlReset: -1,
+				datas: [],
+				data_last: false,
+				page: 1,
+				size: 20,
+				longitude:'',
+				latitude:''
 			};
 		},
 		onLoad(option) {
-			that=this
-			that.id=option.id
+			that = this
+			that.id = option.id
 			that.onRetry()
 		},
-		
+
 		onShow() {
 			let pages = getCurrentPages();
 			let currPage = pages[pages.length - 1];
 			if (currPage.data.order_new) {
 				//将携带的参数赋值
-		
+
 				that.onRetry()
 				// this.addressBack=true 
 				currPage.setData({
 					//直接给上一个页面赋值
 					order_new: false,
 				});
-		
+
 			}
 		},
 		computed: {
@@ -153,62 +165,73 @@
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
-			onRetry(){
-				that.getdata()
+			onRetry() {
+				uni.getLocation({
+					type: 'gcj02',
+					success: function(res) {
+						console.log('当前位置的经度：' + res.longitude);
+						that.longitude = res.longitude
+						that.latitude = res.latitude
+						console.log('当前位置的纬度：' + res.latitude);
+						that.getdata()
+					}
+				});
 			},
 			map_dp(data) {
 				let that = this
 				let plugin = requirePlugin('routePlan');
-				let key = '56LBZ-EYRK6-TODSV-EY4P2-RC367-HAFGD'; //使用在腾讯位置服务申请的key
-				let referer = '达鑫达'; //调用插件的app的名称
+				let key = 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'; //使用在腾讯位置服务申请的key
+				let referer = '万屋智能'; //调用插件的app的名称
 				let endPoint = JSON.stringify({ //终点
-					'name': 'dd',
-					'latitude':  parseFloat('38.912884929705875')||'',
-					'longitude':parseFloat('115.37814606640623')||'',
+					'name': data.owner_address,
+					'latitude': parseFloat(data.lat) || '',
+					'longitude': parseFloat(data.long) || '',
 				});
 				console.log(endPoint)
 				uni.navigateTo({
 					url: 'plugin://routePlan/index?key=' + key + '&referer=' + referer + '&endPoint=' + endPoint + '&navigation=1'
 				});
 			},
-			
+
 			getdata() {
 				var that = this
-				
-				if(that.data_last){
+
+				if (that.data_last) {
 					return
 				}
-				
+
 				var datas = {
-					id:that.id,
+					id: that.id,
 					token: that.loginDatas.token,
+					long:that.longitude,
+					lat:that.latitude,
 				}
-				if(this.btn_kg==1){
+				if (this.btn_kg == 1) {
 					return
 				}
-				this.btn_kg=1
+				this.btn_kg = 1
 				//selectSaraylDetailByUserCard
 				var jkurl = '/engineer/list'
 				uni.showLoading({
 					title: '正在获取数据',
-					mask:true
+					mask: true
 				})
-				var page_that=that.page
+				var page_that = that.page
 				service.P_get(jkurl, datas).then(res => {
-					that.btn_kg=0
+					that.btn_kg = 0
 					console.log(res)
 					if (res.code == 1) {
-						that.htmlReset=0
+						that.htmlReset = 0
 						var datas = res.data
 						console.log(typeof datas)
-					
+
 						if (typeof datas == 'string') {
 							datas = JSON.parse(datas)
 						}
 						console.log(res)
-						that.datas =datas
+						that.datas = datas
 						// if(page_that==1){
-							
+
 						// 	that.datas = datas
 						// }else{
 						// 	if(datas.length==0){
@@ -218,9 +241,9 @@
 						// 	that.datas =that.datas.concat(datas) 
 						// }
 						// that.page++
-					
+
 					} else {
-						that.htmlReset=1
+						that.htmlReset = 1
 						if (res.msg) {
 							uni.showToast({
 								icon: 'none',
@@ -234,22 +257,22 @@
 						}
 					}
 				}).catch(e => {
-					that.htmlReset=1
-					that.btn_kg=0
+					that.htmlReset = 1
+					that.btn_kg = 0
 					console.log(e)
 					uni.showToast({
 						icon: 'none',
 						title: '获取数据失败，请检查您的网络连接'
 					})
 				})
-				
+
 			},
-			
+
 			getimg(img) {
 				console.log(service.getimg(img))
 				return service.getimg(img)
 			},
-			pveimg(e){
+			pveimg(e) {
 				service.pveimg(e)
 			},
 			fabu_status() {
@@ -312,18 +335,19 @@
 </script>
 
 <style scoped>
-	
-	.index_list{
+	.index_list {
 		width: 100%;
 		padding: 20upx 30upx;
 	}
-	.index_li{
+
+	.index_li {
 		width: 100%;
 		background: #FFFFFF;
 		border-radius: 10upx;
 		margin-bottom: 20upx;
 	}
-	.index_li_d1{
+
+	.index_li_d1 {
 		display: flex;
 		align-items: center;
 		width: 100%;
@@ -331,64 +355,76 @@
 		padding: 0 30upx;
 		border-bottom: 1px solid #EEEEEE;
 	}
-	.index_tx{
+
+	.index_tx {
 		width: 44upx;
 		height: 44upx;
 		border-radius: 50%;
 		margin-right: 20upx;
 	}
-	.index_yz{
+
+	.index_yz {
 		flex: 1;
 		display: flex;
 		align-items: center;
 		font-size: 22upx;
 		color: #999;
 	}
-	.index_yz text{
+
+	.index_yz text {
 		color: #000;
 	}
-	.iconphone{
+
+	.iconphone {
 		font-size: 40upx;
 		color: #3778FE;
 	}
-	.index_li_d2{
+
+	.index_li_d2 {
 		width: 100%;
 		padding: 24upx 0;
 		border-bottom: 1px solid #EEEEEE;
-		
+
 	}
-	.index_add{
+
+	.index_add {
 		display: flex;
 	}
-	.index_add1{
+
+	.index_add1 {
 		width: 60upx;
 		text-align: center;
 		color: #3778FE;
 		font-size: 22upx;
 	}
-	.index_add1 .iconfont{
+
+	.index_add1 .iconfont {
 		font-size: 24upx;
 	}
-	.index_add2{
+
+	.index_add2 {
 		line-height: 24upx;
 		font-size: 24upx;
 		font-family: PingFang;
 		font-weight: bold;
 		color: #000000;
 	}
-	.index_add3{
+
+	.index_add3 {
 		font-size: 22upx;
 		display: flex;
 		color: #999;
 		align-items: center;
 		padding-right: 20upx;
 	}
-	.index_add3 .iconfont{
+
+	.index_add3 .iconfont {
 		margin-left: 10upx;
 		font-size: 20upx;
 		color: #222;
 	}
-	.index_address{
+
+	.index_address {
 		padding-left: 60upx;
 		padding-right: 20upx;
 		font-size: 22upx;
@@ -397,12 +433,14 @@
 		font-weight: 500;
 		color: #999999;
 	}
-	.index_li_d3{
+
+	.index_li_d3 {
 		width: 100%;
 		padding: 20upx 30upx 10upx;
 		border-bottom: 1px solid #eee;
 	}
-	.index_li_d3_tit{
+
+	.index_li_d3_tit {
 		line-height: 35upx;
 		font-size: 28upx;
 		font-family: PingFang;
@@ -410,26 +448,31 @@
 		color: #222222;
 		margin-bottom: 15upx;
 	}
-	.tc_list{
+
+	.tc_list {
 		width: 100%;
 	}
-	.tc_li{
+
+	.tc_li {
 		width: 100%;
 		display: flex;
 		padding: 15upx 0;
 	}
-	.tc_li_img{
+
+	.tc_li_img {
 		width: 140upx;
 		height: 140upx;
 		background: #FAFAFA;
 		border-radius: 4upx;
 		margin-right: 20upx;
 	}
-	.tc_d1{
+
+	.tc_d1 {
 		align-items: center;
 		margin-bottom: 10upx;
 	}
-	.tc_d1_l{
+
+	.tc_d1_l {
 		font-size: 24upx;
 		font-family: PingFangSC;
 		font-weight: 500;
@@ -437,23 +480,27 @@
 		line-height: 35upx;
 		font-weight: bold;
 	}
-	.tc_d1_r{
+
+	.tc_d1_r {
 		font-size: 24upx;
 		font-family: PingFangSC;
 		font-weight: 500;
 		color: #222222;
 		line-height: 35upx;
-		flex:none;
+		flex: none;
 	}
-	.tc_d2 .tc_d1_l{
+
+	.tc_d2 .tc_d1_l {
 		color: #999;
 		font-weight: normal;
 	}
-	.tc_d2 .tc_d1_r{
+
+	.tc_d2 .tc_d1_r {
 		color: #999;
 		font-weight: normal;
 	}
-	.tc_bq{
+
+	.tc_bq {
 		padding: 7upx 9upx;
 		font-size: 16upx;
 		line-height: 16upx;
@@ -462,20 +509,24 @@
 		color: #3778FE;
 		border: 1px solid #3778FE;
 	}
-	.index_li_d4{
+
+	.index_li_d4 {
 		width: 100%;
 		padding: 20upx 30upx;
 		border-bottom: 1px solid #eee;
 	}
-	.index_li_d4_li{
+
+	.index_li_d4_li {
 		width: 100%;
 		font-size: 22upx;
 		color: #000;
 	}
-	.index_li_d4_li+.index_li_d4_li{
+
+	.index_li_d4_li+.index_li_d4_li {
 		margin-top: 25upx;
 	}
-	.pz_btn{
+
+	.pz_btn {
 		width: 690upx;
 		height: 88upx;
 		background: #3778FE;
@@ -489,7 +540,8 @@
 		color: #FFFFFF;
 		margin: 60upx auto;
 	}
-	.pz_btn text{
+
+	.pz_btn text {
 		margin-right: 8upx;
 		font-size: 34upx;
 	}

@@ -150,6 +150,7 @@
 		
 		watch:{
 			hasLogin(newval,oldval){
+				var that=this
 				console.log(newval)
 				if(newval==true){
 					that.btn_kg=0

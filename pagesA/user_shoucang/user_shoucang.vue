@@ -59,7 +59,7 @@
 						<!-- <view><text class="fz26">合计:</text>￥{{sum}}</view>
 						<view class="fz22 c9">不含运费</view> -->
 					</view>
-					<view class="hj_pri">合计：<text style="font-size: 24upx;">￥</text><text>99.22</text></view>
+					<view class="hj_pri">合计：<text style="font-size: 24upx;">￥</text><text>{{sum}}</text></view>
 					<view class="jiesuan jiesuan1" @tap="cardel">删除</view>
 					<view class="jiesuan" @tap="openOrder">保存方案</view>
 				</view>
@@ -83,6 +83,7 @@
 				page:1,
 				size:20,
 				all:false,
+				sum: '0.00',
 				htmlReset:-1,
 				data_last:false
 			}
@@ -143,7 +144,7 @@
 							that.datas = that.datas.concat(datas.goods)
 						}
 						that.page++
-			
+						that.countpri()
 					} else {
 						that.htmlReset=1
 						if (res.msg) {
@@ -187,7 +188,8 @@
 						that.$set(that.datas[i], 'xuan', kg)
 					}
 				}
-
+				
+				that.countpri()
 			},
 
 			select(idx) {
@@ -231,7 +233,7 @@
 					// })
 				}
 				// //计算总价
-				// that.countpri()
+				that.countpri()
 			},
 			//加减
 			onNum(e) {
@@ -240,7 +242,6 @@
 				let ad = e.currentTarget.dataset.ad
 				let id = e.currentTarget.dataset.id
 				let thisidx = e.currentTarget.dataset.idx
-				let thisidx1 = e.currentTarget.dataset.idx1
 
 				if (that.datas[thisidx].num < 2 && ad == '-') {
 					console.log('禁止')
@@ -248,18 +249,21 @@
 
 				}
 
-				if (ad == '-') {
-					that.datas[thisidx].num--
-				} else {
-					that.datas[thisidx].num++
+				// if (ad == '-') {
+				// 	that.datas[thisidx].num--
+				// } else {
+				// 	that.datas[thisidx].num++
+				// }
+				// return
+				if (this.btn_kg == 1) {
+					return
 				}
-				return
-				var jkurl = '/cart/incOrDec'
+				this.btn_kg = 1
+				var jkurl = '/user/goods_num'
 				var datas = {
-					token: that.loginMsg.userToken,
-					g_id: that.datas[thisidx].g_id,
-					v_id: that.datas[thisidx].v_id,
-					type: ad == '-' ? 'dec' : 'inc',
+					token: that.loginDatas.token,
+					id: that.datas[thisidx].id,
+					type: ad == '-' ? 'decrement' : 'increment ',
 					sum: 1
 				}
 				service.P_post(jkurl, datas).then(res => {
@@ -274,11 +278,23 @@
 						}
 
 						if (ad == '-') {
-							that.datas[thisidx].num--
+							that.datas[thisidx].quantity--
 						} else {
-							that.datas[thisidx].num++
+							that.datas[thisidx].quantity++
 						}
-
+						that.countpri()
+					}else{
+						if(res.msg){
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						}else{
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
 					}
 				}).catch(e => {
 					that.btn_kg = 0
@@ -290,7 +306,20 @@
 				})
 
 			},
-
+			/*计算价格*/
+			countpri() {
+			  let heji = 0
+			  let var2 = this.datas
+			  for (let i in var2) {
+			    if (var2[i].xuan == true) {
+			      heji += var2[i].quantity * (var2[i].price * 100)
+			
+			    }
+			  }
+			
+			  heji = (heji / 100).toFixed(2)
+				this.sum=heji
+			},
 			getimg(img) {
 				return service.getimg(img)
 			},
@@ -318,15 +347,11 @@
 				if(c_ids.length==0){
 					uni.showToast({
 						icon:'none',
-						title:'请选择商品'
+						title:'请选择您的收藏'
 					})
 					return
 				}
-				uni.showToast({
-					icon: 'none',
-					title: '操作成功'
-				})
-				return
+				
 				uni.showModal({
 				    title: '提示',
 				    content: '是否删除这些商品？',
@@ -339,35 +364,50 @@
 										  that.btnkg= 1
 										}
 										c_ids=c_ids.join(',')
-										var jkurl = '/cart/del'
-										var datas = {
-											token: that.loginMsg.userToken,
-											c_ids:c_ids
+										var jkurl='/user/defined'
+										var datas={
+											token:that.loginDatas.token,
+											id:c_ids,
+											type:'del'
 										}
-										// 单个请求
 										service.P_post(jkurl, datas).then(res => {
-											that.btnkg=0
+											that.btn_kg = 0
 											console.log(res)
 											if (res.code == 1) {
 												var datas = res.data
-												// console.log(typeof datas)
-													
+												console.log(typeof datas)
+										
 												if (typeof datas == 'string') {
 													datas = JSON.parse(datas)
 												}
-											
-													that.getcar()
+												console.log(res)
+										
+												uni.showToast({
+													icon: 'none',
+													title: '操作成功'
+												})
+												setTimeout(()=>{
+													that.onRetry()
+												},500)
+											} else {
+												if (res.msg) {
 													uni.showToast({
 														icon: 'none',
-														title: '操作成功'
+														title: res.msg
 													})
+												} else {
+													uni.showToast({
+														icon: 'none',
+														title: '操作失败'
+													})
+												}
 											}
 										}).catch(e => {
-											that.btnkg=0
+											that.btn_kg = 0
 											console.log(e)
 											uni.showToast({
 												icon: 'none',
-												title: '操作失败'
+												title: '获取数据失败，请检查您的网络连接'
 											})
 										})
 				        } else if (res.cancel) {
@@ -400,12 +440,18 @@
 			    }
 			
 			  }
-			
-				return
+				if(idG.length==0){
+					uni.showToast({
+						icon: 'none',
+						title: '请选择收藏'
+					})
+					return
+				}
 				var jkurl='/user/defined'
 				var datas={
 					token:this.loginDatas.token,
-					id:idG
+					id:idG,
+					type:'create'
 				}
 			  console.log(idG)
 				service.P_post(jkurl, datas).then(res => {
@@ -448,34 +494,7 @@
 						title: '获取数据失败，请检查您的网络连接'
 					})
 				})
-				if(kc_tip&&idG !== ''){
-					uni.showToast({
-						icon:'none',
-						title:'部分商品库存不足已被取消选择'
-					})
-					setTimeout(()=>{
-						wx.navigateTo({
-						  url: '/pages/Order/Order?type=2&g_data='+idG
-						})
-					},1500)
-				}else if (idG !== '') {
-			   wx.navigateTo({
-			     url: '/pages/Order/Order?type=2&g_data='+idG
-			   })
-			  }else{
-					if(kc_tip){
-						uni.showToast({
-							icon:'none',
-							title:'请选择库存充足的商品'
-						})
-					}else{
-						uni.showToast({
-							icon:'none',
-							title:'请选择商品'
-						})
-					}
-					
-				}
+				
 			},
 			
 			jump(e) {

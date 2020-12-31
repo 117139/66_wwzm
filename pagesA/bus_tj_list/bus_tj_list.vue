@@ -1,6 +1,10 @@
 <template>
 	<view>
-		<view class="bus_my_list">
+		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
+		<view v-if="htmlReset==-1"  class="loading_def">
+				<image class="loading_def_img" src="../../static/images/loading.gif" mode=""></image>
+		</view>
+		<view v-if="htmlReset==0" class="bus_my_list">
 			<view class="bus_my_li">
 			
 				<view class="dis_flex my_table my_table_tit">
@@ -10,24 +14,17 @@
 					<view class="my_td my_th">价值</view>
 				</view>
 				<view style="width: 100%;height: 20upx;"></view>
-				<view class="dis_flex my_table">
-					<view class="my_td my_td1">合同2020-2</view>
-					<view class="my_td my_td2">6</view>
-					<view class="my_td my_td2">2</view>
-					<view class="my_td my_td2">50万</view>
+				<view class="zanwu" v-if="datas.length==0">暂无数据</view>
+				<view class="dis_flex my_table" v-for="(item,index) in datas">
+					<view class="my_td my_td1">
+						<view class="oh2">{{item.title}}</view>
+					</view>
+					<view class="my_td my_td2">{{item.quantity}}</view>
+					<view class="my_td my_td2">{{item.done_quantity}}</view>
+					<view class="my_td my_td2">{{getpri(item.cost)}}</view>
 				</view>
-				<view class="dis_flex my_table">
-					<view class="my_td my_td1">合同2020-2</view>
-					<view class="my_td my_td2">12</view>
-					<view class="my_td my_td2">12</view>
-					<view class="my_td my_td2">50万</view>
-				</view>
-				<view class="dis_flex my_table">
-					<view class="my_td my_td1">合同2020-2</view>
-					<view class="my_td my_td2">12</view>
-					<view class="my_td my_td2">12</view>
-					<view class="my_td my_td2">50万</view>
-				</view>
+				
+				<view v-if="data_last" class="data_last">我可是有底线的哟~</view>
 			</view>
 			<!--<view class="bus_my_li">
 				<view class="bus_my_li_tit dis_flex aic ju_c">
@@ -60,17 +57,124 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	var that 
 	export default {
 		data() {
 			return {
-				
+				datas:'',
+				page:1,
+				size:20,
+				data_last:false,
+				htmlReset: -1,
 			}
 		},
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName','loginDatas','fj_data']),
 		},
+		onLoad() {
+			that=this
+			that.onRetry()
+		},
+		onPullDownRefresh() {
+			that.onRetry()
+		},
+		onReachBottom() {
+			that.getdata()
+		},
 		methods: {
 			...mapMutations(['login','logindata','logout','setplatform']),
+			getpri(mon){
+				if(!mon){
+					return
+				}
+				mon=mon*1
+				if(mon>=10000){
+					mon=mon/1000
+					mon=mon.toFixed(2)
+					mon=mon-1+1
+					return mon+'万'
+				}
+				return mon
+			},
+			onRetry() {
+				this.page = 1
+				this.datas = []
+				this.data_last = false
+			
+				this.getdata()
+			},
+			getdata(num) {
+				var that = this
+			
+				if (that.data_last) {
+					return
+				}
+				var datas = {
+					token: that.loginDatas.token || '',
+					page: that.page,
+					size: that.size,
+				}
+				if (this.btn_kg == 1) {
+					return
+				}
+				this.btn_kg = 1
+				//selectSaraylDetailByUserCard
+				var jkurl = '/order/done_contract'
+				uni.showLoading({
+					title: '正在获取数据'
+				})
+				var page_that = that.page
+				service.P_get(jkurl, datas).then(res => {
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset=0
+						var datas = res.data
+						console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+			
+						if (page_that == 1) {
+			
+							that.datas = datas
+						} else {
+							if (datas.length == 0) {
+								that.data_last = true
+								return
+							}
+							that.data_last = false
+							that.datas = that.datas.concat(datas)
+						}
+						that.page++
+			
+					} else {
+						that.htmlReset=1
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				}).catch(e => {
+						that.htmlReset=1
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			
+			},
 			
 		}
 	}

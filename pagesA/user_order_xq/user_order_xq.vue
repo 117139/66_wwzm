@@ -14,8 +14,8 @@
 				</view>
 				<view class="index_li_d1">
 					<!-- <image class="index_tx" :src="getimg('/static/images/tx_m2.jpg')" lazy-load="true" mode="aspectFill"></image> -->
-					<view class="index_yz">施工师傅：<text>{{datas.engineer_name}}</text></view>
-					<view @tap="call" :data-tel="datas.engineer_phone" class="iconfont iconphone" style="color: #11A078;"></view>
+					<view class="index_yz">施工师傅：<text>{{datas.engineer_name?datas.engineer_name:'暂无'}}</text></view>
+					<view v-if="datas.engineer_phone" @tap="call" :data-tel="datas.engineer_phone" class="iconfont iconphone" style="color: #11A078;"></view>
 				</view>
 				<view class="order_li_tit">安防套餐</view>
 				<view class="order_li_msg">
@@ -46,6 +46,7 @@
 							</view>
 						</view>
 					</block>
+					<view v-else class="zanwu">暂无数据</view>
 					
 					<block v-if="datas.under">
 						<view v-if="datas.under.length>0" class="jd_tit jd_tit1">

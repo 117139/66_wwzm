@@ -65,7 +65,7 @@
 			"path": "bus_hetong/bus_hetong",
 			"style": {
 				"navigationBarTitleText": "合同",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"navigationBarBackgroundColor": "#FFFFFF"
 
 			}
@@ -74,7 +74,7 @@
 			"path": "bus_order/bus_order",
 			"style": {
 				"navigationBarTitleText": "工程",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"navigationBarBackgroundColor": "#FFFFFF"
 
 			}
@@ -112,14 +112,14 @@
 			"path": "intell_end/intell_end",
 			"style": {
 				"navigationBarTitleText": "已完成",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 
 		}, {
 			"path": "intell_ing/intell_ing",
 			"style": {
 				"navigationBarTitleText": "施工中",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 
 		}, {
@@ -262,7 +262,16 @@
 				"enablePullDownRefresh": true
 			}
 
-		}]
+		}    ,{
+                    "path" : "bus_sglc/bus_sglc",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
 	}],
 
 	"preloadRule": {

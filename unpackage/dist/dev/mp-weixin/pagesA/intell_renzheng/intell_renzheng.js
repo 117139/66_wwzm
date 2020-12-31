@@ -43,40 +43,49 @@
 
 
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 8));
-var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var that;var _default = { data: function data() {return { name: '', id_cord: '', phone: '', img1: '', img2: '', img3: '' };}, onLoad: function onLoad() {that = this;}, methods: { sub: function sub() {if (!this.name) {uni.showToast({ icon: 'none', title: '请输入姓名' });return;}if (!this.id_cord) {uni.showToast({ icon: 'none', title: '请输入身份证号码' });return;
+var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+
+
+
+var that;var _default =
+{
+  data: function data() {
+    return {
+      name: '',
+      id_cord: '',
+      phone: '',
+      img1: '',
+      img2: '',
+      img3: '' };
+
+  },
+  computed: _objectSpread({},
+  (0, _vuex.mapState)(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'fj_data'])),
+
+  onLoad: function onLoad() {
+    that = this;
+    that.name = that.loginDatas.truename;
+    that.phone = that.loginDatas.phone;
+    that.id_cord = that.loginDatas.id_number;
+    that.img1 = that.loginDatas.id_front;
+    that.img2 = that.loginDatas.id_the_back;
+    that.img3 = that.loginDatas.id_in_hand;
+  },
+  methods: {
+    sub: function sub() {
+      if (!this.name) {
+        uni.showToast({
+          icon: 'none',
+          title: '请输入姓名' });
+
+        return;
+      }
+      if (!this.id_cord) {
+        uni.showToast({
+          icon: 'none',
+          title: '请输入身份证号码' });
+
+        return;
       }
       if (!this.phone) {
         uni.showToast({
@@ -85,7 +94,13 @@ var that;var _default = { data: function data() {return { name: '', id_cord: '',
 
         return;
       }
+      if (that.phone == '' || !/^1\d{10}$/.test(that.phone)) {
+        wx.showToast({
+          icon: 'none',
+          title: '手机号有误' });
 
+        return;
+      }
       if (!this.img1) {
         uni.showToast({
           icon: 'none',
@@ -108,23 +123,67 @@ var that;var _default = { data: function data() {return { name: '', id_cord: '',
         return;
       }
       var datas = {
-        name: that.name,
-        id_cord: that.id_cord,
+        token: that.loginDatas.token,
+        truename: that.name,
+        id_number: that.id_cord,
         phone: that.phone,
-        img1: that.img1,
-        img2: that.img2,
-        img3: that.img3 };
+        id_front: that.img1,
+        id_the_back: that.img2,
+        id_in_hand: that.img3 };
 
-      uni.showToast({
-        icon: 'none',
-        title: '提交成功' });
+      if (this.btn_kg == 1) {
+        return;
+      }
+      this.btn_kg = 1;
+      var jkurl = "/user/truename";
+      _service.default.P_post(jkurl, datas).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          that.htmlReset = 0;
+          var datas = res.data;
+          console.log(typeof datas);
 
-      console.log(datas);
-      setTimeout(function () {
-        uni.navigateBack({
-          delta: 1 });
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+          console.log(res);
+          uni.showToast({
+            icon: 'none',
+            title: '提交成功' });
 
-      }, 1000);
+          _service.default.wxlogin();
+          console.log(datas);
+          setTimeout(function () {
+            uni.navigateBack({
+              delta: 1 });
+
+          }, 1000);
+
+        } else {
+          that.htmlReset = 1;
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '操作失败' });
+
+          }
+        }
+      }).catch(function (e) {
+        that.htmlReset = 1;
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '操作失败' });
+
+      });
+
     },
     upimg: function upimg(e) {
       var that = this;
@@ -148,16 +207,16 @@ var that;var _default = { data: function data() {return { name: '', id_cord: '',
               console.log(res);
               var tempFilePaths = res.tempFilePaths;
 
-              if (datas.type == 1) {
-                that.img1 = tempFilePaths[0];
-              }
-              if (datas.type == 2) {
-                that.img2 = tempFilePaths[0];
-              }
-              if (datas.type == 3) {
-                that.img3 = tempFilePaths[0];
-              }
-              return;
+              /*if(datas.type==1){
+                                                     	that.img1=tempFilePaths[0]
+                                                     }
+                                                     if(datas.type==2){
+                                                     	that.img2=tempFilePaths[0]
+                                                     }
+                                                     if(datas.type==3){
+                                                     	that.img3=tempFilePaths[0]
+                                                     }
+                                                     return*/
 
               that.upimg1(tempFilePaths, 0, datas.type);
 
@@ -172,37 +231,49 @@ var that;var _default = { data: function data() {return { name: '', id_cord: '',
     },
     upimg1: function upimg1(imgs, i, type) {
       var that = this;
+      _service.default.wx_upload(imgs[i]).then(function (res) {
 
-      uni.uploadFile({
-        url: _service.default.IPurl + 'user/upload_img', //仅为示例，非真实的接口地址
-        filePath: imgs[i],
-        name: 'img',
-        formData: {
-          token: that.loginDatas.token },
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          var datas = res.data;
+          console.log(i);
+          if (type == 1) {
+            that.img1 = datas;
+          }
+          if (type == 2) {
+            that.img2 = datas;
+          }
+          if (type == 3) {
+            that.img3 = datas;
+          }
 
-        success: function success(res) {
-          // console.log(res.data)
-          var ndata = JSON.parse(res.data);
-          if (ndata.code == 1) {
-            console.log(imgs[i], i, ndata.img_url);
-            // var newdata = that.sj_img
-            console.log(i);
-            if (type == 1) {
-              that.img1 = ndata.img_url;
-            }
-            if (type == 2) {
-              that.img2 = ndata.img_url;
-            }
-            if (type == 3) {
-              that.img3 = ndata.img_url;
-            }
+          // var news1 = that.sj_img.length
+          // if (news1 < 9 && i < imgs.length - 1) {
+          // 	i++
+          // 	that.upimg1(imgs, i)
+          // }
+        } else {
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
           } else {
             uni.showToast({
               icon: "none",
               title: "上传失败" });
 
           }
-        } });
+        }
+      }).catch(function (e) {
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '操作失败' });
+
+      });
 
     },
     getimg: function getimg(img) {
@@ -338,6 +409,19 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var m0 = _vm.img1 ? _vm.getimg(_vm.img1) : null
+  var m1 = _vm.img2 ? _vm.getimg(_vm.img2) : null
+  var m2 = _vm.img3 ? _vm.getimg(_vm.img3) : null
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        m0: m0,
+        m1: m1,
+        m2: m2
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []

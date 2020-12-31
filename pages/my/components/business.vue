@@ -47,7 +47,8 @@
 			<view class="bus_my_li">
 				<view class="bus_my_li_tit dis_flex aic ju_b">
 					<view class="dis_flex aic bus_my_li_tit_text"><image src="../../../static/images/business/my_icon1.png" mode=""></image>合同完成统计</view>
-					<view class="li_more dis_flex aic" @tap="jump" data-url="/pagesA/bus_tj_list/bus_tj_list">更多<text class="iconfont iconnext-m"></text></view>
+					<view v-if="datas.length>3" class="li_more dis_flex aic" @tap="jump" data-url="/pagesA/bus_tj_list/bus_tj_list">更多<text class="iconfont iconnext-m"></text></view>
+					<!-- <view  class="li_more dis_flex aic" @tap="jump" data-url="/pagesA/bus_tj_list/bus_tj_list">更多<text class="iconfont iconnext-m"></text></view> -->
 				</view>
 				
 				<view class="dis_flex my_table my_table_tit">
@@ -57,23 +58,14 @@
 					<view class="my_td my_th">价值</view>
 				</view>
 				<view style="width: 100%;height: 20upx;"></view>
-				<view class="dis_flex my_table">
-					<view class="my_td my_td1">合同2020-2</view>
-					<view class="my_td my_td2">6</view>
-					<view class="my_td my_td2">2</view>
-					<view class="my_td my_td2">50万</view>
-				</view>
-				<view class="dis_flex my_table">
-					<view class="my_td my_td1">合同2020-2</view>
-					<view class="my_td my_td2">12</view>
-					<view class="my_td my_td2">12</view>
-					<view class="my_td my_td2">50万</view>
-				</view>
-				<view class="dis_flex my_table">
-					<view class="my_td my_td1">合同2020-2</view>
-					<view class="my_td my_td2">12</view>
-					<view class="my_td my_td2">12</view>
-					<view class="my_td my_td2">50万</view>
+				<view class="zanwu" v-if="datas.length==0">暂无数据</view>
+				<view class="dis_flex my_table" v-for="(item,index) in datas">
+					<view class="my_td my_td1">
+						<view class="oh2">{{item.title}}</view>
+					</view>
+					<view class="my_td my_td2">{{item.quantity}}</view>
+					<view class="my_td my_td2">{{item.done_quantity}}</view>
+					<view class="my_td my_td2">{{getpri(item.cost)}}</view>
 				</view>
 			</view>
 			<view class="bus_my_li">
@@ -109,7 +101,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
-
+	var that 
 	export default {
 		data() {
 			return {
@@ -122,16 +114,13 @@
 				StatusBar: this.StatusBar,
 				CustomBar: this.CustomBar,
 				datas: '',
-				
+				page:1,
+				size:20,
 				PageScroll:'',
 				fk_show:false,
 				tk_show:true,
 				tximg:'/static/logo.png'
 			};
-		},
-		onLoad() {},
-		onShow() {
-			// service.wxlogin()
 		},
 		onPageScroll(e){
 			console.log(e)
@@ -171,58 +160,96 @@
 				return style
 			}
 		},
-		
+		mounted() {
+			that=this
+			if(that.hasLogin){
+				that.onRetry()
+			}
+		},
+		watch: {
+			hasLogin(newval, oldval) {
+				console.log(newval)
+				if (newval == true) {
+					that.btn_kg = 0
+					that.onRetry()
+				}
+			}
+		},
 		methods: {
 			...mapMutations(['login','logindata','logout','setplatform']),
 			getimg(img){
 				console.log(service.getimg(img))
 				return service.getimg(img)
 			},
-			myUpload(rsp) {
-				var that = this
-				var tximg = rsp.path; //更新头像方式一
-				this.tximg=tximg
-				console.log(this.tximg)
-				uni.uploadFile({
-					url: service.IPurl + 'user/upload_img', //仅为示例，非真实的接口地址
-					filePath: tximg,
-					name: 'img',
-					formData: {
-						token: that.loginDatas.token
-					},
-					success: (uploadFileRes) => {
-						console.log(uploadFileRes.data);
-						var ndata = JSON.parse(uploadFileRes.data)
-						if (ndata.code == 1||ndata.code == 201) {
-							that.tximg = ndata.img_url
-							var datas={
-								token:that.loginDatas.token,
-								img_url:ndata.img_url
-							}
-							that.set_tximg(datas)
-						}
-					}
-				});
-				//rsp.avatar.imgSrc = rsp.path; //更新头像方式二
+			getpri(mon){
+				if(!mon){
+					return
+				}
+				mon=mon*1
+				if(mon>=10000){
+					mon=mon/1000
+					mon=mon.toFixed(2)
+					mon=mon-1+1
+					return mon+'万'
+				}
+				return mon
 			},
-			set_tximg(datas){
-				var that =this
-				var jkurl = '/user/update_head'
-				
-				service.P_post(jkurl, datas).then(res => {
-					
+			onRetry() {
+				this.page = 1
+				this.datas = []
+				this.data_last = false
+			
+				this.getdata()
+			},
+			getdata(num) {
+				var that = this
+			
+				if (that.data_last) {
+					return
+				}
+				var datas = {
+					token: that.loginDatas.token || '',
+					page: that.page,
+					size: that.size,
+				}
+				if (this.btn_kg == 1) {
+					return
+				}
+				this.btn_kg = 1
+				//selectSaraylDetailByUserCard
+				var jkurl = '/order/done_contract'
+				uni.showLoading({
+					title: '正在获取数据'
+				})
+				var page_that = that.page
+				service.P_get(jkurl, datas).then(res => {
 					that.btn_kg = 0
 					console.log(res)
 					if (res.code == 1) {
+						that.htmlReset=0
 						var datas = res.data
 						console.log(typeof datas)
-				
+			
 						if (typeof datas == 'string') {
 							datas = JSON.parse(datas)
 						}
-						service.tel_login()
-				
+						console.log(res)
+			
+						if (page_that == 1) {
+			
+							that.datas = datas
+						} else {
+							// if (datas.length == 0) {
+							// 	that.data_last = true
+							// 	return
+							// }
+							// that.data_last = false
+							that.datas = that.datas.concat(datas)
+						}
+						that.page++
+			
 					} else {
+						that.htmlReset=1
 						if (res.msg) {
 							uni.showToast({
 								icon: 'none',
@@ -236,118 +263,15 @@
 						}
 					}
 				}).catch(e => {
-					this.triggered = false
-					this._freshing = false
+						that.htmlReset=1
 					that.btn_kg = 0
 					console.log(e)
 					uni.showToast({
 						icon: 'none',
-						title: '获取数据失败'
+						title: '获取数据失败，请检查您的网络连接'
 					})
 				})
-			},
-			onGetPhoneNumber: function(e) {
-				var that = this
-				console.log(e.detail.errMsg)
-				console.log(e.detail.iv)
-				console.log(e.detail.encryptedData)
-				console.log(e.detail.encryptedData)
-				// return
-				if (e.detail.iv) {
-					//用户按了允许授权按钮后需要处理的逻辑方法体
-					wx.login({
-						success: (res) => {
-							if (res.code) { //微信登录成功 已拿到code  
-								console.log(e.detail.iv)
-								var token=that.loginDatas.token
-								var datas = {
-									encryptedData:e.detail.encryptedData,
-									iv:e.detail.iv,
-									code:res.code,
-									token:token
-								}
-								//selectSaraylDetailByUserCard
-								var jkurl = '/data/wechat'
-								
-								uni.showLoading({
-									title:'正在绑定手机号',
-									mask:true
-								})
-								console.log(datas)
-								// return
-								service.P_post(jkurl, datas).then(res => {
-									
-									that.btn_kg = 0
-									console.log(res)
-									if (res.code == 1) {
-										var datas = res.data
-										console.log(typeof datas)
-										console.log(datas)
-										
-										if (typeof datas == 'string') {
-											datas = JSON.parse(datas)
-										}
-										 uni.setStorageSync('account', datas.account)
-										uni.showToast({
-											icon: 'none',
-											title: '操作成功'
-										})
-										setTimeout(function (){
-											var account=uni.getStorageSync('account')
-											var password=uni.getStorageSync('password')
-											if(account){
-												var datas={
-													account:account,
-													password:password
-												}
-												service.tel_login(datas)
-											}
-										},500)
-									} else {
-										that.btnkg=0
-										if (res.msg) {
-											uni.showToast({
-												icon: 'none',
-												title: res.msg
-											})
-										} else {
-											uni.showToast({
-												icon: 'none',
-												title: '操作失败'
-											})
-										}
-									}
-								}).catch(e => {
-									that.btn_kg = 0
-									
-									uni.showToast({
-										icon: 'none',
-										title: '操作失败'
-									})
-									
-								})
-								
-							} else {
-								console.log('登录失败！' + res.errMsg)
-							}
-						}
-					})
-					
 			
-				} else {
-					//用户按了拒绝按钮
-					// uni.showModal({
-					// 	title: '警告',
-					// 	content: '您点击了拒绝授权，将无法登录小程序，请点击返回授权!!!',
-					// 	showCancel: false,
-					// 	confirmText: '返回授权',
-					// 	success: function(res) {
-					// 		if (res.confirm) {
-					// 			console.log('用户点击了“返回授权”')
-					// 		}
-					// 	}
-					// })
-				}
 			},
 			fabu_status(){
 				var that =this

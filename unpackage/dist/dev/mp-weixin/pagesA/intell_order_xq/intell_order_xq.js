@@ -97,20 +97,27 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var l0 = _vm.__map(_vm.datas, function(item, index) {
-    var $orig = _vm.__get_orig(item)
+  var g0 =
+    _vm.htmlReset == 0 && _vm.datas.distance && _vm.datas.distance > 1000
+      ? (_vm.datas.distance / 1000).toFixed(2)
+      : null
+  var l0 =
+    _vm.htmlReset == 0
+      ? _vm.__map(_vm.datas.goods_list, function(item, index) {
+          var $orig = _vm.__get_orig(item)
 
-    var m0 = _vm.getimg(item.img)
-    return {
-      $orig: $orig,
-      m0: m0
-    }
-  })
-
+          var m0 = _vm.getimg(item.cover)
+          return {
+            $orig: $orig,
+            m0: m0
+          }
+        })
+      : null
   _vm.$mp.data = Object.assign(
     {},
     {
       $root: {
+        g0: g0,
         l0: l0
       }
     }
@@ -221,8 +228,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 8));
-var _qqmapWxJssdk = _interopRequireDefault(__webpack_require__(/*! ../../libs/qqmap-wx-jssdk.js */ 92));
+var _qqmapWxJssdk = _interopRequireDefault(__webpack_require__(/*! ../../libs/qqmap-wx-jssdk.js */ 84));
 var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
 
@@ -232,44 +254,33 @@ var that;var _default =
   data: function data() {
     return {
       type: 0,
-      datas: [
-      {
-        img: '/static/images/business/tc_img_03.png' },
-
-      {
-        img: '/static/images/business/tc_img_03.png' },
-
-      {
-        img: '/static/images/business/tc_img_03.png' },
-
-      {
-        img: '/static/images/business/tc_img_03.png' },
-
-      {
-        img: '/static/images/business/tc_img_03.png' },
-
-      {
-        img: '/static/images/business/tc_img_03.png' }],
-
-
+      htmlReset: -1,
+      datas: [],
       data_last: false,
       page: 1,
-      size: 20 };
+      size: 20,
+      longitude: '',
+      latitude: '' };
 
   },
   onLoad: function onLoad(option) {
     that = this;
-    that.type = option.type || 0;
+    that.id = option.id;
+    that.onRetry();
   },
+
   onShow: function onShow() {
-    // service.wxlogin()
-  },
-  onPageScroll: function onPageScroll(e) {
-    console.log(e);
-    this.PageScroll = e.scrollTop;
-    if (e.scrollTop > 10) {
-      uni.showToast({
-        title: e.scrollTop });
+    var pages = getCurrentPages();
+    var currPage = pages[pages.length - 1];
+    if (currPage.data.order_new) {
+      //将携带的参数赋值
+
+      that.onRetry();
+      // this.addressBack=true 
+      currPage.setData({
+        //直接给上一个页面赋值
+        order_new: false });
+
 
     }
   },
@@ -311,51 +322,53 @@ var that;var _default =
   },
   methods: _objectSpread(_objectSpread({},
   (0, _vuex.mapMutations)(['login', 'logindata', 'logout', 'setplatform'])), {}, {
+    onRetry: function onRetry() {
+      uni.getLocation({
+        type: 'gcj02',
+        success: function success(res) {
+          console.log('当前位置的经度：' + res.longitude);
+          that.longitude = res.longitude;
+          that.latitude = res.latitude;
+          console.log('当前位置的纬度：' + res.latitude);
+          that.getdata();
+        } });
+
+    },
     map_dp: function map_dp(data) {
       var that = this;
       var plugin = requirePlugin('routePlan');
-      var key = '56LBZ-EYRK6-TODSV-EY4P2-RC367-HAFGD'; //使用在腾讯位置服务申请的key
-      var referer = '达鑫达'; //调用插件的app的名称
+      var key = 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'; //使用在腾讯位置服务申请的key
+      var referer = '万屋智能'; //调用插件的app的名称
       var endPoint = JSON.stringify({ //终点
-        'name': 'dd',
-        'latitude': parseFloat('38.912884929705875') || '',
-        'longitude': parseFloat('115.37814606640623') || '' });
+        'name': data.owner_address,
+        'latitude': parseFloat(data.lat) || '',
+        'longitude': parseFloat(data.long) || '' });
 
       console.log(endPoint);
       uni.navigateTo({
         url: 'plugin://routePlan/index?key=' + key + '&referer=' + referer + '&endPoint=' + endPoint + '&navigation=1' });
 
     },
-    onRetry: function onRetry() {
-      this.page = 1;
-      this.datas = [];
-      this.data_last = false;
-      this.getdata();
-    },
+
     getdata: function getdata() {
       var that = this;
 
       if (that.data_last) {
         return;
       }
-      var fwb_id;
-      if (that.fw_cur == -1) {
-        fwb_id = -1;
-      } else {
-        fwb_id = that.productCateData[that.fw_cur].id;
-      }
+
       var datas = {
-        id: fwb_id,
-        token: that.loginDatas.userToken,
-        page: that.page,
-        size: that.size };
+        id: that.id,
+        token: that.loginDatas.token,
+        long: that.longitude,
+        lat: that.latitude };
 
       if (this.btn_kg == 1) {
         return;
       }
       this.btn_kg = 1;
       //selectSaraylDetailByUserCard
-      var jkurl = '/serveList';
+      var jkurl = '/engineer/list';
       uni.showLoading({
         title: '正在获取数据',
         mask: true });
@@ -365,6 +378,7 @@ var that;var _default =
         that.btn_kg = 0;
         console.log(res);
         if (res.code == 1) {
+          that.htmlReset = 0;
           var datas = res.data;
           console.log(typeof datas);
 
@@ -372,20 +386,21 @@ var that;var _default =
             datas = JSON.parse(datas);
           }
           console.log(res);
+          that.datas = datas;
+          // if(page_that==1){
 
-          if (page_that == 1) {
-
-            that.datas = datas;
-          } else {
-            if (datas.length == 0) {
-              that.data_last = true;
-              return;
-            }
-            that.datas = that.datas.concat(datas);
-          }
-          that.page++;
+          // 	that.datas = datas
+          // }else{
+          // 	if(datas.length==0){
+          // 		that.data_last=true
+          // 		return
+          // 	}
+          // 	that.datas =that.datas.concat(datas) 
+          // }
+          // that.page++
 
         } else {
+          that.htmlReset = 1;
           if (res.msg) {
             uni.showToast({
               icon: 'none',
@@ -399,6 +414,7 @@ var that;var _default =
           }
         }
       }).catch(function (e) {
+        that.htmlReset = 1;
         that.btn_kg = 0;
         console.log(e);
         uni.showToast({

@@ -1,5 +1,5 @@
 {
   "navigationBarTitleText": "施工中",
-  "enablePullDownRefresh": false,
+  "enablePullDownRefresh": true,
   "usingComponents": {}
 }

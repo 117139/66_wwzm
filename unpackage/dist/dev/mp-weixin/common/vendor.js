@@ -904,7 +904,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"66_wwzm","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"66_wwzm","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -8782,7 +8782,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"66_wwzm","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_NAME":"66_wwzm","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -8803,14 +8803,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"66_wwzm","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"66_wwzm","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"66_wwzm","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"66_wwzm","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -8896,7 +8896,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"66_wwzm","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"66_wwzm","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -9334,18 +9334,18 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 333:
+/***/ 341:
 /*!**********************************************************!*\
   !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
   \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! regenerator-runtime */ 334);
+module.exports = __webpack_require__(/*! regenerator-runtime */ 342);
 
 /***/ }),
 
-/***/ 334:
+/***/ 342:
 /*!************************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
   \************************************************************/
@@ -9376,7 +9376,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(/*! ./runtime */ 335);
+module.exports = __webpack_require__(/*! ./runtime */ 343);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -9393,7 +9393,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 335:
+/***/ 343:
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
   \*****************************************************/
@@ -10871,123 +10871,7 @@ var get_fwb = function get_fwb(str) {
 
 /***/ }),
 
-/***/ 9:
-/*!**********************************************!*\
-  !*** E:/phpStudy/WWW/66_wwzm/store/index.js ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 10));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-_vue.default.use(_vuex.default);
-
-var store = new _vuex.default.Store({
-  state: {
-    /**
-            * 是否需要强制登录
-            */
-    forcedLogin: false,
-    hasLogin: false,
-    platform: '',
-    userName: "游客",
-    loginDatas: {
-      avatarurl: 'http://51daiyan.test.upcdn.net/resource/api/img/20200716/3eb26483a34058663c1adf01cf90901d.png',
-      nickname: '刘明',
-      tel: '1786352362',
-      gs: '智慧家物联网科技有限公司' },
-
-
-    company: '',
-    uid: '',
-    phone: '',
-    token: '',
-    laheiArr: [],
-    uuid: '',
-
-
-
-    new_xz: [], //批量操作
-    new_problem: '', //新问题
-    ls_prodata: '',
-    ls_pro_yh: '',
-    fj_data: '',
-    bj_prodata: '',
-
-
-
-
-
-    xcx_status: 1 //0 商家端  1 用户端  2智能安装端
-  },
-  mutations: {
-    set_xcx: function set_xcx(state, xcx_status) {
-      var tip_text = '正在切换至';
-      if (xcx_status == 0) {
-        tip_text += '商家端';
-      }
-      if (xcx_status == 1) {
-        tip_text += '用户端';
-      }
-      if (xcx_status == 2) {
-        tip_text += '智能安装端';
-      }
-      uni.showToast({
-        icon: 'none',
-        title: tip_text });
-
-      state.xcx_status = xcx_status || 0;
-    },
-    login: function login(state, userName) {
-      state.userName = userName || '新用户';
-      state.hasLogin = true;
-      console.log(userName);
-      console.log(state.userName);
-    },
-    lahei: function lahei(state, id) {
-      // state.userName = userName || '新用户';
-      // state.hasLogin = true;
-      state.laheiArr.push(id);
-      console.log(state.laheiArr);
-    },
-    logindata: function logindata(state, _logindata) {
-      state.loginDatas = _logindata || '';
-      _vue.default.set(state, 'loginDatas', _logindata);
-      // state.company=logindata.company
-      // state.uid= logindata.id
-      // state.phone= logindata.phone
-      // state.token= logindata.token
-      console.log(_logindata);
-      console.log(state.loginDatas);
-    },
-    setplatform: function setplatform(state, platform) {
-      state.platform = platform || 'android';
-    },
-    logout: function logout(state) {
-      state.userName = "游客";
-      state.hasLogin = false;
-    },
-
-    // ****************************************
-    //评论操作
-    setnew_xz: function setnew_xz(state, new_xz) {
-      state.new_xz = new_xz || [];
-    },
-    //新题
-    setnew_problem: function setnew_problem(state, new_problem) {
-      state.new_problem = new_problem || [];
-    } } });var _default =
-
-
-
-store;exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-
-/***/ 92:
+/***/ 84:
 /*!******************************************************!*\
   !*** E:/phpStudy/WWW/66_wwzm/libs/qqmap-wx-jssdk.js ***!
   \******************************************************/
@@ -11456,6 +11340,122 @@ QQMapWX = /*#__PURE__*/function () {"use strict";
 
 
 module.exports = QQMapWX;
+
+/***/ }),
+
+/***/ 9:
+/*!**********************************************!*\
+  !*** E:/phpStudy/WWW/66_wwzm/store/index.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 10));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+_vue.default.use(_vuex.default);
+
+var store = new _vuex.default.Store({
+  state: {
+    /**
+            * 是否需要强制登录
+            */
+    forcedLogin: false,
+    hasLogin: false,
+    platform: '',
+    userName: "游客",
+    loginDatas: {
+      avatarurl: 'http://51daiyan.test.upcdn.net/resource/api/img/20200716/3eb26483a34058663c1adf01cf90901d.png',
+      nickname: '刘明',
+      tel: '1786352362',
+      gs: '智慧家物联网科技有限公司' },
+
+
+    company: '',
+    uid: '',
+    phone: '',
+    token: '',
+    laheiArr: [],
+    uuid: '',
+
+
+
+    new_xz: [], //批量操作
+    new_problem: '', //新问题
+    ls_prodata: '',
+    ls_pro_yh: '',
+    fj_data: '',
+    bj_prodata: '',
+
+
+
+
+
+    xcx_status: 1 //0 商家端  1 用户端  2智能安装端
+  },
+  mutations: {
+    set_xcx: function set_xcx(state, xcx_status) {
+      var tip_text = '正在切换至';
+      if (xcx_status == 0) {
+        tip_text += '商家端';
+      }
+      if (xcx_status == 1) {
+        tip_text += '用户端';
+      }
+      if (xcx_status == 2) {
+        tip_text += '智能安装端';
+      }
+      uni.showToast({
+        icon: 'none',
+        title: tip_text });
+
+      state.xcx_status = xcx_status || 0;
+    },
+    login: function login(state, userName) {
+      state.userName = userName || '新用户';
+      state.hasLogin = true;
+      console.log(userName);
+      console.log(state.userName);
+    },
+    lahei: function lahei(state, id) {
+      // state.userName = userName || '新用户';
+      // state.hasLogin = true;
+      state.laheiArr.push(id);
+      console.log(state.laheiArr);
+    },
+    logindata: function logindata(state, _logindata) {
+      state.loginDatas = _logindata || '';
+      _vue.default.set(state, 'loginDatas', _logindata);
+      // state.company=logindata.company
+      // state.uid= logindata.id
+      // state.phone= logindata.phone
+      // state.token= logindata.token
+      console.log(_logindata);
+      console.log(state.loginDatas);
+    },
+    setplatform: function setplatform(state, platform) {
+      state.platform = platform || 'android';
+    },
+    logout: function logout(state) {
+      state.userName = "游客";
+      state.hasLogin = false;
+    },
+
+    // ****************************************
+    //评论操作
+    setnew_xz: function setnew_xz(state, new_xz) {
+      state.new_xz = new_xz || [];
+    },
+    //新题
+    setnew_problem: function setnew_problem(state, new_problem) {
+      state.new_problem = new_problem || [];
+    } } });var _default =
+
+
+
+store;exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ })
 

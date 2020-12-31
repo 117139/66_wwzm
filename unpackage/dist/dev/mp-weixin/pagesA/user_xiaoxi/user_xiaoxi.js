@@ -149,11 +149,22 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 8));
-var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
+var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
 
 
+var that;var _default =
 {
   data: function data() {
     return {
@@ -169,8 +180,12 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
       { type: 1, msg: '您的订单已完成' },
       { type: 2, msg: '09-04 12:52订单取消成功' },
       { type: 1, msg: '您的订单已完成' },
-      { type: 2, msg: '09-04 12:52订单取消成功' }] };
+      { type: 2, msg: '09-04 12:52订单取消成功' }],
 
+      page: 1,
+      size: 20,
+      data_last: false,
+      htmlReset: -1 };
 
   },
   computed: _objectSpread({},
@@ -179,24 +194,102 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
   onPullDownRefresh: function onPullDownRefresh() {
     this.onRetry();
   },
+  onReachBottom: function onReachBottom() {
+    this.getdata();
+  },
+  onLoad: function onLoad() {
+    that = this;
+    that.onRetry();
+  },
   methods: _objectSpread(_objectSpread({},
   (0, _vuex.mapMutations)(['login', 'logindata', 'logout', 'setplatform'])), {}, {
     onRetry: function onRetry() {
-      uni.stopPullDownRefresh();
+      this.page = 1;
+      this.datas = [];
+      this.data_last = false;
+
+      this.getdata();
     },
     getdata: function getdata() {
-
-    },
-
-    jump: function jump(e) {
       var that = this;
 
-      if (that.btnkg == 1) {
+      if (that.data_last) {
+        return;
+      }
+      var datas = {
+        token: that.loginDatas.token || '',
+        page: that.page,
+        size: that.size };
+
+      if (this.btn_kg == 1) {
+        return;
+      }
+      this.btn_kg = 1;
+      //selectSaraylDetailByUserCard
+      var jkurl = '/user/news';
+      uni.showLoading({
+        title: '正在获取数据' });
+
+      var page_that = that.page;
+      _service.default.P_get(jkurl, datas).then(function (res) {
+        that.btn_kg = 0;
+        console.log(res);
+        if (res.code == 1) {
+          that.htmlReset = 0;
+          var datas = res.data;
+          console.log(typeof datas);
+
+          if (typeof datas == 'string') {
+            datas = JSON.parse(datas);
+          }
+          console.log(res);
+
+          if (page_that == 1) {
+
+            that.datas = datas;
+          } else {
+            if (datas.length == 0) {
+              that.data_last = true;
+              return;
+            }
+            that.data_last = false;
+            that.datas = that.datas.concat(datas);
+          }
+          that.page++;
+
+        } else {
+          that.htmlReset = 1;
+          if (res.msg) {
+            uni.showToast({
+              icon: 'none',
+              title: res.msg });
+
+          } else {
+            uni.showToast({
+              icon: 'none',
+              title: '操作失败' });
+
+          }
+        }
+      }).catch(function (e) {
+        that.htmlReset = 1;
+        that.btn_kg = 0;
+        console.log(e);
+        uni.showToast({
+          icon: 'none',
+          title: '获取数据失败，请检查您的网络连接' });
+
+      });
+
+    },
+    jump: function jump(e) {
+      var that = this;
+      if (that.btn_kg == 1) {
         return;
       } else {
-        that.btnkg = 1;
+        that.btn_kg = 1;
         setTimeout(function () {
-          that.btnkg = 0;
+          that.btn_kg = 0;
         }, 1000);
       }
 

@@ -208,6 +208,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 8));
 var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
@@ -236,43 +240,11 @@ var that;var _default =
 
 
       type: 0,
-      htmlReset: 0,
+      htmlReset: -1,
       datas: [],
       pages: 1,
       size: 20,
-      taocan_list: [{
-        name: 'Mini 主机',
-        id: 1 },
-
-      {
-        name: '门窗传感器',
-        id: 2 },
-
-      {
-        name: '智能可燃气体报警器多功能更安全快速防',
-        id: 3 },
-
-      {
-        name: '智能门锁 T1C',
-        id: 4 },
-
-      {
-        name: 'Mini 主机',
-        id: 1 },
-
-      {
-        name: '门窗传感器',
-        id: 2 },
-
-      {
-        name: '智能可燃气体报警器多功能更安全快速防',
-        id: 3 },
-
-      {
-        name: '智能门锁 T1C',
-        id: 4 }],
-
-
+      taocan_list: [],
       data_last: false };
 
 
@@ -332,6 +304,7 @@ var that;var _default =
         that.btn_kg = 0;
         console.log(res);
         if (res.code == 1) {
+          that.htmlReset = 0;
           var datas = res.data;
           console.log(typeof datas);
 
@@ -354,6 +327,7 @@ var that;var _default =
           that.page++;
 
         } else {
+          that.htmlReset = 1;
           if (res.msg) {
             uni.showToast({
               icon: 'none',
@@ -367,6 +341,7 @@ var that;var _default =
           }
         }
       }).catch(function (e) {
+        that.htmlReset = 1;
         that.btn_kg = 0;
         console.log(e);
         uni.showToast({

@@ -98,7 +98,7 @@
 	top: 210rpx;
 	left: 30rpx;
 	width: 690rpx;
-	height: 195rpx;
+	/* height: 195upx; */
 	/* background: #FFFFFF;
 	box-shadow: 0px 2px 10upx 0px rgba(0, 0, 0, 0.1);
 	border-radius: 10upx; */
