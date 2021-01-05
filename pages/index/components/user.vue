@@ -367,7 +367,7 @@
 				})
 			},
 			getimg(img) {
-				console.log(service.getimg(img))
+				// console.log(service.getimg(img))
 				return service.getimg(img)
 			},
 			getimgarr(img) {

@@ -25,17 +25,11 @@
 					<view @tap="moveToLocation" class="order_li_msg">
 						<!-- <input v-model="yz_address.name" placeholder="请输入业主地址"  disabled="true"/> <-->
 							
-							<text v-if="!yz_address.name" style="line-height: 87upx;font-size: 30upx;color: #666;">请选择地址</text>
-							<text v-else style="line-height: 87upx;font-size: 30upx;">{{yz_address.name}}</text>
+							<text v-if="!yz_address.address" style="line-height: 87upx;font-size: 30upx;color: #666;">请选择地址</text>
+							<text v-else style="line-height: 87upx;font-size: 30upx;">{{yz_address.address}}</text>
 					</view>
 					<button v-if="!ldata" class="" open-type="openSetting" @opensetting='handler'>点击授权</button>
 				</view>
-				<picker class="order_li" @change="bindPickerChange" :value="taocan_index" :range="taocan_list" range-key="title" data-type="1">
-						<view class="order_li_tit">套内详单</view>
-						<view class="order_li_msg">
-							<input v-model="taocan_list[taocan_index].title" placeholder="请选择套餐" disabled="true" />
-						</view>
-				</picker>
 				<view class="order_li">
 					<view class="order_li_tit">负责人</view>
 					<view class="order_li_msg">
@@ -58,6 +52,12 @@
 						<view class="order_li_tit">合同</view>
 						<view class="order_li_msg">
 							<input v-model="hetong_list[hetong_index].title" placeholder="请选择合同" disabled="true" />
+						</view>
+				</picker>
+				<picker class="order_li" @change="bindPickerChange" :value="taocan_index" :range="taocan_list" range-key="goods_package_name" data-type="1">
+						<view class="order_li_tit">套内详单</view>
+						<view class="order_li_msg">
+							<input v-model="taocan_list[taocan_index].goods_package_name" placeholder="请选择套餐" disabled="true" />
 						</view>
 				</picker>
 				<view class="order_li">
@@ -118,7 +118,7 @@
 		},
 		onLoad(){
 			that=this
-			that.gettaocan()
+			
 			that.gethetong()
 			wx.getSetting({
 			  success: (res) => {
@@ -340,18 +340,19 @@
 				})
 				
 			},
-			gettaocan(num) {
+			gettaocan(id) {
 				var that = this
 			
 				var datas = {
 					token: that.loginDatas.token || '',
+					agreement_id:id
 					// page: that.page,
 					// size: that.size,
 					// status: this.type,
 				}
 			
 				//selectSaraylDetailByUserCard
-				var jkurl = '/homepage/menu'
+				var jkurl = '/order/contract'
 				uni.showLoading({
 					title: '正在获取数据'
 				})
@@ -426,7 +427,7 @@
 						console.log(res)
 			
 						that.hetong_list = datas
-			
+						that.gettaocan(datas[0].id)
 					} else {
 						that.htmlReset=1
 						if (res.msg) {
@@ -464,6 +465,8 @@
 					}
 					if(datas.type==3){ //合同
 						this.hetong_index = e.target.value
+						that.gettaocan(that.hetong_list[e.target.value].id)
+						this.taocan_index=0
 					}
 					
 			},

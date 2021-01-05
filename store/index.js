@@ -45,12 +45,33 @@ const store = new Vuex.Store({
 		set_xcx(state, xcx_status){
 			var tip_text='正在切换至'
 			if(xcx_status==0){
+				if(state.loginDatas.is_seller!=1){
+					uni.showToast({
+						icon:'none',
+						title: '暂无权限'
+					});
+					return
+				}
 				tip_text+='商家端'
 			}
 			if(xcx_status==1){
+				if(state.loginDatas.is_owner!=1){
+					uni.showToast({
+						icon:'none',
+						title: '暂无权限'
+					});
+					return
+				}
 				tip_text+='用户端'
 			}
 			if(xcx_status==2){
+				if(state.loginDatas.is_engineer!=1){
+					uni.showToast({
+						icon:'none',
+						title: '暂无权限'
+					});
+					return
+				}
 				tip_text+='智能安装端'
 			}
 			uni.showToast({

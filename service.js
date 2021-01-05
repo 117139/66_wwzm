@@ -181,7 +181,7 @@ const pveimg = function(e) {
 	} else {
 		urls1[0] = current
 	}
-	console.log(urls1)
+	// console.log(urls1)
 	uni.previewImage({
 		current: current, // 当前显示图片的http链接
 		urls: urls1 // 需要预览的图片http链接列表
@@ -271,11 +271,14 @@ const wxlogin=function (num){
 												
 	                      uni.setStorageSync('loginmsg', res.data.data)
 												//0 商家端  1 用户端  2智能安装端
-												if(store.xcx_status==1){
-													if(res.data.data.is_owner==1){
-														store.commit('set_xcx', 1)
-														return
-													}
+												console.log('store.xcx_status')
+												console.log(store.state.xcx_status)
+												if(store.state.xcx_status==1){
+													console.log(res.data.data.is_engineer)
+													// if(res.data.data.is_owner==1){
+													// 	store.commit('set_xcx', 1)
+													// 	return
+													// }
 													if(res.data.data.is_engineer==1){
 														store.commit('set_xcx', 2)
 														return
@@ -611,7 +614,7 @@ const getimgarr=function (imgs,type){
 		type=','
 	}
 	imgs=imgs.split(type)
-	console.log(imgurl+img)
+	// console.log(imgurl+img)
 	var newimgs=[]
 	for(var i=0;i<imgs.length;i++){
 		var img=imgs[i]
@@ -620,7 +623,7 @@ const getimgarr=function (imgs,type){
 		}
 		newimgs.push(img)
 	}
-	console.log(newimgs)
+	// console.log(newimgs)
 	return newimgs
 }
 const gettime=function (mj){
