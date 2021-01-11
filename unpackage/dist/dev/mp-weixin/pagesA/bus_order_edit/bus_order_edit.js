@@ -250,7 +250,7 @@ var that;var _default =
 
   onLoad: function onLoad() {
     that = this;
-    that.gettaocan();
+
     that.gethetong();
     wx.getSetting({
       success: function success(res) {
@@ -270,7 +270,8 @@ var that;var _default =
 
     qqmapsdk = new _qqmapWxJssdk.default({
       //此key需要用户自己申请
-      key: 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O' });
+      // key: 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'
+      key: _service.default.map_key });
 
     // 调用接口
     qqmapsdk.reverseGeocoder({
@@ -296,23 +297,24 @@ var that;var _default =
         that.ldata = true;
         //     // 调用接口
         //     // 实例化API核心类
-        //     qqmapsdk = new QQMapWX({
-        //       //此key需要用户自己申请
-        //       key: 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'
-        //     });
-        //     qqmapsdk.reverseGeocoder({
-        //       success: function (res) {
-        //         console.log(res);
+        qqmapsdk = new _qqmapWxJssdk.default({
+          //此key需要用户自己申请
+          // key: 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'
+          key: _service.default.map_key });
 
-        //       },
-        //       fail: function (res) {
-        //         //console.log(res);
+        qqmapsdk.reverseGeocoder({
+          success: function success(res) {
+            console.log(res);
 
-        //       },
-        //       complete: function (res) {
-        //         //console.log(res);
-        //       }
-        //     });
+          },
+          fail: function fail(res) {
+            //console.log(res);
+
+          },
+          complete: function complete(res) {
+            //console.log(res);
+          } });
+
 
       }
     },
@@ -472,18 +474,19 @@ var that;var _default =
       });
 
     },
-    gettaocan: function gettaocan(num) {
+    gettaocan: function gettaocan(id) {
       var that = this;
 
       var datas = {
-        token: that.loginDatas.token || ''
+        token: that.loginDatas.token || '',
+        agreement_id: id
         // page: that.page,
         // size: that.size,
         // status: this.type,
       };
 
       //selectSaraylDetailByUserCard
-      var jkurl = '/homepage/menu';
+      var jkurl = '/order/contract';
       uni.showLoading({
         title: '正在获取数据' });
 
@@ -558,7 +561,7 @@ var that;var _default =
           console.log(res);
 
           that.hetong_list = datas;
-
+          that.gettaocan(datas[0].id);
         } else {
           that.htmlReset = 1;
           if (res.msg) {
@@ -596,6 +599,8 @@ var that;var _default =
       }
       if (datas.type == 3) {//合同
         this.hetong_index = e.target.value;
+        that.gettaocan(that.hetong_list[e.target.value].id);
+        this.taocan_index = 0;
       }
 
     },

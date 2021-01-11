@@ -20,14 +20,12 @@
 	-webkit-box-pack: center;
 	-webkit-justify-content: center;
 	        justify-content: center;
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	box-sizing: border-box;
 	-webkit-transition: all .5s;
 	transition: all .5s;
 
 
 	padding-right: 220rpx;
-	-webkit-box-shadow: 0rpx 0rpx 0rpx;
 	box-shadow: 0rpx 0rpx 0rpx;
 	z-index: 9999;
 	overflow: hidden;

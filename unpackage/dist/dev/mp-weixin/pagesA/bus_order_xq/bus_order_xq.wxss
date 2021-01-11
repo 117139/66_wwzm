@@ -6,8 +6,7 @@
 .order_main.data-v-303612cb{
 	width: 100%;
 	background: #fff;
-	-webkit-border-radius: 10rpx;
-	        border-radius: 10rpx;
+	border-radius: 10rpx;
 	padding: 0 30rpx;
 }
 .order_li.data-v-303612cb{

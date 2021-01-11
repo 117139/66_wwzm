@@ -56,8 +56,7 @@
 .order_li.data-v-dfddd45e {
 	width: 337rpx;
 	background: #FFFFFF;
-	-webkit-border-radius: 10rpx;
-	        border-radius: 10rpx;
+	border-radius: 10rpx;
 	margin-bottom: 15rpx;
 	overflow: hidden;
 }
@@ -102,8 +101,7 @@
 	margin-right: 15rpx;
 	margin-bottom: 15rpx;
 	border: 1px solid #F4691A;
-	-webkit-border-radius: 10rpx;
-	        border-radius: 10rpx;
+	border-radius: 10rpx;
 }
 .order_pri.data-v-dfddd45e{
 	color: #F4691A;

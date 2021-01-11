@@ -243,7 +243,8 @@
 			map_dp(data) {
 				let that = this
 				let plugin = requirePlugin('routePlan');
-				let key = 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'; //使用在腾讯位置服务申请的key
+				// let key = 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'; //使用在腾讯位置服务申请的key
+				let key =service.map_key
 				let referer = '万屋智能'; //调用插件的app的名称
 				let endPoint = JSON.stringify({ //终点
 					'name': data.owner_address,

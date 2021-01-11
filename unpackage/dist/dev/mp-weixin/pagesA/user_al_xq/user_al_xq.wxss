@@ -28,8 +28,7 @@
 	margin-right: 15rpx;
 	margin-bottom: 15rpx;
 	border: 1px solid #F4691A;
-	-webkit-border-radius: 10rpx;
-	        border-radius: 10rpx;
+	border-radius: 10rpx;
 }
 .xq_img image.data-v-7fdc784b{
 	width: 100%;

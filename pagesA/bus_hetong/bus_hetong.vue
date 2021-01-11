@@ -18,7 +18,7 @@
 					<view class="order_li_msg flex_1 dis_flex_c ju_c">
 						<view class="order_li_d1">套数: {{item.quantity}} 套</view>
 						<view class="order_li_d2">{{gettime(item.created_at)}} | 价值<text>{{getpri(item.cost)}}</text></view>
-						<view v-if="type==1" class="order_li_d3">已完成: <text>{{index}}</text> 套</view>
+						<view v-if="type==1" class="order_li_d3">已完成: <text>{{item.done_quantity}}</text> 套</view>
 					</view>
 				</view>
 				<view v-if="datas.length==0" class="zanwu">暂无数据</view>

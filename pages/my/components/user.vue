@@ -163,7 +163,21 @@
 		},
 		mounted() {
 			that=this
-			this.onRetry()
+			if(that.hasLogin){
+				console.log('that.hasLogin-----------------------------.')
+				console.log(that.hasLogin)
+				this.onRetry()
+			}
+		},
+		
+		watch: {
+			hasLogin(newval,oldval){
+				console.log(newval)
+				if(newval==true){
+					this.btn_kg=0
+					this.onRetry()
+				}
+			}
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
@@ -586,10 +600,10 @@
 		left: 0;
 		right: 0;
 	}
-	.cur_H {
+	/* .cur_H {
 		background: #fff;
 		color: #333;
-	}
+	} */
 	.scroll_H{
 		position: fixed;
 		top: 0;

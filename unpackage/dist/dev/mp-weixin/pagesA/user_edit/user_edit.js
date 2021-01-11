@@ -201,13 +201,20 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
 
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 8));
-var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var avatar = function avatar() {Promise.all(/*! require.ensure | components/yq-avatar/yq-avatar */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/yq-avatar/yq-avatar")]).then((function () {return resolve(__webpack_require__(/*! ../../components/yq-avatar/yq-avatar.vue */ 336));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _qqmapWxJssdk = _interopRequireDefault(__webpack_require__(/*! ../../libs/qqmap-wx-jssdk.js */ 84));
+var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var avatar = function avatar() {Promise.all(/*! require.ensure | components/yq-avatar/yq-avatar */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/yq-avatar/yq-avatar")]).then((function () {return resolve(__webpack_require__(/*! ../../components/yq-avatar/yq-avatar.vue */ 344));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 
 
+var qqmapsdk;
 var that;var _default =
 {
   data: function data() {
@@ -216,7 +223,8 @@ var that;var _default =
       sex: 1,
       phone: '',
       address: '',
-      loginDatas_data: {} };
+      loginDatas_data: {},
+      ldata: false };
 
   },
   components: {
@@ -228,9 +236,96 @@ var that;var _default =
   onLoad: function onLoad() {
     that = this;
     this.loginDatas_data = JSON.parse(JSON.stringify(that.loginDatas));
+
+    wx.getSetting({
+      success: function success(res) {
+        console.log(res.authSetting['scope.userLocation']);
+        if (res.authSetting['scope.userLocation'] != undefined && res.authSetting['scope.userLocation'] != true) {//非初始化进入该页面,且未授权
+          that.ldata = false;
+        } else if (res.authSetting['scope.userLocation'] == undefined) {//初始化进入
+          // that.getLocation(that);
+          that.ldata = false;
+        } else {//授权后默认加载
+          console.log('授权后默认加载');
+          // that.getLocation(that);
+          that.ldata = true;
+        }
+      } });
+
+    qqmapsdk = new _qqmapWxJssdk.default({
+      //此key需要用户自己申请
+      // key: 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'
+      key: _service.default.map_key });
+
+    // 调用接口
+    qqmapsdk.reverseGeocoder({
+      success: function success(res) {
+        console.log(res);
+      },
+      fail: function fail(res) {
+        //console.log(res);
+
+      },
+      complete: function complete(res) {
+        console.log(res);
+      } });
+
   },
   methods: _objectSpread(_objectSpread({},
   (0, _vuex.mapMutations)(['login', 'logindata', 'logout', 'setplatform'])), {}, {
+    handler: function handler(e) {
+      var that = this;
+      if (!e.detail.authSetting['scope.userLocation']) {
+        that.ldata = false;
+      } else {
+        that.ldata = true;
+        qqmapsdk = new _qqmapWxJssdk.default({
+          //此key需要用户自己申请
+          // key: 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'
+          key: _service.default.map_key });
+
+        // 调用接口
+        qqmapsdk.reverseGeocoder({
+          success: function success(res) {
+            console.log(res);
+          },
+          fail: function fail(res) {
+            //console.log(res);
+
+          },
+          complete: function complete(res) {
+            console.log(res);
+          } });
+
+
+      }
+    },
+    //移动选点
+    moveToLocation: function moveToLocation() {
+      var that = this;
+      wx.chooseLocation({
+        success: function success(res) {
+          console.log(res);
+          console.log(res.name);
+          var add_data = {
+            address: res.address,
+            latitude: res.latitude,
+            longitude: res.longitude,
+            name: res.name };
+
+          that.yz_address = add_data;
+          // that.set_add(res.name)
+          _vue.default.set(that.loginDatas_data, 'address', res.address);
+          _vue.default.set(that.loginDatas_data, 'lat', res.latitude);
+          _vue.default.set(that.loginDatas_data, 'long', res.longitude);
+
+        },
+        fail: function fail(err) {
+          console.log(err);
+        } });
+
+    },
+
     sub: function sub() {var _this = this;
       if (that.loginDatas_data.nickname.length == 0) {
         uni.showToast({
@@ -267,7 +362,9 @@ var that;var _default =
         nickname: that.loginDatas_data.nickname,
         sex: that.loginDatas_data.sex == 1 ? 1 : 0,
         phone: that.loginDatas_data.phone,
-        address: that.loginDatas_data.address };
+        address: that.loginDatas_data.address,
+        long: that.loginDatas_data.long,
+        lat: that.loginDatas_data.lat };
 
       console.log(datas);
       var jkurl = '/user/edit';

@@ -5,7 +5,7 @@
 			<block slot="content" ><image class="login_tit" src="/static/images/tit.png" mode="aspectFit"></image></block>
 		</cu-custom> -->
 		<view class="login_box dis_flex_c ju_c aic">
-			<image class="logo" src="/static/images/login_bg.jpg" mode=""></image>
+			<image class="logo" src="/static/images/logo.png" mode=""></image>
 		</view>
 		<view class="dis_flex aic ju_c login_tip">登录表示您同意<text @tap="jump" data-url="/pagesA/about/about?type=yszc">《法律声明和隐私政策》</text></view>
 		<view class="dis_flex aic ju_c login_btn">
@@ -15,6 +15,7 @@
 				微信用户一键登录
 			</button>
 		</view>
+		<view class="dis_flex aic ju_c goback_btn" @tap="goback()">返回</view>
 	</view>
 </template>
 
@@ -127,7 +128,7 @@
 		background: #f4f8fb;
 	}
 	.login_bg{
-		height: 100%;
+		height: 100vh;
 		background: #f4f8fb;
 	}
 	.login_box{
@@ -135,10 +136,14 @@
 		height: 650upx;
 		font-size: 36upx;
 		color: #333;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
 	}
 	.logo{
-		width: 100%;
-		height:100%;
+		width: 200upx;
+		height:200upx;
 		margin-bottom: 25upx;
 	}
 	.login_tip{
@@ -164,5 +169,13 @@
 		width: 53upx;
 		height: 43upx;
 		margin-right: 30upx;
+	}
+	.goback_btn{
+		width: 690upx;
+		height: 95upx;
+		margin: 30px auto;
+		background: #fff;
+		border-radius: 95upx;
+		border: 1px solid #eee;
 	}
 </style>

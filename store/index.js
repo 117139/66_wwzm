@@ -79,6 +79,9 @@ const store = new Vuex.Store({
 				title:tip_text
 			})
 			state.xcx_status = xcx_status || 0;
+			uni.switchTab({
+				url:'/pages/index/index'
+			})
 		},
 		login(state, userName) {
 			state.userName = userName || '新用户';

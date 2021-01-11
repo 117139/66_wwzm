@@ -145,7 +145,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
 
 
@@ -177,15 +177,43 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
 
 
   },
+  onLoad: function onLoad() {
+    if (!this.hasLogin) {
+      uni.navigateTo({
+        url: '/pages/login/login' });
 
+    }
+  },
+  onShow: function onShow() {
+    if (!this.hasLogin) {
+
+    } else {
+      uni.showLoading({
+        mask: true,
+        title: '正在检测权限' });
+
+      _service.default.wxlogin();
+    }
+
+  },
   computed: _objectSpread({},
   (0, _vuex.mapState)(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'xcx_status'])),
 
   methods: _objectSpread(_objectSpread({},
   (0, _vuex.mapMutations)(['set_xcx'])), {}, {
+    set_xcx_fuc: function set_xcx_fuc(num) {
+      if (!this.hasLogin) {
+        uni.navigateTo({
+          url: '/pages/login/login' });
+
+        return;
+      }
+      this.set_xcx(num);
+    },
     getimg: function getimg(img) {
       return _service.default.getimg(img);
     } }) };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

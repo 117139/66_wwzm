@@ -6,8 +6,7 @@
 .index_li.data-v-1fbe3e35 {
 	width: 100%;
 	background: #FFFFFF;
-	-webkit-border-radius: 10rpx;
-	        border-radius: 10rpx;
+	border-radius: 10rpx;
 }
 .index_li+.index_li.data-v-1fbe3e35 {
 	margin-top: 20rpx;
@@ -30,8 +29,7 @@
 .li_user image.data-v-1fbe3e35 {
 	width: 40rpx;
 	height: 40rpx;
-	-webkit-border-radius: 20rpx;
-	        border-radius: 20rpx;
+	border-radius: 20rpx;
 	margin-right: 10rpx;
 }
 .li_msg.data-v-1fbe3e35 {

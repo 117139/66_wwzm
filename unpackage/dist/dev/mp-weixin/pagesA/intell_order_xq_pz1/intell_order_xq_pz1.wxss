@@ -22,8 +22,7 @@
 .pz_img.data-v-f9069f3a {
 	width: 150rpx;
 	height: 150rpx;
-	-webkit-border-radius: 10rpx;
-	        border-radius: 10rpx;
+	border-radius: 10rpx;
 	margin-right: 15rpx;
 	margin-bottom: 15rpx;
 	position: relative;
@@ -36,8 +35,7 @@
 	width: 30rpx;
 	height: 30rpx;
 	background: #FF4B4B;
-	-webkit-border-radius: 15rpx;
-	        border-radius: 15rpx;
+	border-radius: 15rpx;
 	position: absolute;
 	top: -10rpx;
 	right: -10rpx;
@@ -74,8 +72,7 @@
 	width: 690rpx;
 	height: 88rpx;
 	background: #3778FE;
-	-webkit-border-radius: 10rpx;
-	        border-radius: 10rpx;
+	border-radius: 10rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;

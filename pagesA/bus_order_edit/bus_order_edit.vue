@@ -138,7 +138,8 @@
 			})
 			qqmapsdk = new QQMapWX({
 			  //此key需要用户自己申请
-			  key: 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'
+			  // key: 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'
+				key:service.map_key
 			});
 			// 调用接口
 			qqmapsdk.reverseGeocoder({
@@ -164,23 +165,24 @@
 			    that.ldata=true
 			//     // 调用接口
 			//     // 实例化API核心类
-			//     qqmapsdk = new QQMapWX({
-			//       //此key需要用户自己申请
-			//       key: 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'
-			//     });
-			//     qqmapsdk.reverseGeocoder({
-			//       success: function (res) {
-			//         console.log(res);
+			    qqmapsdk = new QQMapWX({
+			      //此key需要用户自己申请
+			      // key: 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'
+						key:service.map_key
+			    });
+			    qqmapsdk.reverseGeocoder({
+			      success: function (res) {
+			        console.log(res);
 			       
-			//       },
-			//       fail: function (res) {
-			//         //console.log(res);
+			      },
+			      fail: function (res) {
+			        //console.log(res);
 			
-			//       },
-			//       complete: function (res) {
-			//         //console.log(res);
-			//       }
-			//     });
+			      },
+			      complete: function (res) {
+			        //console.log(res);
+			      }
+			    });
 			    
 			  }
 			},

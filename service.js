@@ -6,11 +6,13 @@ const USERS_KEY = 'USERS_KEY';
 const STATE_KEY = 'STATE_KEY';
 // const IPurl = 'https://datixcx.com.aa.800123456.top/api/';
 // const imgurl = 'https://datixcx.com.aa.800123456.top/';
-const imgurl = 'http://192.168.129.246/';
+// const imgurl = 'http://192.168.129.246/';
+const map_key="7FEBZ-WLWK2-PMGUE-C4BFT-EKXB6-BFFNR"
+const imgurl="https://wanuzn.com.aa.800123456.top/"
 const IPurl=imgurl+'api/'
 // const IPurl='http://192.168.129.246/api/'
 // const adminurl='https://datixcx.com.aa.800123456.top/admin/';
-// appid:wx4c41cc50c5a53df9
+// appid:wxf61ecd472abe41cb  正式
 // appid:wx49a560f7feac0feb   cj
 /**
  * 请求头
@@ -273,12 +275,12 @@ const wxlogin=function (num){
 												//0 商家端  1 用户端  2智能安装端
 												console.log('store.xcx_status')
 												console.log(store.state.xcx_status)
-												if(store.state.xcx_status==1){
+												if(num==1){
 													console.log(res.data.data.is_engineer)
-													// if(res.data.data.is_owner==1){
-													// 	store.commit('set_xcx', 1)
-													// 	return
-													// }
+													if(res.data.data.is_owner==1){
+														store.commit('set_xcx', 1)
+														return
+													}
 													if(res.data.data.is_engineer==1){
 														store.commit('set_xcx', 2)
 														return
@@ -708,6 +710,7 @@ export default {
 	get,
 	post,
 	IPurl,
+	map_key,
 	imgurl,
 	gologin,
 	jump,
