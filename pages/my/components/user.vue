@@ -97,7 +97,6 @@
 		</scroll-view>
 	</view>
 </template>
-
 <script>
 	import service from '../../../service.js';
 	import {

@@ -310,6 +310,12 @@ var that = void 0;var _default =
       var style = "height:".concat(CustomBar, "px;padding-top:").concat(StatusBar, "px;");
 
       return style;
+    },
+    style1: function style1() {
+      var StatusBar = this.StatusBar;
+      var style = "top:".concat(StatusBar, "px;");
+
+      return style;
     } }),
 
 

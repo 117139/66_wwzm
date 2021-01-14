@@ -70,10 +70,11 @@
 	}
 </script>
 
+
 <style scoped>
 	.wrap_box{
 		width: 100%;
-		/* min-height: 100vh; */
+		min-height: 100vh;
 		background: #fff;
 	}
 	.main_box{

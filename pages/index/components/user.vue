@@ -1,7 +1,7 @@
 <template>
 	<view class="content_wrap" style="min-height: 100vh;background: #fafafa;">
 		
-		<view v-if="xcx_status!=2" class="head_box" :class="{'cur_H':PageScroll>10}" :style="style">
+		<view class="head_box" :class="{'cur_H':PageScroll>10}" :style="style">
 			<!-- <image class="head_box_img" src="/static/images/business/my_bg_01.jpg" mode="aspectFill"></image> -->
 			<view class="my_tit_box" :style="style1">
 				<!-- 个人中心 -->
@@ -143,6 +143,12 @@
 				var CustomBar = this.CustomBar;
 				var style = `height:${CustomBar}px;padding-top:${StatusBar}px;`;
 
+				return style
+			},
+			style1() {
+				var StatusBar = this.StatusBar;
+				var style = `top:${StatusBar}px;`;
+			
 				return style
 			},
 		},
