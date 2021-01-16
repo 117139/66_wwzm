@@ -1,5 +1,5 @@
 
-.head_box.data-v-24f44585 {
+.head_box.data-v-57280228 {
 	position: fixed;
 	width: 100%;
 	top: 0;
@@ -30,7 +30,7 @@
 	z-index: 9999;
 	overflow: hidden;
 }
-.head_box_img.data-v-24f44585{
+.head_box_img.data-v-57280228{
 	position: absolute;
 	top: 0;
 	width: 100%;
@@ -38,7 +38,7 @@
 	left: 0;
 	right: 0;
 }
-.my_tit_box.data-v-24f44585 {
+.my_tit_box.data-v-57280228 {
 	width: calc(100% - 440rpx);
 	position: absolute;
 	text-align: center;
@@ -58,7 +58,7 @@
 	white-space: nowrap;
 	overflow: hidden;
 }
-.cur_H.data-v-24f44585 {
+.cur_H.data-v-57280228 {
 	background: #fff;
 	color: #333;
 }

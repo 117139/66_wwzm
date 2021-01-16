@@ -1,12 +1,12 @@
 
-page.data-v-1126c31a{
+page.data-v-b237504c{
 	background: #f4f8fb;
 }
-.login_bg.data-v-1126c31a{
+.login_bg.data-v-b237504c{
 	height: 100vh;
 	background: #f4f8fb;
 }
-.login_box.data-v-1126c31a{
+.login_box.data-v-b237504c{
 	width: 100%;
 	height: 650rpx;
 	font-size: 36rpx;
@@ -25,20 +25,20 @@ page.data-v-1126c31a{
 	-webkit-justify-content: center;
 	        justify-content: center;
 }
-.logo.data-v-1126c31a{
+.logo.data-v-b237504c{
 	width: 200rpx;
 	height:200rpx;
 	margin-bottom: 25rpx;
 }
-.login_tip.data-v-1126c31a{
+.login_tip.data-v-b237504c{
 	font-size: 26rpx;
 	color: #999;
 }
-.login_btn.data-v-1126c31a{
+.login_btn.data-v-b237504c{
 	width: 100%;
 	margin-top: 40rpx;
 }
-.login_btn button.data-v-1126c31a{
+.login_btn button.data-v-b237504c{
 	width: 690rpx;
 	height: 88rpx;
 	background: #1AAC19;
@@ -55,12 +55,12 @@ page.data-v-1126c31a{
 	font-size: 30rpx;
 	color: #fff;
 }
-.wx_icon.data-v-1126c31a{
+.wx_icon.data-v-b237504c{
 	width: 53rpx;
 	height: 43rpx;
 	margin-right: 30rpx;
 }
-.goback_btn.data-v-1126c31a{
+.goback_btn.data-v-b237504c{
 	width: 690rpx;
 	height: 95rpx;
 	margin: 30px auto;

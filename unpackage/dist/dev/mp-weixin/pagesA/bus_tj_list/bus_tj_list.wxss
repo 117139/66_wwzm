@@ -1,11 +1,11 @@
 
-.bus_my_list.data-v-58388d04{
+.bus_my_list.data-v-2ddcda06{
 		position: relative;
 		z-index: 10;
 		/* margin-top: -40upx; */
 		padding: 20rpx 30rpx;
 }
-.bus_my_li.data-v-58388d04{
+.bus_my_li.data-v-2ddcda06{
 		width: 100%;
 		
 		background: #FFFFFF;
@@ -13,43 +13,43 @@
 		border-radius: 10rpx;
 		margin-bottom: 20rpx;
 }
-.bus_my_li_tit.data-v-58388d04{
+.bus_my_li_tit.data-v-2ddcda06{
 		width: 100%;
 		padding: 0 30rpx 0;
 		border-bottom: 1px solid #EDEDED;
 		height: 75rpx;
 }
-.bus_my_li_tit image.data-v-58388d04{
+.bus_my_li_tit image.data-v-2ddcda06{
 		width: 30rpx;
 		height: 33rpx;
 		margin-right: 20rpx;
 }
-.bus_my_li_tit_text.data-v-58388d04{
+.bus_my_li_tit_text.data-v-2ddcda06{
 		line-height: 32rpx;
 		font-size: 32rpx;
 		font-family: PingFangSC;
 		font-weight: 500;
 		color: #000000;
 }
-.li_more.data-v-58388d04{
+.li_more.data-v-2ddcda06{
 		
 		font-size: 28rpx;
 		font-family: PingFang SC;
 		font-weight: 400;
 		color: #999999;
 }
-.li_more text.data-v-58388d04{
+.li_more text.data-v-2ddcda06{
 		color: #999;
 		font-size: 14rpx;
 		margin-left: 20rpx;
 }
-.my_table.data-v-58388d04{
+.my_table.data-v-2ddcda06{
 		width: 100%;
 }
-.my_table_tit.data-v-58388d04{
+.my_table_tit.data-v-2ddcda06{
 		border-bottom: 1px solid #EDEDED;
 }
-.my_td.data-v-58388d04{
+.my_td.data-v-2ddcda06{
 		width: 25%;
 		-webkit-box-flex: 0;
 		-webkit-flex: none;
@@ -70,7 +70,7 @@
 		color: #727272;
 		position: relative;
 }
-.my_th+.my_th.data-v-58388d04::before{
+.my_th+.my_th.data-v-2ddcda06::before{
 		position: absolute;
 		content: '';
 		width: 1px;
@@ -79,38 +79,38 @@
 		top: 15rpx;
 		left: 0;
 }
-.my_td1.data-v-58388d04{
+.my_td1.data-v-2ddcda06{
 		height: 88rpx;
 		font-size: 28rpx;
 		font-family: PingFangSC;
 		font-weight: 500;
 		color: #727272;
 }
-.my_td2.data-v-58388d04{
+.my_td2.data-v-2ddcda06{
 		height: 88rpx;
 		font-size: 30rpx;
 		font-family: PingFangSC;
 		font-weight: 500;
 		color: #11A078;
 }
-.td_user_tx.data-v-58388d04{
+.td_user_tx.data-v-2ddcda06{
 		width: 52rpx;
 		height: 52rpx;
 		border-radius: 50%;
 		margin-right: 20rpx;
 }
-.td_user_msg.data-v-58388d04{
+.td_user_msg.data-v-2ddcda06{
 		height: 62rpx;
 }
-.td_uname.data-v-58388d04{
+.td_uname.data-v-2ddcda06{
 		color: #3a3a3a;
 		font-size: 26rpx;
 }
-.td_utb.data-v-58388d04{
+.td_utb.data-v-2ddcda06{
 		font-size: 14rpx;
 		color: #a8a8a8;
 }
-.td_ximg.data-v-58388d04{
+.td_ximg.data-v-2ddcda06{
 		width: 18rpx;
 		height: 16rpx;
 		margin-right: 20rpx;

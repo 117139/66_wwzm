@@ -1,23 +1,23 @@
 
-.order_list.data-v-91fc44dc{
+.order_list.data-v-7432c4cb{
 	width: 100%;
 	padding: 30rpx;
 	box-sizing: border-box;
 }
-.order_li.data-v-91fc44dc{
+.order_li.data-v-7432c4cb{
 	width: 100%;
 	background: #FFFFFF;
 	border-radius: 2px;
 	margin-bottom: 30rpx;
 	padding: 20rpx;
 }
-.order_name.data-v-91fc44dc{
+.order_name.data-v-7432c4cb{
 	font-size: 32rpx;
 	color: #222;
 	margin-bottom: 25rpx;
 	font-weight: bold;
 }
-.order_name text.data-v-91fc44dc{
+.order_name text.data-v-7432c4cb{
 	-webkit-box-flex: 0;
 	-webkit-flex: none;
 	        flex: none;
@@ -27,11 +27,11 @@
 	color: #F34826;
 	margin-left: 10rpx;
 }
-.order_time.data-v-91fc44dc{
+.order_time.data-v-7432c4cb{
 	font-size: 24rpx;
 	color: #666;
 }
-.order_time text.data-v-91fc44dc{
+.order_time text.data-v-7432c4cb{
 	color: #fff;
 	display: -webkit-box;
 	display: -webkit-flex;

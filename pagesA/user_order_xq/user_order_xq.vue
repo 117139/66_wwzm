@@ -183,6 +183,9 @@
 				return service.getimg(img)
 			},
 			getimgarr(img){
+				console.log('imgarr------------------------------------>')
+				console.log(img)
+				console.log(service.getimgarr(img))
 				return service.getimgarr(img)
 			},
 			pveimg(e){
