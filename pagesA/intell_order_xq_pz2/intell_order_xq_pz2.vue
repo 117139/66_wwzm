@@ -51,7 +51,7 @@
 							<image mode="aspectFill" :src="getimg(item)" @tap="pveimg" :data-src="getimg(item)"></image>
 						</view>
 						<view class="pz_img" v-if="sj_img.length<9">
-							<image mode="aspectFill" src="/static/images/upimg1.png" @tap="upimg" data-type="1"></image>
+							<image mode="aspectFit" src="/static/images/upimg1.png" @tap="upimg" data-type="1"></image>
 						</view>
 					</view>
 				</view>
@@ -73,7 +73,7 @@
 							<image mode="aspectFill" :src="getimg(item)" @tap="pveimg" :data-src="getimg(item)"></image>
 						</view>
 						<view class="pz_img" v-if="sj_img2.length<9">
-							<image mode="aspectFill" src="/static/images/upimg1.png" @tap="upimg" data-type="2"></image>
+							<image mode="aspectFit" src="/static/images/upimg1.png" @tap="upimg" data-type="2"></image>
 						</view>
 					</view>
 				</view>

@@ -1,29 +1,29 @@
 
-.rz_li.data-v-dd221b2e{
+.rz_li.data-v-5cdaf570{
 	width: 100%;
 	padding: 10rpx 30rpx;
 	min-height: 87rpx;
 	border-bottom: 1px solid #eee;
 	background: #fff;
 }
-.rz_li.data-v-dd221b2e{
+.rz_li.data-v-5cdaf570{
 	font-size: 30rpx;
 	color: #222;
 }
-.rz_li image.data-v-dd221b2e{
+.rz_li image.data-v-5cdaf570{
 	width: 152rpx;
 	height: 100rpx;
 	border-radius: 8px;
 	margin-right: 20rpx;
 }
-.rz_li text.data-v-dd221b2e{
+.rz_li text.data-v-5cdaf570{
 	font-size: 30rpx;
 	color: #989CA9;
 }
-.rz_li input.data-v-dd221b2e{
+.rz_li input.data-v-5cdaf570{
 	text-align: right;
 }
-.sub_btn.data-v-dd221b2e{
+.sub_btn.data-v-5cdaf570{
 	margin: 60rpx auto;
 	width: 690rpx;
 	height: 88rpx;

@@ -59,6 +59,10 @@
 		onLoad() {
 			this.onRetry()
 		},
+		onPullDownRefresh() {
+			
+		this.onRetry()
+		},
 		onReachBottom() {
 			this.getdata()
 		},

@@ -13,7 +13,7 @@
 			 @refresherabort="onAbort" @scrolltolower="getdata" @scroll="scroll_fuc">
 				<view class="index_list">
 					<!-- <view  class="order_bottom_btn" @tap="jump" data-url="/pagesA/bus_order_edit/bus_order_edit">添加工程</view> -->
-					<view class="index_li" v-for="(item,index) in datas">
+					<view  class="index_li" v-for="(item,index) in datas">
 						<view class="index_li_d1">
 							<image class="index_tx" :src="getimg(item.owner_cover)" lazy-load="true" mode="aspectFill"></image>
 							<view class="index_yz">业主：<text>{{item.owner_name}}</text></view>
@@ -29,7 +29,7 @@
 								</view>
 								<block v-if="item.distance">
 									<view class="index_add3" v-if="item.distance>1000">
-										距您<text  style="color: #3778FE;">{{(item.distance/1000).toFixed(2)}}</text>千米
+										距您<text  style="color: #3778FE;">{{getcm(item.distance)}}</text>千米
 										<text class="iconfont iconnext-m"></text>
 									</view>
 									<view class="index_add3" v-else>
@@ -61,6 +61,21 @@
 
 			</scroll-view>
 		</block>
+		<view v-if="show_tk" class="tk_big_box dis_flex aic ju_c">
+			<view class="dis_flex_c aic ju_c">
+				<view class="dis_flex_c tk_box">
+					<view class="tk_tit">提示</view>
+					<view class="tk_msg">为了更好的服务，小程序需要获取您的位置信息</view>
+					<view class="dis_flex ju_a ">
+						<view class="dy_btn dy_btn1" style="position: relative;">
+							<button style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;opacity: 0;" open-type="openSetting" @opensetting='handler'>点击授权</button>
+							点击授权
+						</view>
+						<view class="dy_btn" @tap="authMsg_on">取消</view>
+					</view>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -83,6 +98,7 @@
 				htmlReset:-1,
 				longitude:'',
 				latitude:'',
+				show_tk:false
 			};
 		},
 
@@ -115,6 +131,39 @@
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
 			scroll_fuc(){},
+			getcm(num){
+				if(num>1000){
+					num=num/1000
+					num=num.toFixed(2)
+					return num
+				}
+			},
+			handler: function (e) {
+			  var that = this;
+			  if (!e.detail.authSetting['scope.userLocation']) {
+			   that.ldata=false
+			  } else {
+			    that.ldata=true
+				that.show_tk=false
+				that.onRetry()
+			
+			    
+			  }
+			},
+			authMsg_on(e){
+				var that =this
+				uni.showModal({
+						title: '温馨提示',
+						content: '拒绝后您将无法获取消息,请返回授权',
+						confirmText:"知道了",
+						showCancel:false,
+						success: function (res) {
+							///点击知道了的后续操作 
+							///如跳转首页面 
+							// that.show_tk=false
+						}
+				});
+			},
 			onPulling(e) {
 				console.log("onpulling", e);
 			},
@@ -130,6 +179,7 @@
 				setTimeout(() => {
 					that.triggered = false
 					that._freshing = false
+					
 				}, 500)
 			},
 			onRestore() {
@@ -230,7 +280,12 @@
 									})
 								})
 								
-				    }
+				    },
+					fail: function (err) {
+						console.log(err)
+						that.htmlReset=0
+						that.show_tk=true
+					}
 				});
 
 				
@@ -246,6 +301,9 @@
 
 			map_dp(data) {
 				let that = this
+				if(!data.distance){
+					return
+				}
 				let plugin = requirePlugin('routePlan');
 				// let key = 'FORBZ-KIPEF-WECJR-NFZKA-MREDV-FCF3O'; //使用在腾讯位置服务申请的key
 				let key =service.map_key
@@ -473,4 +531,49 @@
 		align-items: center;
 		justify-content: center;
 	}
+	
+	
+	.tk_big_box {
+			position: fixed;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			z-index: 9999;
+			background: rgba(0, 0, 0, .5);
+		}
+		.tk_box {
+			width: 400rpx;
+			padding: 20upx;
+			background: #FFF;
+		}
+		.tk_tit{
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 24upx;
+			margin-bottom: 30upx;
+		}
+		.tk_msg{
+			font-size: 24upx;
+			margin-bottom: 20upx;
+			padding-bottom: 20upx;
+			border-bottom: 1px solid #ddd;
+		}
+		.dy_btn{
+			width: 150upx;
+			height: 60upx;
+			font-size: 24upx;
+			border: 1px solid #ddd;
+			color: #ddd;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.dy_btn1{
+			width: 152upx;height: 62upx;
+			background: linear-gradient(90deg, rgba(61, 127, 255, 0.91), rgba(60, 142, 255, 0.91));
+			color: #fff;
+			border: 0;
+		}
 </style>

@@ -1,9 +1,9 @@
 
-.wrap_box.data-v-f9b472b4{
+.wrap_box.data-v-3bde4102{
 	width: 100%;
 	min-height: 100vh;
 }
-.kf_btn.data-v-f9b472b4{
+.kf_btn.data-v-3bde4102{
 	width: 690rpx;
 	height: 89rpx;
 	display: -webkit-box;

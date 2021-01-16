@@ -1,16 +1,16 @@
 
-.al_xq.data-v-7fdc784b{
+.al_xq.data-v-36b84812{
 	width: 100%;
 	padding: 20rpx 30rpx;
 }
-.al_tit.data-v-7fdc784b{
+.al_tit.data-v-36b84812{
 	font-size: 36rpx;
 	font-family: PingFang;
 	font-weight: bold;
 	color: #222222;
 	margin-bottom: 30rpx;
 }
-.order_bqs.data-v-7fdc784b{
+.order_bqs.data-v-36b84812{
 	margin-bottom: 25rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -18,7 +18,7 @@
 	-webkit-flex-wrap: wrap;
 	        flex-wrap: wrap;
 }
-.order_bq.data-v-7fdc784b{
+.order_bq.data-v-36b84812{
 	padding: 10rpx 20rpx;
 	font-size: 24rpx;
 	line-height: 24rpx;
@@ -30,16 +30,16 @@
 	border: 1px solid #F4691A;
 	border-radius: 10rpx;
 }
-.xq_img image.data-v-7fdc784b{
+.xq_img image.data-v-36b84812{
 	width: 100%;
 }
-.xq_img image+image.data-v-7fdc784b{
+.xq_img image+image.data-v-36b84812{
 	margin-top: 23rpx;
 }
-.xq_img.data-v-7fdc784b{
+.xq_img.data-v-36b84812{
 	margin-bottom: 48rpx;
 }
-.xq_xq.data-v-7fdc784b{
+.xq_xq.data-v-36b84812{
 	margin-top: 20rpx;
 }
 

@@ -1,9 +1,9 @@
 
-.zzsj_bg.data-v-59ce8383 {
+.zzsj_bg.data-v-3719990a {
 	width: 100%;
 	height: 640rpx;
 }
-.zzsj_box.data-v-59ce8383 {
+.zzsj_box.data-v-3719990a {
 	width: 690rpx;
 	height: 540rpx;
 	background: #FFFFFF;
@@ -13,7 +13,7 @@
 	position: relative;
 	z-index: 10;
 }
-.sj_li.data-v-59ce8383 {
+.sj_li.data-v-3719990a {
 	width: 100%;
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -26,13 +26,13 @@
 	        justify-content: space-between;
 	margin-bottom: 30rpx;
 }
-.sj_li_l.data-v-59ce8383 {
+.sj_li_l.data-v-3719990a {
 	font-size: 24rpx;
 	font-family: PingFang SC;
 	font-weight: 500;
 	color: #000000;
 }
-.sj_li_r.data-v-59ce8383 {
+.sj_li_r.data-v-3719990a {
 	width: 503rpx;
 	height: 60rpx;
 	padding: 0 30rpx;
@@ -45,7 +45,7 @@
 	border: 1px solid #DDDDDD;
 	border-radius: 30rpx;
 }
-.sj_int.data-v-59ce8383 {
+.sj_int.data-v-3719990a {
 	-webkit-box-flex: 1;
 	-webkit-flex: 1;
 	        flex: 1;
@@ -55,10 +55,10 @@
 	font-weight: 500;
 	color: #000000;
 }
-.iconoff.data-v-59ce8383 {
+.iconoff.data-v-3719990a {
 	font-size: 16rpx;
 }
-.sub_btn.data-v-59ce8383 {
+.sub_btn.data-v-3719990a {
 	width: 690rpx;
 	height: 88rpx;
 	background: #11A078;

@@ -10,7 +10,7 @@
 					<image mode="aspectFill" :src="getimg(item)" @tap="pveimg" :data-src="getimg(item)"></image>
 				</view>
 				<view class="pz_img" v-if="sj_img.length<9">
-					<image mode="aspectFill" src="/static/images/upimg1.png" @tap="upimg"></image>
+					<image mode="aspectFit" src="/static/images/upimg1.png" @tap="upimg"></image>
 				</view>
 			</view>
 			<view class="pz1_tit">备注（选填）</view>

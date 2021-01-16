@@ -43,7 +43,7 @@
 			}else{
 				uni.showLoading({
 					mask:true,
-					title:'正在检测权限'
+					title:'正在检测权限,请误操作'
 				})
 				service.wxlogin()
 			}

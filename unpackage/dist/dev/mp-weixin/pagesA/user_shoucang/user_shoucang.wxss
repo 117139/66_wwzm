@@ -1,10 +1,10 @@
 
-.goods.data-v-266c7439 {
+.goods.data-v-55e912c0 {
 	width: 100%;
 	margin-bottom: 20rpx;
 	padding: 20rpx 30rpx;
 }
-.goods1.data-v-266c7439 {
+.goods1.data-v-55e912c0 {
 	width: 100%;
 	padding: 20rpx;
 	box-sizing: border-box;
@@ -22,7 +22,7 @@
 
 	border-radius: 10rpx;
 }
-.scbg.data-v-266c7439 {
+.scbg.data-v-55e912c0 {
 	position: absolute;
 	top: 20rpx;
 	right: 20rpx;
@@ -38,13 +38,13 @@
 	align-items: center; */
 	text-align: center;
 }
-.goodsImg.data-v-266c7439 {
+.goodsImg.data-v-55e912c0 {
 	width: 140rpx;
 	height: 140rpx;
 	/* border: 1px solid #d2d2d2; */
 	margin-right: 22rpx;
 }
-.xuanze.data-v-266c7439 {
+.xuanze.data-v-55e912c0 {
 	/* width: 30rpx;
 	height: 30rpx; */
 	/* padding: 0 30rpx; */
@@ -62,7 +62,7 @@
 	-webkit-flex: none;
 	        flex: none;
 }
-.xuanze1.data-v-266c7439 {
+.xuanze1.data-v-55e912c0 {
 	width: 34rpx;
 	height: 34rpx;
 	border-radius: 50%;
@@ -81,19 +81,19 @@
 	-webkit-flex: none;
 	        flex: none;
 }
-.xuanze1 text.data-v-266c7439{
+.xuanze1 text.data-v-55e912c0{
 	font-size: 34rpx;
 }
-.xuanze2.data-v-266c7439 {
+.xuanze2.data-v-55e912c0 {
 	border: 0;
 	overflow: hidden;
 }
-.goodsinr.data-v-266c7439 {
+.goodsinr.data-v-55e912c0 {
 	-webkit-box-flex: 1;
 	-webkit-flex: 1;
 	        flex: 1;
 }
-.goodsname.data-v-266c7439 {
+.goodsname.data-v-55e912c0 {
 	font-size: 24rpx;
 	color: #222;
 	padding-right: 20rpx;
@@ -107,7 +107,7 @@
 	-webkit-line-clamp: 1;
 	font-weight: bold;
 }
-.goodsname1.data-v-266c7439 {
+.goodsname1.data-v-55e912c0 {
 	font-size: 22rpx;
 	color: #999;
 	padding-right: 20rpx;
@@ -120,18 +120,18 @@
 	-webkit-box-orient:vertical;
 	-webkit-line-clamp:2; */
 }
-.goodsname1 text.data-v-266c7439 {
+.goodsname1 text.data-v-55e912c0 {
 	margin-right: 8rpx;
 }
-.goodspri.data-v-266c7439 {
+.goodspri.data-v-55e912c0 {
 	font-size: 24rpx;
 	color: #F4691A;
 	font-weight: bold;
 }
-.scx.data-v-266c7439 {
+.scx.data-v-55e912c0 {
 	text-decoration: line-through;
 }
-.goodspri1.data-v-266c7439 {
+.goodspri1.data-v-55e912c0 {
 	font-size: 28rpx;
 	color: #F4691A;
 	font-weight: bold;
@@ -145,7 +145,7 @@
 	-webkit-align-items: center;
 	        align-items: center;
 }
-.goods2.data-v-266c7439 {
+.goods2.data-v-55e912c0 {
 	width: 100%;
 	padding: 20rpx 28rpx 28rpx;
 	box-sizing: border-box;
@@ -157,7 +157,7 @@
 	-webkit-flex-direction: column;
 	        flex-direction: column;
 }
-.goods2tit.data-v-266c7439 {
+.goods2tit.data-v-55e912c0 {
 	width: 100%;
 	line-height: 45rpx;
 	font-size: 26rpx;
@@ -165,7 +165,7 @@
 }
 
 /*步进器*/
-.steppera.data-v-266c7439 {
+.steppera.data-v-55e912c0 {
 	width: 148rpx;
 	height: 45rpx;
 	border: 1px solid #dcdcdc;
@@ -178,7 +178,7 @@
 	        align-items: center;
 	color: #222;
 }
-.steppera .vanipt.data-v-266c7439 {
+.steppera .vanipt.data-v-55e912c0 {
 	width: 60rpx;
 	height: 40rpx;
 	max-height: 0;
@@ -200,8 +200,8 @@
 	        justify-content: center;
 	font-size: 24rpx;
 }
-.steppera .vantjia.data-v-266c7439,
-.steppera .vantjian.data-v-266c7439 {
+.steppera .vantjia.data-v-55e912c0,
+.steppera .vantjian.data-v-55e912c0 {
 	width: 45rpx;
 	height: 43rpx;
 	background-color: #fff;
@@ -221,7 +221,7 @@
 	color: #222;
 	font-weight: 100;
 }
-.pl_bbox.data-v-266c7439 {
+.pl_bbox.data-v-55e912c0 {
 	width: 100%;
 	padding-bottom: 50rpx;
 	position: fixed;
@@ -230,7 +230,7 @@
 	background: #FFFFFF;
 	z-index: 100;
 }
-.xq_cz.data-v-266c7439 {
+.xq_cz.data-v-55e912c0 {
 	width: 100%;
 	height: 96rpx;
 
@@ -243,7 +243,7 @@
 	-webkit-align-items: center;
 	        align-items: center;
 }
-.xq_cz.data-v-266c7439 {
+.xq_cz.data-v-55e912c0 {
 	width: 100%;
 	height: 96rpx;
 
@@ -256,7 +256,7 @@
 	-webkit-align-items: center;
 	        align-items: center;
 }
-.selecAll.data-v-266c7439{
+.selecAll.data-v-55e912c0{
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -264,18 +264,18 @@
 	-webkit-align-items: center;
 	        align-items: center;
 }
-.selecAll .all.data-v-266c7439{
+.selecAll .all.data-v-55e912c0{
 	margin-right: 20rpx;
 }
-.hj_pri.data-v-266c7439{
+.hj_pri.data-v-55e912c0{
 	font-size: 28rpx;
 	color: #222;
 	margin-right: 30rpx;
 }
-.hj_pri text.data-v-266c7439{
+.hj_pri text.data-v-55e912c0{
 	color: #F4691A;
 }
-.jiesuan.data-v-266c7439{
+.jiesuan.data-v-55e912c0{
 	width: 160rpx;
 	height: 56rpx;
 	background: #11A078;
