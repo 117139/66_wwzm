@@ -22,7 +22,7 @@
 							</view>
 							<block v-if="datas.distance">
 								<view class="index_add3" v-if="datas.distance>1000">
-									距您<text style="color: #3778FE;">{{getcm(item.distance)}}</text>千米
+									距您<text style="color: #3778FE;">{{getcm(datas.distance)}}</text>千米
 									<text class="iconfont iconnext-m"></text>
 								</view>
 								<view class="index_add3" v-else>
