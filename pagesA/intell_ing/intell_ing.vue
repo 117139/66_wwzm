@@ -22,7 +22,7 @@
 						</view>
 						<block v-if="item.distance">
 							<view class="index_add3" v-if="item.distance>1000">
-								距您<text  style="color: #3778FE;">{{(item.distance/1000).toFixed(2)}}</text>千米
+								距您<text  style="color: #3778FE;">{{getcm(item.distance)}}</text>千米
 								<text class="iconfont iconnext-m"></text>
 							</view>
 							<view class="index_add3" v-else>
@@ -102,6 +102,13 @@
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform']),
+			getcm(num){
+				if(num>1000){
+					num=num/1000
+					num=num.toFixed(2)
+					return num
+				}
+			},
 			onRetry() {
 				this.page = 1
 				this.datas = []

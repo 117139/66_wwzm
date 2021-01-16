@@ -97,24 +97,24 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var g0 = (_vm.item.distance / 1000).toFixed(2)
-
   var l1 = _vm.__map(_vm.datas, function(item, index) {
     var m0 = _vm.getimg(item.owner_cover)
+    var m1 = _vm.getcm(item.distance)
 
     var l0 = _vm.__map(item.goods_list, function(item1, index1) {
-      var m1 = _vm.getimg(item1.cover)
       var m2 = _vm.getimg(item1.cover)
+      var m3 = _vm.getimg(item1.cover)
       return {
         $orig: _vm.__get_orig(item1),
-        m1: m1,
-        m2: m2
+        m2: m2,
+        m3: m3
       }
     })
 
     return {
       $orig: _vm.__get_orig(item),
       m0: m0,
+      m1: m1,
       l0: l0
     }
   })
@@ -123,7 +123,6 @@ var render = function() {
     {},
     {
       $root: {
-        g0: g0,
         l1: l1
       }
     }
@@ -312,6 +311,13 @@ var that;var _default =
       this.datas = [];
       this.data_last = false;
       this.getdata();
+    },
+    getcm: function getcm(num) {
+      if (num > 1000) {
+        num = num / 1000;
+        num = num.toFixed(2);
+        return num;
+      }
     },
     getdata: function getdata() {
       var that = this;

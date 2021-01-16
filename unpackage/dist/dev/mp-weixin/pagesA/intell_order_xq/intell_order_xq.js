@@ -97,13 +97,13 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var g0 = (_vm.datas.distance / 1000).toFixed(2)
+  var m0 = _vm.getcm(_vm.item.distance)
 
   var l0 = _vm.__map(_vm.datas.goods_list, function(item, index) {
-    var m0 = _vm.getimg(item.cover)
+    var m1 = _vm.getimg(item.cover)
     return {
       $orig: _vm.__get_orig(item),
-      m0: m0
+      m1: m1
     }
   })
 
@@ -111,7 +111,7 @@ var render = function() {
     {},
     {
       $root: {
-        g0: g0,
+        m0: m0,
         l0: l0
       }
     }
@@ -316,6 +316,13 @@ var that;var _default =
   },
   methods: _objectSpread({},
   (0, _vuex.mapMutations)(['login', 'logindata', 'logout', 'setplatform']), {
+    getcm: function getcm(num) {
+      if (num > 1000) {
+        num = num / 1000;
+        num = num.toFixed(2);
+        return num;
+      }
+    },
     onRetry: function onRetry() {
       uni.getLocation({
         type: 'gcj02',
