@@ -15,6 +15,8 @@
 			<view class="order_list">
 				<view class="order_li " v-for="(item,index) in datas" @tap="jump" :data-url="'/pagesA/bus_order_xq/bus_order_xq?id='+item.id">
 					<view class="order_li_d1 oh1">{{item.order_name}}</view>
+					
+					<view v-if="item.order_num" class="order_li_d2 oh1">订单号：{{item.order_num}}</view>
 					<view class="order_li_d2 oh1">时间：{{item.time}}</view>
 					<view class="order_li_d2 oh1">地址：{{item.owner_address}}</view>
 					<view class="order_li_d2 oh1">负责人：{{item.functionary}}</view>
@@ -22,7 +24,8 @@
 					<view v-if="item.status!=1" class="order_li_d2 oh1">施工团队：{{item.engineer_name}}</view>
 					<view v-if="item.status!=1" class="order_li_d2 oh1">施工联系方式：{{item.engineer_phone}}</view>
 					<view class="dis_flex order_li_d3">
-						<view class="flex_1"></view>
+						<view class="flex_1"></view>						
+						<view @tap="jump" :data-url="'/pagesA/bus_order_xq/bus_order_xq?id='+item.id" class="order_li_btn">查看详情</view>
 						<view v-if="item.status==1" class="order_li_btn">待接单</view>
 						<view v-if="item.status>1" class="order_li_btn" @tap.stop="jump" :data-url="'/pagesA/bus_sglc/bus_sglc?order_num='+item.order_num">施工流程</view>
 						<view v-if="item.status==2" class="order_li_btn">进行中</view>
@@ -61,8 +64,12 @@
 						id: 2
 					},
 					{
-						name: '已完成',
+						name: '待签字',
 						id: 3
+					},
+					{
+						name: '已完成',
+						id: 4
 					},
 				],
 				type: 1,

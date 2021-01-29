@@ -39,7 +39,8 @@
         "user_taocan_list/user_taocan_list",
         "user_order/user_order",
         "bus_tj_list/bus_tj_list",
-        "bus_sglc/bus_sglc"
+        "bus_sglc/bus_sglc",
+        "user_taocan/user_taocan"
       ]
     }
   ],
@@ -107,5 +108,6 @@
   },
   "usingComponents": {
     "cu-custom": "/colorui/components/cu-custom"
-  }
+  },
+  "sitemapLocation": "sitemap1.json"
 }

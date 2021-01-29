@@ -224,6 +224,7 @@ view.user_tx.data-v-1fddd322{
 	font-weight: 500;
 	color: #727272;
 	position: relative;
+	padding: 0 3rpx;
 }
 .my_th+.my_th.data-v-1fddd322::before{
 	position: absolute;

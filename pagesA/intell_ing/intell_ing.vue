@@ -32,6 +32,7 @@
 						</block>
 					</view>
 					<view class="index_address">{{item.owner_address}}</view>
+					<view class="index_address">订单号：{{item.order_num}}</view>
 				</view>
 				<view class="index_li_d3">
 					<view class="index_li_d3_tit">{{item.goods_list_name}}</view>
@@ -132,7 +133,7 @@
 								that.latitude=res.latitude
 				        console.log('当前位置的纬度：' + res.latitude);
 								var datas = {
-									status:2,
+									status:'1,2,3',
 									token: that.loginDatas.token,
 									long:that.longitude,
 									lat:that.latitude,

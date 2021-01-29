@@ -9,6 +9,7 @@
 				<view class="order_status dis_flex aic ju_b">
 					<view v-if="datas.status==1" style="font-size: 30upx;">待处理</view>
 					<view v-else-if="datas.status==2"  style="font-size: 30upx;color: #F34826;">施工中</view>
+					<view v-else-if="datas.status==3"  style="font-size: 30upx;color: #F34826;">待签字</view>
 					<view v-else  style="font-size: 30upx;color:#52B0FF;">已结束</view>
 					<view style="font-size: 24upx;color: #222;">{{datas.order_num}}</view>
 				</view>
@@ -17,7 +18,11 @@
 					<view class="index_yz">施工师傅：<text>{{datas.engineer_name?datas.engineer_name:'暂无'}}</text></view>
 					<view v-if="datas.engineer_phone" @tap="call" :data-tel="datas.engineer_phone" class="iconfont iconphone" style="color: #11A078;"></view>
 				</view>
-				<view class="order_li_tit">安防套餐</view>
+				<view class="order_li_tit">
+					
+					<text>安防套餐</text>
+					<text style="font-size: 30upx;color: #F4691A;">总价:{{datas.total_money}}</text>
+				</view>
 				<view class="order_li_msg">
 				
 					<scroll-view class="weixin_dblist" scroll-x="true" bindscroll="scroll" style="width: 100%">
@@ -71,7 +76,7 @@
 					<block v-if="datas.finish">
 						<view  class="jd_tit jd_tit2">
 							<text class="iconfont iconduigou"></text>
-							<text>已结束</text>
+							<text>待签字</text>
 						</view>
 						
 						<view class="jd_msgbox jd_msgbox1">
@@ -81,6 +86,28 @@
 								<view class="jd_msgbox_img">
 									<view class="pz_img" v-for="(item1,index1) in getimgarr(datas.finish.photo)">
 										<image :src="item1" mode="aspectFill"  @tap="pveimg" :data-src="item1" ></image>
+									</view>
+									
+								</view>
+							
+						</view>
+					</block>
+					<block v-if="datas.done">
+						<view  class="jd_tit jd_tit2">
+							<text class="iconfont iconduigou"></text>
+							<text>已签字</text>
+						</view>
+						
+						<view class="jd_msgbox jd_msgbox1">
+							
+								<view v-if="datas.done.comments" class="sg_bz">{{datas.finish.comments}}</view>
+								<view class="sg_bz_time">{{datas.done.created_at}}</view>
+								<view class="jd_msgbox_img">
+									<view class="pz_img">
+										<image :src="getimg(datas.done.owner_sign_photo)" mode="aspectFill"  @tap="pveimg" :data-src="getimg(datas.done.owner_sign_photo)" ></image>
+									</view>
+									<view class="pz_img" >
+										<image :src="getimg(datas.done.engineer_sign_photo)" mode="aspectFill"  @tap="pveimg" :data-src="getimg(datas.done.engineer_sign_photo)" ></image>
 									</view>
 									
 								</view>
@@ -378,7 +405,9 @@
 		color: #000000;
 		padding: 0 30upx;
 		background: #fff;
-		
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 	}
 	.weixin_dblist {
 		width: 100%;

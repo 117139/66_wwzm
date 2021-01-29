@@ -7,7 +7,7 @@
 		<view class="login_box dis_flex_c ju_c aic">
 			<image class="logo" src="/static/images/logo.png" mode=""></image>
 		</view>
-		<view class="dis_flex aic ju_c login_tip">登录表示您同意<text @tap="jump" data-url="/pagesA/about/about?type=yszc">《法律声明和隐私政策》</text></view>
+		<view class="dis_flex aic ju_c login_tip">登录表示您同意<text @tap="jump" data-url="/pagesA/user_tao/user_tao?type=yszc">《法律声明和隐私政策》</text></view>
 		<view class="dis_flex aic ju_c login_btn">
 			<button class='bottom'  open-type="getUserInfo"
 			lang="zh_CN" @getuserinfo="getUserInfo">

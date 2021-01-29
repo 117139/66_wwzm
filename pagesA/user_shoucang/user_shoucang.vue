@@ -471,7 +471,10 @@
 							title: '操作成功'
 						})
 						setTimeout(()=>{
-							that.onRetry()
+							// that.onRetry()
+							uni.navigateTo({
+								url:'/pagesA/user_order/user_order?type=1'
+							})
 						},500)
 					} else {
 						if (res.msg) {

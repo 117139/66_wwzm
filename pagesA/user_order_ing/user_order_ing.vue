@@ -19,6 +19,9 @@
 						<text v-else-if="item.status==2"  style="color: #0B8EE1;">
 							施工中
 						</text>
+						<text v-else-if="item.status==3"  style="color: #0B8EE1;">
+							待签字
+						</text>
 						<text v-else  style="color:#52B0FF;">已结束</text>
 					</view>
 					<view class="dis_flex aic ju_b order_time">

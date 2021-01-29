@@ -90,7 +90,7 @@
 				}
 				mon=mon*1
 				if(mon>=10000){
-					mon=mon/1000
+					mon=mon/10000
 					mon=mon.toFixed(2)
 					mon=mon-1+1
 					return mon+'万'

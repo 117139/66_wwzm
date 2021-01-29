@@ -195,4 +195,10 @@
 		width: 200rpx!important;
 		height: 200rpx!important
 	}
+	.minh100{
+		width: 100%;
+		min-height: 100vh;
+		background: #fff;
+		box-sizing: border-box;
+	}
 </style>

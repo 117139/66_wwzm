@@ -217,6 +217,12 @@ const call=  function (e){
 const wxlogin=function (num){
 	var that =this
 	// 获取用户信息
+	if (num == 1) {
+		uni.showLoading({
+			title: '正在登录',
+			mask: true
+		})
+	}
 	uni.getSetting({
 	  success: res => {
 	   console.log(res)

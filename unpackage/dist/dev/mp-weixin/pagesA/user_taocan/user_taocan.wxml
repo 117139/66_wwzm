@@ -1,0 +1,1 @@
+<view class="minh100 data-v-4d6cf49e"><block wx:if="{{datas}}"><view class="xieyi_main data-v-4d6cf49e"><rich-text nodes="{{datas}}"></rich-text></view></block></view>

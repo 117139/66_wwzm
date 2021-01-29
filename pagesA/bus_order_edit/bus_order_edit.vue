@@ -291,6 +291,10 @@
 				console.log(datas)
 				///order/create
 				var jkurl='/order/create'
+				if(that.btn_kg==1){
+					return
+				}
+				that.btn_kg=1
 				service.P_post(jkurl, datas).then(res => {
 					that.btn_kg = 0
 					console.log(res)
@@ -429,7 +433,14 @@
 						console.log(res)
 			
 						that.hetong_list = datas
-						that.gettaocan(datas[0].id)
+						if(datas.length>0){
+							that.gettaocan(datas[0].id)
+						}else{
+							uni.showToast({
+								icon:'none',
+								title:'暂无关联合同请联系客服添加'
+							})
+						}
 					} else {
 						that.htmlReset=1
 						if (res.msg) {

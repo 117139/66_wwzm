@@ -21,9 +21,28 @@
 	height: 250rpx;
 	box-shadow: 0px 0px 16rpx 0px rgba(173, 218, 219, 0.5);
 	border-radius: 10rpx;
+	position: relative;
 }
 .more_main image.data-v-52f690a6{
 	width: 690rpx;
 	height: 250rpx;
+}
+.more_main_text.data-v-52f690a6{
+	position: absolute;
+	z-index: 10;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	font-size: 32rpx;
+	font-weight: bold;
+	color: #000;
+	padding-left: 160rpx;
 }
 

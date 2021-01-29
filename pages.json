@@ -271,6 +271,15 @@
                 }
                 
                 }
+                ,{
+                    "path" : "user_taocan/user_taocan",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
             ]
 	}],
 

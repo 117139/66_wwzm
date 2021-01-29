@@ -26,6 +26,9 @@
 					<view v-else-if="item.status==2" class="order_type" style="color: #0B8EE1;">
 						施工中
 					</view>
+					<view v-else-if="item.status==3" class="order_type" style="color: #0B8EE1;">
+						待签字
+					</view>
 					<view v-else class="order_type" style="color:#A2A2A2;">已完成</view>
 				</view>
 				<view class="order_li_tit">{{item.order_name}}</view>
@@ -74,8 +77,12 @@
 						id: 2
 					},
 					{
-						name: '已完成',
+						name: '待签字',
 						id: 3
+					},
+					{
+						name: '已完成',
+						id: 4
 					},
 				],
 				type: 0,
@@ -91,7 +98,10 @@
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas']),
 		},
-		onLoad() {
+		onLoad(option) {
+			if(option.type){
+				this.type=option.type
+			}
 			this.onRetry()
 		},
 		onReachBottom() {

@@ -53,6 +53,15 @@
 		color: #000000;
 		padding: 0 30rpx;
 		background: #fff;
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: flex;
+		-webkit-box-align: center;
+		-webkit-align-items: center;
+		        align-items: center;
+		-webkit-box-pack: justify;
+		-webkit-justify-content: space-between;
+		        justify-content: space-between;
 }
 .weixin_dblist.data-v-5c19cd29 {
 		width: 100%;
