@@ -28,6 +28,7 @@
 		},
 		onLoad(Option) {
 			var that =this
+			
 			console.log(Option.type)
 			
 			

@@ -59,7 +59,8 @@
 				</view>
 				<view style="width: 100%;height: 20upx;"></view>
 				<view class="zanwu" v-if="datas.length==0">暂无数据</view>
-				<view class="dis_flex my_table" v-for="(item,index) in datas">
+				
+				<view v-if="index<4" class="dis_flex my_table" v-for="(item,index) in datas">
 					<view class="my_td my_td1">
 						<view class="oh2">{{item.title}}</view>
 					</view>

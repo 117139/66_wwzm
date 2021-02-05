@@ -160,6 +160,7 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
   },
   onLoad: function onLoad(Option) {
     var that = this;
+
     console.log(Option.type);
 
 

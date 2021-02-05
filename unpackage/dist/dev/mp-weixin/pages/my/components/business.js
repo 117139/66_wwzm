@@ -87,7 +87,7 @@ var render = function() {
   var l0 = _vm.__map(_vm.datas, function(item, index) {
     var $orig = _vm.__get_orig(item)
 
-    var m2 = _vm.getpri(item.cost)
+    var m2 = index < 4 ? _vm.getpri(item.cost) : null
     return {
       $orig: $orig,
       m2: m2
@@ -149,6 +149,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
 
 
 

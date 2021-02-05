@@ -40,8 +40,8 @@
 			<view class="tc_box">
 				<view class="tc_tit">主推套餐</view>
 				<view class="dis_flex ju_b">
-					<!-- <image class="index_url" @tap='jump' data-url="/pagesA/user_list/user_list?type=1" :src="getimg('/static/images/user/inde_url_04.png')" mode="aspectFill"></image> -->
-					<image class="index_url" @tap='jump' data-url="/pagesA/user_taocan/user_taocan?type=zn" :src="getimg('/static/images/user/inde_url_04.png')" mode="aspectFill"></image>
+					<image class="index_url" @tap='jump' data-url="/pagesA/user_list/user_list?type=1" :src="getimg('/static/images/user/inde_url_04.png')" mode="aspectFill"></image>
+					<!-- <image class="index_url" @tap='jump' data-url="/pagesA/user_taocan/user_taocan?type=zn" :src="getimg('/static/images/user/inde_url_04.png')" mode="aspectFill"></image> -->
 					<view class="index_url dis_flex_c ju_b" style="width: 357upx;">
 						<image class="index_url1" @tap='jump' data-url="/pagesA/user_taocan/user_taocan?type=qs" :src="getimg('/static/images/user/inde_url_06.png')" mode="aspectFill"></image>
 						<image class="index_url1" @tap='jump' data-url="/pagesA/user_taocan/user_taocan?type=qw" :src="getimg('/static/images/user/inde_url_09.png')" mode="aspectFill"></image>

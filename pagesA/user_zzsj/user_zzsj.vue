@@ -226,7 +226,7 @@
 
 	.zzsj_box {
 		width: 690upx;
-		height: 540upx;
+		/* height: 540upx; */
 		background: #FFFFFF;
 		border-radius: 20upx;
 		padding: 60upx 30upx;
