@@ -296,7 +296,7 @@
 				}
 				that.btn_kg=1
 				service.P_post(jkurl, datas).then(res => {
-					that.btn_kg = 0
+					
 					console.log(res)
 					if (res.code == 1) {
 						var datas = res.data
@@ -319,6 +319,7 @@
 						  order_new: true,
 						});
 						setTimeout(()=>{
+							that.btn_kg = 0
 							uni.navigateBack({
 								delta:1
 							})

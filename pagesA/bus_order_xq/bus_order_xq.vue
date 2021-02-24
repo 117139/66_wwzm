@@ -8,7 +8,7 @@
 		<block v-if="htmlReset==0">
 			<view class="order_box">
 				<view class="order_main">
-					<view  v-if="datas.status==1" class="order_status">待结单</view>
+					<view  v-if="datas.status==1" class="order_status">待接单</view>
 					<view  v-if="datas.status==2" class="order_status" style="color: #4793FA;">施工中</view>
 					<view  v-if="datas.status==3" class="order_status" style="color: #4793FA;">待签字</view>
 					<view  v-if="datas.status==4" class="order_status" style="color: #4793FA;">已完成</view>

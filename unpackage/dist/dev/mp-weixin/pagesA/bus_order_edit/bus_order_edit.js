@@ -428,7 +428,7 @@ var that;var _default =
       }
       that.btn_kg = 1;
       _service.default.P_post(jkurl, datas).then(function (res) {
-        that.btn_kg = 0;
+
         console.log(res);
         if (res.code == 1) {
           var datas = res.data;
@@ -451,6 +451,7 @@ var that;var _default =
             order_new: true });
 
           setTimeout(function () {
+            that.btn_kg = 0;
             uni.navigateBack({
               delta: 1 });
 

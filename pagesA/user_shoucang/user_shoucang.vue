@@ -61,7 +61,7 @@
 					</view>
 					<view class="hj_pri">合计：<text style="font-size: 24upx;">￥</text><text>{{sum}}</text></view>
 					<view class="jiesuan jiesuan1" @tap="cardel">删除</view>
-					<view class="jiesuan" @tap="openOrder">保存方案</view>
+					<view class="jiesuan" @tap="openOrder">下单</view>
 				</view>
 			</view>
 		</block>
