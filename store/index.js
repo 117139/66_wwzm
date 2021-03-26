@@ -9,15 +9,28 @@ const store = new Vuex.Store({
 		 * 是否需要强制登录
 		 */
 		forcedLogin: false,
-		hasLogin: false,
+		hasLogin: true,
 		platform:'',
 		userName: "游客",
 		loginDatas:{
-				avatarurl:'http://51daiyan.test.upcdn.net/resource/api/img/20200716/3eb26483a34058663c1adf01cf90901d.png',
-				nickname:'刘明',
-				tel:'1786352362',
-				gs:'智慧家物联网科技有限公司'
-			
+				address: "北京市海淀区长春桥路",
+				company: "",
+				cover: "imgs/20210111134350305.png",
+				engineer_status: 2,
+				id_front: "imgs/20210116183627551.jpg",
+				id_in_hand: "imgs/20210116183644825.jpg",
+				id_number: "142625199406223911",
+				id_the_back: "imgs/20210116183638217.jpg",
+				is_engineer: 1,
+				is_owner: 1,
+				is_seller: 1,
+				lat: "39.95933",
+				long: "116.29845",
+				nickname: "问·心",
+				phone: "18300000000",
+				sex: 1,
+				token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvd2FudXpuLmNvbS5hYS44MDAxMjM0NTYudG9wXC9hcGlcL3VzZXJcL2xvZ2luIiwiaWF0IjoxNjE2MTE4Njg4LCJleHAiOjE2MjIxMTg2ODgsIm5iZiI6MTYxNjExODY4OCwianRpIjoiWnpLRGd0WFRmaXZIM25XMCIsInN1YiI6NSwicHJ2IjoiMWY2MDc4MDZhZWFjN2YyNmVlYjM0OTViMDFkMTMyYWNiN2RmY2NiZCJ9.s_gCL9N6rKppRWipAR-szFEj5QKJQzJeOZGn0dGp0HY",
+				truename: "问心",
 		},
 		company:'',
 		uid:'',
@@ -40,8 +53,13 @@ const store = new Vuex.Store({
 		
 		
 		xcx_status:1,     //0 商家端  1 用户端  2智能安装端
+		add_goods:[]
 	},
 	mutations: {
+		setadd_goods(state, add_goods) {
+			state.add_goods = add_goods || '新用户';
+			
+		},
 		set_xcx(state, xcx_status){
 			var tip_text='正在切换至'
 			if(xcx_status==0){

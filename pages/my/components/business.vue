@@ -6,93 +6,106 @@
 				<!-- 个人中心 -->
 			</view>
 		</view>
-		
-		<view v-if="hasLogin" class="my_box">
-			<image class="my_box_bg" src="/static/images/business/my_bg_01.jpg" mode="aspectFill"></image>
-			<view class="user_box dis_flex aic">
-				<view class="user_tx">
-					<image class="user_tx" :src="getimg(loginDatas.cover)" @tap="jump" data-url="/pagesA/user_edit/user_edit"></image>
-					<!-- <avatar  stretch="short" selWidth="400upx" selHeight="400upx" @upload="myUpload"
-					:avatarSrc="tximg?getimg(tximg):loginDatas.avatarurl"
-					 avatarStyle="width: 140upx; height:140upx; border-radius: 50%;">
-					</avatar> -->
-					<!-- <avatar  stretch="short" inner="true" selWidth="400upx" selHeight="400upx" @upload="myUpload"
-					:avatarSrc="loginDatas.img_url?getimg(loginDatas.img_url):tximg"
-					 avatarStyle="width: 140upx; height:140upx; border-radius: 50%;">
-					</avatar>
-					<view class="user_set">
-						<text class="iconfont icon-xiugai"></text>
-					</view> -->
-				</view>
-				<view class="flex_1">
-					<view class="user_name">{{loginDatas.nickname}}</view>
-					<view class="user_time">{{loginDatas.company}}</view>
-					<image class="user_edit"  @tap="jump" data-url="/pagesA/user_edit/user_edit" :data-login='true' :data-haslogin='hasLogin' 
-					 :src="getimg('/static/images/user/my_edit.png')" mode="aspectFill"></image>
-				</view>
-				<!-- <view class="iconfont icon-bianji user_edit" @tap="jump" data-url="/pages/my_msg/my_msg"></view> -->
-			</view>
-		</view>
-		<view v-else class="my_box">
-			<image class="my_box_bg" src="/static/images/business/my_bg_01.jpg" mode="aspectFill"></image>
-			
-			<view class="user_box dis_flex aic ju_c">
-				<!-- <image class="user_tx" src="/static/logo.png"></image> -->
-				<view class="flex_1 dis_flex aic ju_c">
-					<view class="user_name" @tap="jump" data-url="/pages/login/login" >登录/注册</view>
-				</view>
-			</view>
-		</view>
-		<view class="bus_my_list">
-			<view class="bus_my_li">
-				<view class="bus_my_li_tit dis_flex aic ju_b">
-					<view class="dis_flex aic bus_my_li_tit_text"><image src="../../../static/images/business/my_icon1.png" mode=""></image>合同完成统计</view>
-					<view v-if="datas.length>3" class="li_more dis_flex aic" @tap="jump" data-url="/pagesA/bus_tj_list/bus_tj_list">更多<text class="iconfont iconnext-m"></text></view>
-					<!-- <view  class="li_more dis_flex aic" @tap="jump" data-url="/pagesA/bus_tj_list/bus_tj_list">更多<text class="iconfont iconnext-m"></text></view> -->
-				</view>
-				
-				<view class="dis_flex my_table my_table_tit">
-					<view class="my_td my_th">合同名称</view>
-					<view class="my_td my_th">标的额</view>
-					<view class="my_td my_th">套数/已完成</view>
-					<view class="my_td my_th">积分值</view>
-				</view>
-				<view style="width: 100%;height: 20upx;"></view>
-				<view class="zanwu" v-if="datas.length==0">暂无数据</view>
-				
-				<view v-if="index<4" class="dis_flex my_table" v-for="(item,index) in datas">
-					<view class="my_td my_td1">
-						<view class="oh2">{{item.title}}</view>
+		<scroll-view class="scroll_H" style="top: 0px;" scroll-y="true" refresher-enabled='true' :refresher-triggered="triggered"
+		 :refresher-threshold="100" @refresherpulling="onPulling" @refresherrefresh="onRefresh" @refresherrestore="onRestore"
+		 @refresherabort="onAbort" @scrolltolower="getdata" @scroll="scroll_fuc">
+			<view v-if="hasLogin" class="my_box">
+				<image class="my_box_bg" src="/static/images/business/my_bg_01.jpg" mode="aspectFill"></image>
+				<view class="user_box dis_flex aic">
+					<view class="user_tx">
+						<image class="user_tx" :src="getimg(loginDatas.cover)" @tap="jump" data-url="/pagesA/user_edit/user_edit"></image>
+						<!-- <avatar  stretch="short" selWidth="400upx" selHeight="400upx" @upload="myUpload"
+						:avatarSrc="tximg?getimg(tximg):loginDatas.avatarurl"
+						 avatarStyle="width: 140upx; height:140upx; border-radius: 50%;">
+						</avatar> -->
+						<!-- <avatar  stretch="short" inner="true" selWidth="400upx" selHeight="400upx" @upload="myUpload"
+						:avatarSrc="loginDatas.img_url?getimg(loginDatas.img_url):tximg"
+						 avatarStyle="width: 140upx; height:140upx; border-radius: 50%;">
+						</avatar>
+						<view class="user_set">
+							<text class="iconfont icon-xiugai"></text>
+						</view> -->
 					</view>
-					<view class="my_td my_td2">{{getpri(item.cost)}}</view>
-					<view class="my_td my_td2">{{item.quantity}}/{{item.done_quantity}}</view>
-					<view class="my_td my_td2">{{item.integral_sum}}</view>
+					<view class="flex_1">
+						<view class="user_name dis_flex aic ju_b">
+							<view>{{loginDatas.nickname}}</view>
+							<view class="my_jf_btn" @tap="jump" data-url='/pagesA/bus_my_jf/bus_my_jf'>我的积分</view>
+						</view>
+						<view class="user_time">{{loginDatas.company}}</view>
+						<image class="user_edit"  @tap="jump" data-url="/pagesA/user_edit/user_edit" :data-login='true' :data-haslogin='hasLogin' 
+						 :src="getimg('/static/images/user/my_edit.png')" mode="aspectFill"></image>
+					</view>
+					<!-- <view class="iconfont icon-bianji user_edit" @tap="jump" data-url="/pages/my_msg/my_msg"></view> -->
 				</view>
 			</view>
-			<view class="bus_my_li">
-				<view class="bus_my_li_tit dis_flex aic ju_c">
-					<view class="dis_flex aic bus_my_li_tit_text"><image src="../../../static/images/business/my_icon2.png" mode=""></image>工程完成统计</view>
+			<view v-else class="my_box">
+				<image class="my_box_bg" src="/static/images/business/my_bg_01.jpg" mode="aspectFill"></image>
+				
+				<view class="user_box dis_flex aic ju_c">
+					<!-- <image class="user_tx" src="/static/logo.png"></image> -->
+					<view class="flex_1 dis_flex aic ju_c">
+						<view class="user_name" @tap="jump" data-url="/pages/login/login" >登录/注册</view>
+					</view>
+				</view>
+			</view>
+			<view class="bus_my_list">
+				<view class="bus_my_li">
+					<view class="bus_my_li_tit dis_flex aic ju_b">
+						<view class="dis_flex aic bus_my_li_tit_text"><image src="../../../static/images/business/my_icon1.png" mode=""></image>合同完成统计</view>
+						<!-- <view v-if="datas.length>3" class="li_more dis_flex aic" @tap="jump" data-url="/pagesA/bus_tj_list/bus_tj_list">更多<text class="iconfont iconnext-m"></text></view> -->
+						<!-- <view  class="li_more dis_flex aic" @tap="jump" data-url="/pagesA/bus_tj_list/bus_tj_list">更多<text class="iconfont iconnext-m"></text></view> -->
+					</view>
 					
-				</view>
-				<view class="dis_flex my_table my_table_tit">
-					<view class="my_td my_th" style="width: 33%;">工程名称</view>
-					<view class="my_td my_th" style="width: 33%;">工程金额</view>
-					<view class="my_td my_th" style="width: 33%;">积分值</view>
-				</view>
-				<view style="width: 100%;height: 20upx;"></view>
-				<view class="zanwu" v-if="datas_gc.length==0">暂无数据</view>
-				<view class="dis_flex my_table" v-for="(item,index) in datas_gc">
-					<view class="my_td my_td1" style="width: 33%;">
-						<view class="oh2">{{item.order_name}}</view>
+					<view class="dis_flex my_table my_table_tit">
+						<view class="my_td my_th">合同名称</view>
+						<view class="my_td my_th">标的额</view>
+						<view class="my_td my_th">套数/已完成</view>
+						<view class="my_td my_th">积分值</view>
 					</view>
-					<view class="my_td my_td2" style="width: 33%;">{{getpri(item.total_money)}}</view>
-					<view class="my_td my_td2" style="width: 33%;">{{item.integral}}</view>
+					<view class="dis_flex my_table my_table_tit">
+						<view class="my_td my_th">合计</view>
+						<view class="my_td my_th">{{hj_data.cost?getpri(hj_data.cost):0}}</view>
+						<view class="my_td my_th">{{hj_data.quantity?hj_data.quantity:0}}/{{hj_data.done_quantity?hj_data.done_quantity:0}}</view>
+						<view class="my_td my_th">{{hj_data.integral_sum?hj_data.integral_sum:0}}</view>
+					</view>
+					<view style="width: 100%;height: 20upx;"></view>
+					<view class="zanwu" v-if="datas.length==0">暂无数据</view>
+					
+					<!-- <view v-if="index<4" class="dis_flex my_table" v-for="(item,index) in datas"> -->
+					<view class="dis_flex my_table" v-for="(item,index) in datas" @tap="jump" :data-url="'/pagesA/bus_gc_tj/bus_gc_tj?id='+item.id">
+						<view class="my_td my_td1">
+							<view class="oh2">{{item.title}}</view>
+						</view>
+						<view class="my_td my_td2">{{getpri(item.cost)}}</view>
+						<view class="my_td my_td2">{{item.quantity}}/{{item.done_quantity}}</view>
+						<view class="my_td my_td2">{{item.integral_sum}}</view>
+					</view>
 				</view>
+				<view v-if="data_last" class="data_last">我可是有底线的哟~</view>
+				<!-- <view class="bus_my_li">
+					<view class="bus_my_li_tit dis_flex aic ju_c">
+						<view class="dis_flex aic bus_my_li_tit_text"><image src="../../../static/images/business/my_icon2.png" mode=""></image>工程完成统计</view>
+						
+					</view>
+					<view class="dis_flex my_table my_table_tit">
+						<view class="my_td my_th" style="width: 33%;">工程名称</view>
+						<view class="my_td my_th" style="width: 33%;">工程金额</view>
+						<view class="my_td my_th" style="width: 33%;">积分值</view>
+					</view>
+					<view style="width: 100%;height: 20upx;"></view>
+					<view class="zanwu" v-if="datas_gc.length==0">暂无数据</view>
+					<view class="dis_flex my_table" v-for="(item,index) in datas_gc">
+						<view class="my_td my_td1" style="width: 33%;">
+							<view class="oh2">{{item.order_name}}</view>
+						</view>
+						<view class="my_td my_td2" style="width: 33%;">{{getpri(item.total_money)}}</view>
+						<view class="my_td my_td2" style="width: 33%;">{{item.integral}}</view>
+					</view>
+				</view> -->
+				<view style="width: 100%;height: 10upx;"></view>
 			</view>
-			<view style="width: 100%;height: 10upx;"></view>
-		</view>
-		
-		
+			
+		</scroll-view>
 		
 	</view>
 </template>
@@ -122,13 +135,18 @@
 				fk_show:false,
 				tk_show:true,
 				tximg:'/static/logo.png',
-				datas_gc:''
+				datas_gc:'',
+				hj_data:'',    //合计数据
+				triggered: true, //设置当前下拉刷新状态
 			};
 		},
 		onPageScroll(e){
 			console.log(e)
 			this.PageScroll=e.scrollTop
 			
+		},
+		onReachBottom() {
+			console.log('1111')
 		},
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin', 'userName','loginDatas','fj_data']),
@@ -164,7 +182,8 @@
 			}
 		},
 		mounted() {
-			that=this
+			that = this
+			this._freshing = false;
 			if(that.hasLogin){
 				that.onRetry()
 			}
@@ -180,6 +199,30 @@
 		},
 		methods: {
 			...mapMutations(['login','logindata','logout','setplatform']),
+			onPulling(e) {
+				console.log("onpulling", e);
+			},
+			onRefresh() {
+				if (this.btn_kg == 1) {
+					that.triggered=false
+					that._freshing =false
+					return
+				}
+				if (that._freshing) return;
+				that._freshing = true;
+				this.onRetry()
+				setTimeout(()=>{
+					that.triggered=false
+					that._freshing =false
+				},500)
+			},
+			onRestore() {
+				this.triggered = 'restore'; // 需要重置
+				console.log("onRestore");
+			},
+			onAbort() {
+				console.log("onAbort");
+			},
 			getimg(img){
 				console.log(service.getimg(img))
 				return service.getimg(img)
@@ -203,12 +246,15 @@
 				this.data_last = false
 			
 				this.getdata()
-				this.getdata_gc()
+				// this.getdata_gc()
 			},
 			getdata(num) {
 				var that = this
 			
-			
+				if (this.btn_kg == 1) {
+					return
+				}
+				this.btn_kg = 1
 				var datas = {
 					token: that.loginDatas.token || '',
 					page: that.page,
@@ -233,19 +279,20 @@
 							datas = JSON.parse(datas)
 						}
 						console.log(res)
-			
+						
+							that.hj_data=datas.statistics
 						if (page_that == 1) {
-			
-							that.datas = datas
+							that.datas = datas.contract
 						} else {
-							// if (datas.length == 0) {
-							// 	that.data_last = true
-							// 	return
-							// }
-							// that.data_last = false
-							that.datas = that.datas.concat(datas)
+							if (datas.contract.length == 0) {
+								that.data_last = true
+								return
+							}
+							that.data_last = false
+							
+							that.datas = that.datas.concat(datas.contract)
 						}
-						// that.page++
+						that.page++
 			
 					} else {
 						that.htmlReset=1
@@ -666,5 +713,12 @@
 		width: 18upx;
 		height: 16upx;
 		margin-right: 20upx;
+	}
+	.my_jf_btn{
+		padding: 10upx 20upx;
+		border: 1px solid #fff;
+		font-size: 34upx;
+		line-height: 40upx;
+		border-radius: 50upx;
 	}
 </style>

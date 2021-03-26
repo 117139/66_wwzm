@@ -61,7 +61,7 @@
 						
 						<view v-if="datas.under.length>0" class="jd_msgbox jd_msgbox1">
 							<block v-for="(item,index) in datas.under">
-								<view class="sg_bz">{{item.comments}}</view>
+								<view class="sg_bz" v-if="item.comments">{{item.comments}}</view>
 								<view class="sg_bz_time">{{item.created_at}}</view>
 								<view class="jd_msgbox_img">
 									<view class="pz_img" v-for="(item1,index1) in getimgarr(item.photo)">

@@ -48,18 +48,25 @@
 							<input v-model="date" placeholder="请选择时间" disabled="true" />
 						</view>
 				</picker>
-				<picker class="order_li" @change="bindPickerChange" :value="hetong_index" :range="hetong_list" range-key="title" data-type="3">
+				<picker v-if="hetong_list.length>0" class="order_li" @change="bindPickerChange" :value="hetong_index" :range="hetong_list" range-key="title" data-type="3">
 						<view class="order_li_tit">合同</view>
 						<view class="order_li_msg">
 							<input v-model="hetong_list[hetong_index].title" placeholder="请选择合同" disabled="true" />
 						</view>
 				</picker>
-				<picker class="order_li" @change="bindPickerChange" :value="taocan_index" :range="taocan_list" range-key="goods_package_name" data-type="1">
+				<picker v-if="taocan_list.length>0" class="order_li" @change="bindPickerChange" :value="taocan_index" :range="taocan_list" range-key="goods_package_name" data-type="1">
 						<view class="order_li_tit">套内详单</view>
 						<view class="order_li_msg">
 							<input v-model="taocan_list[taocan_index].goods_package_name" placeholder="请选择套餐" disabled="true" />
 						</view>
 				</picker>
+				<!-- bus_add_goods -->
+				<view class="order_li" @tap="jump" data-url='/pagesA/bus_add_goods/bus_add_goods'>
+					<view class="order_li_tit">添加其他商品</view>
+					<view class="order_li_msg dis_flex aic">
+						已添加{{add_goods.length}}种 <text style="font-size: 24upx;color: #00A079;margin-left: 10upx;">查看详情</text><text class="iconfont iconnext-m" style="font-size: 24upx;color: #00A079;"></text>
+					</view>
+				</view>
 				<view class="order_li">
 					<view class="order_li_tit">业主要求</view>
 					<view class="order_li_msg">
@@ -108,7 +115,7 @@
 			}
 		},
 		computed: {
-			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas']),
+			...mapState(['hasLogin', 'forcedLogin', 'userName', 'loginDatas','add_goods']),
 			startDate() {
 					return this.getDate('start');
 			},
@@ -154,6 +161,9 @@
 			    console.log(res);
 			  }
 			});
+		},
+		onUnload() {
+			that.that.setadd_goods('')
 		},
 		methods: {
 			...mapMutations(['login', 'logindata', 'logout', 'setplatform', 'setfj_data']),
@@ -266,13 +276,13 @@
 					})
 					return
 				}
-				if(!this.yz_yaoqiu){
-					uni.showToast({
-						icon:'none',
-						title:'请填写业主要求'
-					})
-					return
-				}
+				// if(!this.yz_yaoqiu){
+				// 	uni.showToast({
+				// 		icon:'none',
+				// 		title:'请填写业主要求'
+				// 	})
+				// 	return
+				// }
 				var datas={
 					token:that.loginDatas.token,
 					order_name:that.gc_name,
@@ -286,9 +296,11 @@
 					functionary_phone:that.fzr_tel,
 					time:that.date,
 					agreement_id:that.hetong_list[that.hetong_index].id||0,
-					owner_demand:that.yz_yaoqiu
+					owner_demand:that.yz_yaoqiu,
+					add_goods:JSON.stringify(that.add_goods)
 				}
 				console.log(datas)
+				// return
 				///order/create
 				var jkurl='/order/create'
 				if(that.btn_kg==1){
@@ -483,6 +495,20 @@
 						this.taocan_index=0
 					}
 					
+			},
+			jump(e) {
+				var that = this
+			
+				if (that.btnkg == 1) {
+					return
+				} else {
+					that.btnkg = 1
+					setTimeout(function() {
+						that.btnkg = 0
+					}, 1000)
+				}
+			
+				service.jump(e)
 			},
 			getDate(type) {
 					const date = new Date();

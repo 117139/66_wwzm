@@ -9322,18 +9322,18 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 357:
+/***/ 397:
 /*!**********************************************************!*\
   !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
   \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! regenerator-runtime */ 358);
+module.exports = __webpack_require__(/*! regenerator-runtime */ 398);
 
 /***/ }),
 
-/***/ 358:
+/***/ 398:
 /*!************************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
   \************************************************************/
@@ -9364,7 +9364,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(/*! ./runtime */ 359);
+module.exports = __webpack_require__(/*! ./runtime */ 399);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -9381,7 +9381,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 359:
+/***/ 399:
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
   \*****************************************************/
@@ -10246,7 +10246,6 @@ function dealParams(params) {
 }
 
 
-
 var getUsers = function getUsers() {
   var ret = '';
   ret = uni.getStorageSync(USERS_KEY);
@@ -10271,7 +10270,16 @@ var gologin = function gologin() {
 
 };
 
-var jump = function jump(e) {
+
+/**
+    * function: 跳转页面
+    ** author: wenxin
+    ** @url URL地址
+    ** @params e
+    ** @method 请求方式：GET/POST
+    ** @createTime: 2021-3-19 15:06:53
+    */
+function jump(e) {
   // console.log(e.currentTarget.dataset.type)
   var datas = e.currentTarget.dataset;
   console.log(datas.login == true);
@@ -10305,7 +10313,15 @@ var jump = function jump(e) {
       url: datas.url });
 
   }
-};
+}
+/**
+   * function: 查看图片
+   ** author: wenxin
+   ** @url URL地址
+   ** @params e
+   ** @method 请求方式：GET/POST
+   ** @createTime: 2021-3-19 15:06:53
+   */
 var pveimg = function pveimg(e) {
   var current = e.currentTarget.dataset.src;
   var urls = e.currentTarget.dataset.array;
@@ -10324,6 +10340,14 @@ var pveimg = function pveimg(e) {
   });
 
 };
+/**
+    * function: 打电话
+    ** author: wenxin
+    ** @url URL地址
+    ** @params e
+    ** @method 请求方式：GET/POST
+    ** @createTime: 2021-3-19 15:06:53
+    */
 var call = function call(e) {
   console.log(e);
   // return
@@ -10347,7 +10371,14 @@ var call = function call(e) {
 
   }
 };
-
+/**
+    * function: 登录
+    ** author: wenxin
+    ** @url URL地址
+    * @params num
+    ** @method 请求方式：GET/POST
+    ** @createTime: 2021-3-19 15:06:53
+    */
 var wxlogin = function wxlogin(num) {
   var that = this;
   // 获取用户信息
@@ -10556,7 +10587,14 @@ var setUsermsg = function setUsermsg(data) {
 
 };
 
-
+/**
+    * function: 图片上传
+    ** author: wenxin
+    ** @url URL地址
+    ** @params tximg
+    ** @method 请求方式：GET/POST
+    ** @createTime: 2021-3-19 15:06:53
+    */
 var wx_upload = function wx_upload(tximg) {
   return new Promise(function (resolve, reject) {
     uni.showLoading({
@@ -10614,10 +10652,18 @@ var wx_upload = function wx_upload(tximg) {
 };
 
 
+/**
+    * @description 配置接口请求的公共方法   
+    * @example   
+    * var animal = new Animal('恐龙',1000); 
+    ** author: wenxin
+    ** @url URL地址
+    * @param {String} url = ''  接口请求地址  
+    * @param {String} param = {}  接口请求参数 
+    * @param {String} method = [get|post] 可选值域包括get和post，get是直接请求，post是提交数据  
+    * @createTime: 2021-3-19 15:22:57
+    */
 
-
-
-// 配置接口请求的公共方法
 var http = function http() {var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},_ref$url = _ref.url,url = _ref$url === void 0 ? '' : _ref$url,_ref$param = _ref.param,param = _ref$param === void 0 ? {} : _ref$param,_ref$method = _ref.method,method = _ref$method === void 0 ? '' : _ref$method,_ref$header = _ref.header,header = _ref$header === void 0 ? { 'content-type': 'application/x-www-form-urlencoded' } : _ref$header;
 
   var timeStart = Date.now();
@@ -11362,15 +11408,28 @@ var store = new _vuex.default.Store({
             * 是否需要强制登录
             */
     forcedLogin: false,
-    hasLogin: false,
+    hasLogin: true,
     platform: '',
     userName: "游客",
     loginDatas: {
-      avatarurl: 'http://51daiyan.test.upcdn.net/resource/api/img/20200716/3eb26483a34058663c1adf01cf90901d.png',
-      nickname: '刘明',
-      tel: '1786352362',
-      gs: '智慧家物联网科技有限公司' },
-
+      address: "北京市海淀区长春桥路",
+      company: "",
+      cover: "imgs/20210111134350305.png",
+      engineer_status: 2,
+      id_front: "imgs/20210116183627551.jpg",
+      id_in_hand: "imgs/20210116183644825.jpg",
+      id_number: "142625199406223911",
+      id_the_back: "imgs/20210116183638217.jpg",
+      is_engineer: 1,
+      is_owner: 1,
+      is_seller: 1,
+      lat: "39.95933",
+      long: "116.29845",
+      nickname: "问·心",
+      phone: "18300000000",
+      sex: 1,
+      token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvd2FudXpuLmNvbS5hYS44MDAxMjM0NTYudG9wXC9hcGlcL3VzZXJcL2xvZ2luIiwiaWF0IjoxNjE2MTE4Njg4LCJleHAiOjE2MjIxMTg2ODgsIm5iZiI6MTYxNjExODY4OCwianRpIjoiWnpLRGd0WFRmaXZIM25XMCIsInN1YiI6NSwicHJ2IjoiMWY2MDc4MDZhZWFjN2YyNmVlYjM0OTViMDFkMTMyYWNiN2RmY2NiZCJ9.s_gCL9N6rKppRWipAR-szFEj5QKJQzJeOZGn0dGp0HY",
+      truename: "问心" },
 
     company: '',
     uid: '',
@@ -11392,9 +11451,14 @@ var store = new _vuex.default.Store({
 
 
 
-    xcx_status: 1 //0 商家端  1 用户端  2智能安装端
-  },
+    xcx_status: 1, //0 商家端  1 用户端  2智能安装端
+    add_goods: [] },
+
   mutations: {
+    setadd_goods: function setadd_goods(state, add_goods) {
+      state.add_goods = add_goods || '新用户';
+
+    },
     set_xcx: function set_xcx(state, xcx_status) {
       var tip_text = '正在切换至';
       if (xcx_status == 0) {

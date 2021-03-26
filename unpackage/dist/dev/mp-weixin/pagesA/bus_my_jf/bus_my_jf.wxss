@@ -1,0 +1,196 @@
+
+.main_box.data-v-76858d8d{
+	width: 100%;
+	padding: 30rpx;
+}
+.top_box.data-v-76858d8d{
+	width: 100%;
+	position: relative;
+	border-radius: 27rpx;
+}
+.top_box_img.data-v-76858d8d{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 1;
+	width: 100%;
+	height: 100%;
+	border-radius: 27rpx;
+}
+.top_box_box.data-v-76858d8d{
+	width: 100%;
+	position: relative;
+	z-index: 10;
+	min-height: 347rpx;
+	padding: 30rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-justify-content: space-around;
+	        justify-content: space-around;
+}
+.top_box_btn.data-v-76858d8d{
+	
+	width: 30rpx;
+	height: 30rpx;
+	background: #FFFFFF;
+	border-radius: 20rpx;
+	font-size: 24rpx;
+	color: #FC6956;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	margin-left: 8rpx;
+}
+.top_box_btn text.data-v-76858d8d{
+	color: #00BFA5;
+	font-size: 20rpx;
+}
+.top_d2.data-v-76858d8d{
+	font-size: 90rpx;
+	color: #fff;
+	/* font-weight: bold; */
+	line-height: 95rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+}
+.tixian_tit.data-v-76858d8d{
+	width: 100%;
+	height: 100rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	color: #000;
+	font-size: 36rpx;
+	margin-top: 20rpx;
+}
+.tixian_tit image.data-v-76858d8d{
+	width: 30rpx;
+	height: 24rpx;
+	margin-right: 15rpx;
+}
+.tx_list.data-v-76858d8d{
+	width: 100%;
+	/* padding: 15upx 0; */
+}
+.tx_li.data-v-76858d8d{
+	width: 100%;
+	padding: 15rpx 0;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: stretch;
+	-webkit-align-items: stretch;
+	        align-items: stretch;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+}
+.tx_li+.tx_li.data-v-76858d8d{
+	margin-top: 12rpx;
+}
+.tx_l.data-v-76858d8d{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	        flex-direction: column;
+	-webkit-justify-content: space-around;
+	        justify-content: space-around;
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	        flex: 1;
+}
+.tx_r.data-v-76858d8d{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	        flex-direction: column;
+	-webkit-justify-content: space-around;
+	        justify-content: space-around;
+}
+.mx_name.data-v-76858d8d{
+	color: #111;
+	font-size: 40rpx;
+}
+.mx_time.data-v-76858d8d{
+	color: #999;
+	font-size: 22rpx;
+	margin-top: 10rpx;
+}
+.mx_pri.data-v-76858d8d{
+	color: #FF5757;
+	font-size: 30rpx;
+	font-weight: bold;
+}
+.mx_pri1.data-v-76858d8d{
+	color: #57B6FF;
+	font-size: 30rpx;
+	font-weight: bold;
+}
+.go_pz.data-v-76858d8d{
+	font-size: 24rpx;
+	color: #999;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	margin-right: 10rpx;
+}
+.go_pz text.data-v-76858d8d{
+	
+	font-size: 24rpx;
+	color: #999;
+}
+.dhjf_btn.data-v-76858d8d{
+	position: absolute;
+	bottom: 30rpx;
+	right: 30rpx;
+	font-size: 24rpx;
+	color: #fff;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	width: 158rpx;
+	height: 61rpx;
+	background: -webkit-linear-gradient(329deg, #48CEB7, #48D39A);
+	background: linear-gradient(121deg, #48CEB7, #48D39A);
+	border: 1px solid #FFFFFF;
+	border-radius: 31rpx;
+}
+

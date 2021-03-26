@@ -1,5 +1,5 @@
 <template>
-	<view style="min-height: 100vh;background: #fafafa;">
+	<view style="min-height: 100vh;background: #fafafa;padding-bottom: 150upx;">
 		
 		<view v-if="htmlReset==1" class="zanwu" @tap='onRetry'>请求失败，请点击重试</view>
 		<view v-if="htmlReset==-1"  class="loading_def">

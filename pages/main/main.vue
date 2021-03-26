@@ -5,13 +5,14 @@
 		</cu-custom>
 		<view class="main_box">
 			<view class="main_tit">欢迎使用万屋智能~</view>
-			<view class="more_main" @tap="set_xcx_fuc(0)">
-				<image :src="getimg('/static/images/wwzm_041.jpg')" mode="aspectFill"></image>
-				<view class="more_main_text">商家</view>
-			</view>
+			
 			<view class="more_main" @tap="set_xcx_fuc(1)">
 				<image :src="getimg('/static/images/wwzm_071.jpg')" mode="aspectFill"></image>
 				<view class="more_main_text">用户</view>
+			</view>
+			<view class="more_main" @tap="set_xcx_fuc(0)">
+				<image :src="getimg('/static/images/wwzm_041.jpg')" mode="aspectFill"></image>
+				<view class="more_main_text">商家</view>
 			</view>
 			<view class="more_main" @tap="set_xcx_fuc(2)">
 				<image :src="getimg('/static/images/wwzm_091.jpg')"  mode="aspectFill"></image>
@@ -44,11 +45,13 @@
 			if(!this.hasLogin){
 				
 			}else{
+				// #ifdef MP-WEIXIN
 				uni.showLoading({
 					mask:true,
 					title:'正在检测权限'
 				})
 				service.wxlogin()
+				// #endif
 			}
 			
 		},

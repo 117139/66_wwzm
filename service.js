@@ -112,7 +112,6 @@ function dealParams(params) {
 }
 
 
-
 const getUsers = function() {
 	let ret = '';
 	ret = uni.getStorageSync(USERS_KEY);
@@ -137,7 +136,16 @@ const gologin = function() {
 	})
 }
 
-const jump = function(e) {
+
+/**
+ * function: 跳转页面
+ ** author: wenxin
+ ** @url URL地址
+ ** @params e
+ ** @method 请求方式：GET/POST
+ ** @createTime: 2021-3-19 15:06:53
+ */
+function jump(e) {
 	// console.log(e.currentTarget.dataset.type)
 	var datas=e.currentTarget.dataset
 	console.log(datas.login==true)
@@ -172,6 +180,14 @@ const jump = function(e) {
 		})
 	}
 }
+/**
+ * function: 查看图片
+ ** author: wenxin
+ ** @url URL地址
+ ** @params e
+ ** @method 请求方式：GET/POST
+ ** @createTime: 2021-3-19 15:06:53
+ */
 const pveimg = function(e) {
 	var current = e.currentTarget.dataset.src
 	var urls = e.currentTarget.dataset.array
@@ -190,6 +206,14 @@ const pveimg = function(e) {
 	})
 
 }
+/**
+ * function: 打电话
+ ** author: wenxin
+ ** @url URL地址
+ ** @params e
+ ** @method 请求方式：GET/POST
+ ** @createTime: 2021-3-19 15:06:53
+ */
 const call=  function (e){
 	console.log(e)
 	// return
@@ -213,7 +237,14 @@ const call=  function (e){
 		});
 	}
 }
-
+/**
+ * function: 登录
+ ** author: wenxin
+ ** @url URL地址
+ * @params num
+ ** @method 请求方式：GET/POST
+ ** @createTime: 2021-3-19 15:06:53
+ */
 const wxlogin=function (num){
 	var that =this
 	// 获取用户信息
@@ -422,7 +453,14 @@ const setUsermsg=function(data){
 	)
 }
 
-
+/**
+ * function: 图片上传
+ ** author: wenxin
+ ** @url URL地址
+ ** @params tximg
+ ** @method 请求方式：GET/POST
+ ** @createTime: 2021-3-19 15:06:53
+ */
 const wx_upload=function(tximg){
 	return new Promise((resolve,reject)=>{
 		uni.showLoading({
@@ -480,10 +518,18 @@ const wx_upload=function(tximg){
 }
 
 
+/**
+ * @description 配置接口请求的公共方法   
+ * @example   
+ * var animal = new Animal('恐龙',1000); 
+ ** author: wenxin
+ ** @url URL地址
+ * @param {String} url = ''  接口请求地址  
+ * @param {String} param = {}  接口请求参数 
+ * @param {String} method = [get|post] 可选值域包括get和post，get是直接请求，post是提交数据  
+ * @createTime: 2021-3-19 15:22:57
+ */
 
-
-
-// 配置接口请求的公共方法
 const http =({url ='',param ={},method='',header={'content-type': 'application/x-www-form-urlencoded'}}={}) =>{
   
   let timeStart = Date.now();

@@ -280,6 +280,51 @@
                 }
                 
                 }
+                ,{
+                    "path" : "bus_my_jf/bus_my_jf",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "我的积分",
+                    "enablePullDownRefresh": true
+                }
+                
+                }
+                ,{
+                    "path" : "bus_js_list/bus_js_list",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "积分来源",
+                    "enablePullDownRefresh": true
+                }
+                
+                }
+                ,{
+                    "path" : "bus_js_set/bus_js_set",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "积分兑换",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "bus_gc_tj/bus_gc_tj",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "工程完成统计",
+                    "enablePullDownRefresh": true
+                }
+                
+                }
+                ,{
+                    "path" : "bus_add_goods/bus_add_goods",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "添加商品",
+                    "enablePullDownRefresh": true
+                }
+                
+                }
             ]
 	}],
 

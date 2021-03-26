@@ -208,6 +208,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
 var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 8));
 var _qqmapWxJssdk = _interopRequireDefault(__webpack_require__(/*! ../../libs/qqmap-wx-jssdk.js */ 84));
@@ -240,7 +247,7 @@ var that;var _default =
 
   },
   computed: _objectSpread(_objectSpread({},
-  (0, _vuex.mapState)(['hasLogin', 'forcedLogin', 'userName', 'loginDatas'])), {}, {
+  (0, _vuex.mapState)(['hasLogin', 'forcedLogin', 'userName', 'loginDatas', 'add_goods'])), {}, {
     startDate: function startDate() {
       return this.getDate('start');
     },
@@ -286,6 +293,9 @@ var that;var _default =
         console.log(res);
       } });
 
+  },
+  onUnload: function onUnload() {
+    that.that.setadd_goods('');
   },
   methods: _objectSpread(_objectSpread({},
   (0, _vuex.mapMutations)(['login', 'logindata', 'logout', 'setplatform', 'setfj_data'])), {}, {
@@ -398,13 +408,13 @@ var that;var _default =
 
         return;
       }
-      if (!this.yz_yaoqiu) {
-        uni.showToast({
-          icon: 'none',
-          title: '请填写业主要求' });
-
-        return;
-      }
+      // if(!this.yz_yaoqiu){
+      // 	uni.showToast({
+      // 		icon:'none',
+      // 		title:'请填写业主要求'
+      // 	})
+      // 	return
+      // }
       var datas = {
         token: that.loginDatas.token,
         order_name: that.gc_name,
@@ -418,9 +428,11 @@ var that;var _default =
         functionary_phone: that.fzr_tel,
         time: that.date,
         agreement_id: that.hetong_list[that.hetong_index].id || 0,
-        owner_demand: that.yz_yaoqiu };
+        owner_demand: that.yz_yaoqiu,
+        add_goods: JSON.stringify(that.add_goods) };
 
       console.log(datas);
+      // return
       ///order/create
       var jkurl = '/order/create';
       if (that.btn_kg == 1) {
@@ -615,6 +627,20 @@ var that;var _default =
         this.taocan_index = 0;
       }
 
+    },
+    jump: function jump(e) {
+      var that = this;
+
+      if (that.btnkg == 1) {
+        return;
+      } else {
+        that.btnkg = 1;
+        setTimeout(function () {
+          that.btnkg = 0;
+        }, 1000);
+      }
+
+      _service.default.jump(e);
     },
     getDate: function getDate(type) {
       var date = new Date();

@@ -40,7 +40,12 @@
         "user_order/user_order",
         "bus_tj_list/bus_tj_list",
         "bus_sglc/bus_sglc",
-        "user_taocan/user_taocan"
+        "user_taocan/user_taocan",
+        "bus_my_jf/bus_my_jf",
+        "bus_js_list/bus_js_list",
+        "bus_js_set/bus_js_set",
+        "bus_gc_tj/bus_gc_tj",
+        "bus_add_goods/bus_add_goods"
       ]
     }
   ],
@@ -109,5 +114,5 @@
   "usingComponents": {
     "cu-custom": "/colorui/components/cu-custom"
   },
-  "sitemapLocation": "sitemap58.json"
+  "sitemapLocation": "sitemap.json"
 }

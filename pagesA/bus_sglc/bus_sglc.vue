@@ -14,7 +14,7 @@
 						<text>施工前</text>
 					</view>
 					<view class="jd_msgbox">
-						<view class="sg_bz">{{datas.before.comments}}</view>
+						<view class="sg_bz" v-if="datas.before.comments">{{datas.before.comments}}</view>
 						<view class="jd_msgbox_img">
 							<view class="pz_img" v-for="(item,index) in getimgarr(datas.before.photo)">
 								<image :src="item" mode="aspectFill" @tap="pveimg" :data-src="item" lazy-load="true"></image>
