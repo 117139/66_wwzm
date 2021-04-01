@@ -416,21 +416,22 @@
 			    }
 			
 			  }
-				if(idG.length==0){
-					uni.showToast({
-						icon: 'none',
-						title: '请选择商品'
-					})
-					return
-				}
+				// if(idG.length==0){
+				// 	uni.showToast({
+				// 		icon: 'none',
+				// 		title: '请选择商品'
+				// 	})
+				// 	return
+				// }
 				if(that.btn_kg==1){
 					return
 				}
 				that.btn_kg=1
 				that.setadd_goods(idG)
+				
 				uni.showToast({
 					icon: 'none',
-					title: '添加成功'
+					title: '操作成功'
 				})
 				setTimeout(()=>{
 					that.btn_kg=0
