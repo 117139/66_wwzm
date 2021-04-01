@@ -28,7 +28,8 @@
 	width: 100%;
 	min-height: 124rpx;
 	background: #FFFFFF;
-	border-radius: 10rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 	padding: 20rpx;
 }
 .xx_type.data-v-645cfa16{

@@ -7,7 +7,8 @@
 	width: 690rpx;
 	/* height: 540upx; */
 	background: #FFFFFF;
-	border-radius: 20rpx;
+	-webkit-border-radius: 20rpx;
+	        border-radius: 20rpx;
 	padding: 60rpx 30rpx;
 	margin: -90rpx auto 60rpx;
 	position: relative;
@@ -43,7 +44,8 @@
 	-webkit-align-items: center;
 	        align-items: center;
 	border: 1px solid #DDDDDD;
-	border-radius: 30rpx;
+	-webkit-border-radius: 30rpx;
+	        border-radius: 30rpx;
 }
 .sj_int.data-v-59ce8383 {
 	-webkit-box-flex: 1;
@@ -62,7 +64,8 @@
 	width: 690rpx;
 	height: 88rpx;
 	background: #11A078;
-	border-radius: 44rpx;
+	-webkit-border-radius: 44rpx;
+	        border-radius: 44rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;

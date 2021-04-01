@@ -42,7 +42,8 @@ page.data-v-b237504c{
 	width: 690rpx;
 	height: 88rpx;
 	background: #1AAC19;
-	border-radius: 44rpx;
+	-webkit-border-radius: 44rpx;
+	        border-radius: 44rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -65,7 +66,8 @@ page.data-v-b237504c{
 	height: 95rpx;
 	margin: 30px auto;
 	background: #fff;
-	border-radius: 95rpx;
+	-webkit-border-radius: 95rpx;
+	        border-radius: 95rpx;
 	border: 1px solid #eee;
 }
 

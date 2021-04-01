@@ -307,6 +307,10 @@
 					return
 				}
 				that.btn_kg=1
+				uni.showLoading({
+					title:'正在提交',
+					mask:true
+				})
 				service.P_post(jkurl, datas).then(res => {
 					
 					console.log(res)

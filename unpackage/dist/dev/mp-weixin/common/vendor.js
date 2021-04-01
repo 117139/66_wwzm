@@ -503,7 +503,7 @@ function processArgs(methodName, fromArgs) {var argsOption = arguments.length > 
           keyOption = keyOption(fromArgs[key], fromArgs, toArgs);
         }
         if (!keyOption) {// 不支持的参数
-          console.warn("\u5FAE\u4FE1\u5C0F\u7A0B\u5E8F ".concat(methodName, "\u6682\u4E0D\u652F\u6301").concat(key));
+          console.warn("The '".concat(methodName, "' method of platform '\u5FAE\u4FE1\u5C0F\u7A0B\u5E8F' does not support option '").concat(key, "'"));
         } else if (isStr(keyOption)) {// 重写参数 key
           toArgs[keyOption] = fromArgs[key];
         } else if (isPlainObject(keyOption)) {// {name:newName,value:value}可重新指定参数 key:value
@@ -538,7 +538,7 @@ function wrapper(methodName, method) {
     var protocol = protocols[methodName];
     if (!protocol) {// 暂不支持的 api
       return function () {
-        console.error("\u5FAE\u4FE1\u5C0F\u7A0B\u5E8F \u6682\u4E0D\u652F\u6301".concat(methodName));
+        console.error("Platform '\u5FAE\u4FE1\u5C0F\u7A0B\u5E8F' does not support '".concat(methodName, "'."));
       };
     }
     return function (arg1, arg2) {// 目前 api 最多两个参数
@@ -585,7 +585,7 @@ function createTodoApi(name) {
 
   {var fail = _ref.fail,complete = _ref.complete;
     var res = {
-      errMsg: "".concat(name, ":fail:\u6682\u4E0D\u652F\u6301 ").concat(name, " \u65B9\u6CD5") };
+      errMsg: "".concat(name, ":fail method '").concat(name, "' not supported") };
 
     isFn(fail) && fail(res);
     isFn(complete) && complete(res);
@@ -619,7 +619,7 @@ function getProvider(_ref2)
     isFn(success) && success(res);
   } else {
     res = {
-      errMsg: 'getProvider:fail:服务[' + service + ']不存在' };
+      errMsg: 'getProvider:fail service not found' };
 
     isFn(fail) && fail(res);
   }
@@ -1323,7 +1323,12 @@ function parseBaseApp(vm, _ref3)
 
       delete this.$options.mpType;
       delete this.$options.mpInstance;
-
+      if (this.mpType === 'page') {// hack vue-i18n
+        var app = getApp();
+        if (app.$vm && app.$vm.$i18n) {
+          this._i18n = app.$vm.$i18n;
+        }
+      }
       if (this.mpType !== 'app') {
         initRefs(this);
         initMocks(this, mocks);
@@ -11408,29 +11413,29 @@ var store = new _vuex.default.Store({
             * 是否需要强制登录
             */
     forcedLogin: false,
-    hasLogin: true,
+    hasLogin: false,
     platform: '',
     userName: "游客",
     loginDatas: {
-      address: "北京市海淀区长春桥路",
-      company: "",
-      cover: "imgs/20210111134350305.png",
-      engineer_status: 2,
-      id_front: "imgs/20210116183627551.jpg",
-      id_in_hand: "imgs/20210116183644825.jpg",
-      id_number: "142625199406223911",
-      id_the_back: "imgs/20210116183638217.jpg",
-      is_engineer: 1,
-      is_owner: 1,
-      is_seller: 1,
-      lat: "39.95933",
-      long: "116.29845",
-      nickname: "问·心",
-      phone: "18300000000",
-      sex: 1,
-      token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvd2FudXpuLmNvbS5hYS44MDAxMjM0NTYudG9wXC9hcGlcL3VzZXJcL2xvZ2luIiwiaWF0IjoxNjE2MTE4Njg4LCJleHAiOjE2MjIxMTg2ODgsIm5iZiI6MTYxNjExODY4OCwianRpIjoiWnpLRGd0WFRmaXZIM25XMCIsInN1YiI6NSwicHJ2IjoiMWY2MDc4MDZhZWFjN2YyNmVlYjM0OTViMDFkMTMyYWNiN2RmY2NiZCJ9.s_gCL9N6rKppRWipAR-szFEj5QKJQzJeOZGn0dGp0HY",
-      truename: "问心" },
-
+      // address: "北京市海淀区长春桥路",
+      // company: "",
+      // cover: "imgs/20210111134350305.png",
+      // engineer_status: 2,
+      // id_front: "imgs/20210116183627551.jpg",
+      // id_in_hand: "imgs/20210116183644825.jpg",
+      // id_number: "142625199406223911",
+      // id_the_back: "imgs/20210116183638217.jpg",
+      // is_engineer: 1,
+      // is_owner: 1,
+      // is_seller: 1,
+      // lat: "39.95933",
+      // long: "116.29845",
+      // nickname: "问·心",
+      // phone: "18300000000",
+      // sex: 1,
+      // token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvd2FudXpuLmNvbS5hYS44MDAxMjM0NTYudG9wXC9hcGlcL3VzZXJcL2xvZ2luIiwiaWF0IjoxNjE2MTE4Njg4LCJleHAiOjE2MjIxMTg2ODgsIm5iZiI6MTYxNjExODY4OCwianRpIjoiWnpLRGd0WFRmaXZIM25XMCIsInN1YiI6NSwicHJ2IjoiMWY2MDc4MDZhZWFjN2YyNmVlYjM0OTViMDFkMTMyYWNiN2RmY2NiZCJ9.s_gCL9N6rKppRWipAR-szFEj5QKJQzJeOZGn0dGp0HY",
+      // truename: "问心",
+    },
     company: '',
     uid: '',
     phone: '',

@@ -6,7 +6,8 @@
 .sh_li.data-v-257dedaa {
 	width: 100%;
 	background: #FFFFFF;
-	border-radius: 10px 10px 0px 0px;
+	-webkit-border-radius: 10px 10px 0px 0px;
+	        border-radius: 10px 10px 0px 0px;
 	margin-bottom: 20rpx;
 }
 .sh_li_tit.data-v-257dedaa {
@@ -62,7 +63,8 @@
 	height: 56rpx;
 	background: #fff;
 	border: 1px solid #3778FE;
-	border-radius: 10rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;

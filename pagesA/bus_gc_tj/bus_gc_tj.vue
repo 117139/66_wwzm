@@ -22,7 +22,7 @@
 					<view class="my_td my_td1">
 						<view class="oh2" style="font-size: 32upx;color: #000;">{{item.order_name}}</view>
 					</view>
-					<view class="my_td my_td2">{{item.order_name}}</view>
+					<!-- <view class="my_td my_td2">{{item.order_name}}</view> -->
 					<view class="my_td my_td2">{{getpri(item.total_money)}}</view>
 					<view class="my_td my_td2">{{item.integral}}</view>
 				</view>

@@ -6,7 +6,8 @@
 .top_box.data-v-76858d8d{
 	width: 100%;
 	position: relative;
-	border-radius: 27rpx;
+	-webkit-border-radius: 27rpx;
+	        border-radius: 27rpx;
 }
 .top_box_img.data-v-76858d8d{
 	position: absolute;
@@ -17,7 +18,8 @@
 	z-index: 1;
 	width: 100%;
 	height: 100%;
-	border-radius: 27rpx;
+	-webkit-border-radius: 27rpx;
+	        border-radius: 27rpx;
 }
 .top_box_box.data-v-76858d8d{
 	width: 100%;
@@ -43,7 +45,8 @@
 	width: 30rpx;
 	height: 30rpx;
 	background: #FFFFFF;
-	border-radius: 20rpx;
+	-webkit-border-radius: 20rpx;
+	        border-radius: 20rpx;
 	font-size: 24rpx;
 	color: #FC6956;
 	display: -webkit-box;
@@ -191,6 +194,7 @@
 	background: -webkit-linear-gradient(329deg, #48CEB7, #48D39A);
 	background: linear-gradient(121deg, #48CEB7, #48D39A);
 	border: 1px solid #FFFFFF;
-	border-radius: 31rpx;
+	-webkit-border-radius: 31rpx;
+	        border-radius: 31rpx;
 }
 

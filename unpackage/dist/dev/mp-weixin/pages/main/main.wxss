@@ -19,8 +19,10 @@
 	margin-bottom: 55rpx;
 	width: 690rpx;
 	height: 250rpx;
-	box-shadow: 0px 0px 16rpx 0px rgba(173, 218, 219, 0.5);
-	border-radius: 10rpx;
+	-webkit-box-shadow: 0px 0px 16rpx 0px rgba(173, 218, 219, 0.5);
+	        box-shadow: 0px 0px 16rpx 0px rgba(173, 218, 219, 0.5);
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 	position: relative;
 }
 .more_main image.data-v-52f690a6{

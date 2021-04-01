@@ -6,7 +6,8 @@
 .order_main.data-v-8652e9aa{
 	width: 100%;
 	background: #fff;
-	border-radius: 10rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 	padding: 0 30rpx;
 }
 .order_li.data-v-8652e9aa{
@@ -60,7 +61,8 @@
 	font-size: 30rpx;
 	color: #00A079;
 	background: #FFFFFF;
-	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	        border-radius: 10px;
 }
 .order_li button.data-v-8652e9aa {
 	position: absolute;

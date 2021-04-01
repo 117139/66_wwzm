@@ -2,12 +2,14 @@
 .order_list.data-v-7432c4cb{
 	width: 100%;
 	padding: 30rpx;
+	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
 .order_li.data-v-7432c4cb{
 	width: 100%;
 	background: #FFFFFF;
-	border-radius: 2px;
+	-webkit-border-radius: 2px;
+	        border-radius: 2px;
 	margin-bottom: 30rpx;
 	padding: 20rpx;
 }
@@ -45,6 +47,7 @@
 	width: 135rpx;
 	height: 56rpx;
 	background: #11A078;
-	border-radius: 28rpx;
+	-webkit-border-radius: 28rpx;
+	        border-radius: 28rpx;
 }
 

@@ -52,7 +52,8 @@
 		width: 100%;
 		min-height: 234rpx;
 		background: #FFFFFF;
-		border-radius: 10px;
+		-webkit-border-radius: 10px;
+		        border-radius: 10px;
 		padding: 30rpx;
 		/* box-shadow: 0px 0px 10upx 0px rgba(0, 0, 0, 0.1); */
 }
@@ -62,7 +63,8 @@
 .order_li_img.data-v-66db87eb{
 		width: 144rpx;
 		height: 174rpx;
-		border-radius: 10rpx;
+		-webkit-border-radius: 10rpx;
+		        border-radius: 10rpx;
 		margin-right: 30rpx;
 }
 .order_li_d1.data-v-66db87eb{

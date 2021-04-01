@@ -439,6 +439,10 @@ var that;var _default =
         return;
       }
       that.btn_kg = 1;
+      uni.showLoading({
+        title: '正在提交',
+        mask: true });
+
       _service.default.P_post(jkurl, datas).then(function (res) {
 
         console.log(res);

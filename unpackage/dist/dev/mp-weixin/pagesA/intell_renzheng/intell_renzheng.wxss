@@ -13,7 +13,8 @@
 .rz_li image.data-v-dd221b2e{
 	width: 152rpx;
 	height: 100rpx;
-	border-radius: 8px;
+	-webkit-border-radius: 8px;
+	        border-radius: 8px;
 	margin-right: 20rpx;
 }
 .rz_li text.data-v-dd221b2e{
@@ -28,7 +29,8 @@
 	width: 690rpx;
 	height: 88rpx;
 	background: #3778FE;
-	border-radius: 10rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;

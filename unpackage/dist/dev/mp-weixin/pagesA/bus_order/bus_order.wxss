@@ -52,7 +52,8 @@
 	width: 100%;
 	/* min-height: 420upx; */
 	background: #FFFFFF;
-	border-radius: 10rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 	padding: 30rpx;
 	/* box-shadow: 0px 0px 10upx 0px rgba(0, 0, 0, 0.1); */
 }
@@ -95,7 +96,8 @@
 	color: #00A079;
 	margin-left: 30rpx;
 	border: 1px solid #00A079;
-	border-radius: 10rpx;
+	-webkit-border-radius: 10rpx;
+	        border-radius: 10rpx;
 }
 .order_bottom.data-v-659ec90b{
 	width: 100%;
@@ -130,6 +132,7 @@
 	font-size: 30rpx;
 	color: #00A079;
 	background: #FFFFFF;
-	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	        border-radius: 10px;
 }
 
