@@ -254,6 +254,141 @@ const wxlogin=function (num){
 			mask: true
 		})
 	}
+	var userInfo = uni.getStorageSync('userInfo')
+	if(!userInfo){
+	
+	}else{
+	  uni.login({
+	    success: function (res) {
+				
+	      // 发送 res.code 到后台换取 openId, sessionKey, unionId
+	      var uinfo = userInfo
+	      let data = {
+	        code: res.code,
+	        nickname: uinfo.nickName,
+	        cover: uinfo.avatarUrl
+	      }
+	      let rcode = res.code
+	      console.log(res.code)
+	      uni.request({
+	        url: IPurl+'user/login',
+	        data: data,
+	        header: {
+	          'content-type': 'application/x-www-form-urlencoded'
+	        },
+	        dataType: 'json',
+	        method: 'POST',
+	        success(res) {
+						uni.hideLoading()
+	          console.log(res.data)
+	          if (res.data.code == 1) {
+	            console.log('登录成功')
+	            console.log(res.data)
+	            uni.setStorageSync('token', res.data.data.token)
+							//获取手机号
+							/*
+							if(!res.data.data.phone){
+								if(num==1){
+									uni.redirectTo({
+										url:'/pages/login_tel/login_tel'
+									})
+								}
+								return
+							}*/
+							store.commit('logindata', res.data.data)
+							store.commit('login', res.data.data.nickname)
+							
+	            uni.setStorageSync('loginmsg', res.data.data)
+							//0 商家端  1 用户端  2智能安装端
+							console.log('store.xcx_status')
+							console.log(store.state.xcx_status)
+							if(num==1){
+								console.log(res.data.data.is_engineer)
+								if(res.data.data.is_owner==1){
+									store.commit('set_xcx', 1)
+									return
+								}
+								if(res.data.data.is_engineer==1){
+									store.commit('set_xcx', 2)
+									return
+								}
+								if(res.data.data.is_seller==1){
+									store.commit('set_xcx', 0)
+								}
+							}
+							// im login
+							
+							
+							
+							if(num==1){
+								uni.showToast({
+									icon:'none',
+									title:'登录成功'
+								})
+								setTimeout(()=>{
+									event.trigger({
+									    type:'test',
+									    page:'/pages/index/index',
+									    //obj和test是举的例子，随意啥都行，这个传过去在on中的args中都可以获取到
+									    obj:{
+									
+									    },
+									    test:{
+												'loginmsg': res.data.data
+									    },
+									    success:function(data){
+									        //data为on中返回的数据
+									    }
+									});
+								},1000)
+								setTimeout(()=>{
+									uni.navigateBack()
+								},1500)
+							}else{
+								event.trigger({
+								    type:'test',
+								    page:'/pages/index/index',
+								    //obj和test是举的例子，随意啥都行，这个传过去在on中的args中都可以获取到
+								    obj:{
+								
+								    },
+								    test:{
+											'loginmsg': res.data.data
+								    },
+								    success:function(data){
+								        //data为on中返回的数据
+								    }
+								});
+							}
+	          } else {
+	            uni.removeStorageSync('userInfo')
+	            uni.removeStorageSync('token')
+	            if(res.msg){
+								uni.showToast({
+								  icon: 'none',
+								  title: res.msg,
+								})
+							}else{
+								uni.showToast({
+								  icon: 'none',
+								  title: '登录失败',
+								})
+							}
+	          }
+		
+	        },
+	        fail() {
+						uni.hideLoading()
+	          uni.showToast({
+	            icon: 'none',
+	            title: '登录失败'
+	          })
+	        }
+	      })
+	    }
+	  })
+	}
+	return
 	uni.getSetting({
 	  success: res => {
 	   console.log(res)

@@ -9,7 +9,12 @@
 		</view>
 		<view class="dis_flex aic ju_c login_tip">登录表示您同意<text @tap="jump" data-url="/pagesA/user_tao/user_tao?type=yszc">《法律声明和隐私政策》</text></view>
 		<view class="dis_flex aic ju_c login_btn">
-			<button class='bottom'  open-type="getUserInfo"
+			<button v-if="canIUseGetUserProfile" class='bottom'  open-type="getUserInfo"
+			lang="zh_CN" @tap="getuserprofile">
+				<image class="wx_icon" src="/static/images/wx.png"></image>
+				微信用户一键登录
+			</button>
+			<button v-else class='bottom'  open-type="getUserInfo"
 			lang="zh_CN" @getuserinfo="getUserInfo">
 				<image class="wx_icon" src="/static/images/wx.png"></image>
 				微信用户一键登录
@@ -28,7 +33,7 @@
 	export default {
 		data() {
 			return {
-				canIUse: uni.canIUse('button.open-type.getUserInfo')
+				canIUseGetUserProfile: false
 			}
 		},	
 		computed: {
@@ -36,6 +41,11 @@
 				'hasLogin',
 				'loginMsg'
 			])
+		},
+		onLoad() {
+			if (wx.getUserProfile) {
+			      this.canIUseGetUserProfile= true
+			    }
 		},
 		methods: {
 			...mapMutations(['wxshouquan','login']),
@@ -52,6 +62,19 @@
 				}
 				
 				service.jump(e)
+			},
+			getuserprofile(e){
+				wx.getUserProfile({
+					desc:'正在获取',//不写不弹提示框
+					success:function(res){
+							uni.setStorageSync('userInfo',res.userInfo)
+							service.wxlogin(1)
+						 console.log('获取成功: ',res)
+					},
+					fail:function(err){
+						 console.log("获取失败: ",err)
+					}
+				})
 			},
 			getUserInfo({
 				detail
@@ -76,6 +99,7 @@
 							
 								// #ifdef MP-WEIXIN
 								console.log('小程序口', e)
+								uni.setStorageSync('userInfo',e.userInfo)
 								// this.wxshouquan(e.userInfo)
 								service.wxlogin(1)
 			
