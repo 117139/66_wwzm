@@ -35,8 +35,7 @@
 
 	/* background: #FFFFFF; */
 	/* box-shadow: 0px 0px 16upx 0px rgba(173, 218, 219, 0.22); */
-	-webkit-border-radius: 10rpx;
-	        border-radius: 10rpx;
+	border-radius: 10rpx;
 	margin-bottom: 20rpx;
 }
 .bus_my_li_tit.data-v-bd1af1be {
@@ -126,8 +125,7 @@
 .td_user_tx.data-v-bd1af1be {
 	width: 52rpx;
 	height: 52rpx;
-	-webkit-border-radius: 50%;
-	        border-radius: 50%;
+	border-radius: 50%;
 	margin-right: 20rpx;
 }
 .td_user_msg.data-v-bd1af1be {

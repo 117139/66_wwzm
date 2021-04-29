@@ -6,8 +6,7 @@
 .index_li.data-v-3ecf6013 {
 	width: 100%;
 	background: #FFFFFF;
-	-webkit-border-radius: 10rpx;
-	        border-radius: 10rpx;
+	border-radius: 10rpx;
 	margin-bottom: 20rpx;
 }
 .index_li_d1.data-v-3ecf6013 {
@@ -25,8 +24,7 @@
 .index_tx.data-v-3ecf6013 {
 	width: 44rpx;
 	height: 44rpx;
-	-webkit-border-radius: 50%;
-	        border-radius: 50%;
+	border-radius: 50%;
 	margin-right: 20rpx;
 }
 .index_yz.data-v-3ecf6013 {
@@ -127,8 +125,7 @@
 	width: 140rpx;
 	height: 140rpx;
 	background: #FAFAFA;
-	-webkit-border-radius: 4rpx;
-	        border-radius: 4rpx;
+	border-radius: 4rpx;
 	margin-right: 20rpx;
 }
 .tc_d1.data-v-3ecf6013 {
@@ -189,8 +186,7 @@
 	width: 690rpx;
 	height: 88rpx;
 	background: #3778FE;
-	-webkit-border-radius: 10rpx;
-	        border-radius: 10rpx;
+	border-radius: 10rpx;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;

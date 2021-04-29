@@ -46,8 +46,7 @@
 	width: 6rpx;
 	height: 33rpx;
 	background: #11A078;
-	-webkit-border-radius: 3rpx;
-	        border-radius: 3rpx;
+	border-radius: 3rpx;
 }
 .jf_int.data-v-4070ed0b{
 	margin-top: 25rpx;
@@ -55,8 +54,7 @@
 	height: 88rpx;
 	background: #FFFFFF;
 	border: 1px solid #DDDDDD;
-	-webkit-border-radius: 4px;
-	        border-radius: 4px;
+	border-radius: 4px;
 	padding: 0 25rpx;
 }
 .jf_znum.data-v-4070ed0b{
@@ -75,8 +73,7 @@
 	height: 88rpx;
 	background: #11A078;
 	border: 1px solid #DDDDDD;
-	-webkit-border-radius: 4px;
-	        border-radius: 4px;
+	border-radius: 4px;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;

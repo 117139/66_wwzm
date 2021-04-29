@@ -21,7 +21,8 @@
 				<view class="order_li_tit">
 					
 					<text>安防套餐</text>
-					<text style="font-size: 30upx;color: #F4691A;">总价:{{datas.total_money}}</text>
+					<text style="font-size: 30upx;color: #F4691A;">总价:{{datas.total_money?datas.total_money*1:0}}</text>
+					<text style="font-size: 30upx;color: #F4691A;">成交金额:{{datas.final_money?datas.final_money*1:0}}</text>
 				</view>
 				<view class="order_li_msg">
 				
@@ -43,7 +44,7 @@
 							<text>施工前</text>
 						</view>
 						<view class="jd_msgbox">
-							<view class="sg_bz">{{datas.before.comments}}</view>
+							<view v-if="datas.before.comments" class="sg_bz">{{datas.before.comments}}</view>
 							<view class="jd_msgbox_img">
 								<view class="pz_img" v-for="(item,index) in getimgarr(datas.before.photo)">
 									<image :src="item" mode="aspectFill"  @tap="pveimg" :data-src="item" ></image>

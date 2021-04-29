@@ -126,7 +126,6 @@
 	background: -webkit-linear-gradient(329deg, #48CEB7, #48D39A);
 	background: linear-gradient(121deg, #48CEB7, #48D39A);
 	border: 1px solid #FFFFFF;
-	-webkit-border-radius: 31rpx;
-	        border-radius: 31rpx;
+	border-radius: 31rpx;
 }
 

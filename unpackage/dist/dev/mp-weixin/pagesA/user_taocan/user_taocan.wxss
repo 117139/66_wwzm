@@ -10,7 +10,6 @@
 .xieyi_main.data-v-4d6cf49e{
 	 width: 100%;
 	 padding: 30rpx;
-	 -webkit-box-sizing: border-box;
 	 box-sizing: border-box;
 	 font-size: 28rpx;
 	 color: #333;

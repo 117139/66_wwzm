@@ -103,7 +103,7 @@ var render = function() {
       ? _vm.__map(_vm.datas, function(item, index) {
           var $orig = _vm.__get_orig(item)
 
-          var m1 = _vm.getpri(item.total_money)
+          var m1 = _vm.getpri(item.final_money)
           return {
             $orig: $orig,
             m1: m1
@@ -153,6 +153,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
 
 
 
